@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { Reveal, Stagger, fadeUpChild, EASE_OUT_QUINT } from "./motion";
+import { motion } from "framer-motion";
+import { Reveal, Stagger, fadeUpChild } from "./motion";
 import { asset } from "@/lib/asset";
 
-// Matches the Figma "On hover → Smart animate" spring on the card variants.
+// Matches the Figma "On hover" spring on the card variants.
 const FLIP_SPRING = { type: "spring", mass: 1, stiffness: 100, damping: 15 } as const;
 
 const SERVICES = [
@@ -59,14 +59,18 @@ const SERVICES = [
 
 type Service = (typeof SERVICES)[number];
 
-const listParent = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.04, delayChildren: 0.08 } },
-};
-const listChild = {
-  hidden: { opacity: 0, y: 10 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: EASE_OUT_QUINT } },
-};
+function CardTitle({ s }: { s: Service }) {
+  return (
+    <h3 className="service-card__title">
+      {s.title.map((line, i) => (
+        <span key={line}>
+          {line}
+          {i < s.title.length - 1 && <br />}
+        </span>
+      ))}
+    </h3>
+  );
+}
 
 function ServiceCard({ s }: { s: Service }) {
   const [open, setOpen] = useState(false);
@@ -92,61 +96,36 @@ function ServiceCard({ s }: { s: Service }) {
       tabIndex={0}
       aria-expanded={open}
     >
-      <div className="service-card__body">
-        <h3 className="service-card__title">
-          {s.title.map((line, i) => (
-            <span key={line}>
-              {line}
-              {i < s.title.length - 1 && <br />}
-            </span>
-          ))}
-        </h3>
-        <AnimatePresence mode="popLayout" initial={false}>
-          {open ? (
-            <motion.div key="back" className="service-card__back" exit={{ opacity: 0, transition: { duration: 0.15 } }}>
-              <motion.ul className="service-card__list" variants={listParent} initial="hidden" animate="show">
-                {s.items.map((item) => (
-                  <motion.li key={item} variants={listChild}>
-                    {item}
-                  </motion.li>
-                ))}
-              </motion.ul>
-              <motion.a
-                href="#"
-                className="service-card__cta"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ ...FLIP_SPRING, delay: 0.2 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                View Service Details
-              </motion.a>
-            </motion.div>
-          ) : (
-            <motion.ul
-              key="front"
-              className="service-card__tags"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0, transition: { duration: 0.15 } }}
-              transition={{ duration: 0.3, ease: EASE_OUT_QUINT }}
-            >
+      <motion.div className="service-card__inner" initial={false} animate={{ rotateY: open ? 180 : 0 }} transition={FLIP_SPRING}>
+        <div className="service-card__face service-card__face--front" aria-hidden={open}>
+          <div className="service-card__body">
+            <CardTitle s={s} />
+            <ul className="service-card__tags">
               {s.tags.map((t) => (
                 <li key={t} className="tag">{t}</li>
               ))}
-            </motion.ul>
-          )}
-        </AnimatePresence>
-      </div>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <motion.img
-        className="service-card__img"
-        src={asset(s.img)}
-        alt={s.alt}
-        loading="lazy"
-        animate={{ opacity: open ? 0.1 : 1 }}
-        transition={FLIP_SPRING}
-      />
+            </ul>
+          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="service-card__img" src={asset(s.img)} alt={s.alt} loading="lazy" />
+        </div>
+
+        <div className="service-card__face service-card__face--back" aria-hidden={!open}>
+          <div className="service-card__body">
+            <CardTitle s={s} />
+            <ul className="service-card__list">
+              {s.items.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+            <a href="#" className="service-card__cta" tabIndex={open ? 0 : -1}>
+              View Service Details
+            </a>
+          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="service-card__img service-card__img--faded" src={asset(s.img)} alt="" loading="lazy" />
+        </div>
+      </motion.div>
     </motion.article>
   );
 }

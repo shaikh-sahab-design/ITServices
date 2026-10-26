@@ -581,19 +581,36 @@ button {
   position: relative;
   display: block;
   height: 500px;
-  border-radius: 10px;
-  overflow: hidden;
   color: var(--white);
-  transition: transform 250ms var(--ease-out-quint), box-shadow 250ms var(--ease-out-quint);
+  perspective: 1600px;
 }
 
-.service-card--it {
-  background: var(--blue);
+/* The card turns over on hover: front face shows the tags, back face the service list. */
+.service-card__inner {
+  position: relative;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.service-card__face {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.service-card__face--back {
+  transform: rotateY(180deg);
   box-shadow: 0 10px 48px rgba(11, 27, 43, 0.1);
 }
 
-.service-card--security { background: var(--red); }
-.service-card--ai { background: var(--yellow); color: var(--text); }
+.service-card--it .service-card__face { background: var(--blue); }
+.service-card--it .service-card__face--front { box-shadow: 0 10px 48px rgba(11, 27, 43, 0.1); }
+.service-card--security .service-card__face { background: var(--red); }
+.service-card--ai .service-card__face { background: var(--yellow); }
+.service-card--ai { color: var(--text); }
 
 .service-card__body {
   position: relative;
@@ -641,8 +658,8 @@ button {
 .service-card--ai .service-card__img { left: 41px; top: 194px; width: 410px; }
 
 .service-card { cursor: default; outline: none; }
-.service-card:focus-visible { box-shadow: 0 0 0 3px var(--text); }
-.service-card.is-open { box-shadow: 0 10px 48px rgba(11, 27, 43, 0.1); }
+.service-card:focus-visible .service-card__face { box-shadow: 0 0 0 3px var(--text); }
+.service-card__img--faded { opacity: 0.1; }
 
 /* Back variant: the service list and the outline button. */
 .service-card__list {
