@@ -13,6 +13,19 @@ const VERTICALS = [
   { icon: <CartIcon />, title: "Retail & Distribution", body: "POS security, supply chain IT, and multi-site infrastructure management at scale." },
 ];
 
+// Hover variant's corner badge: the Figma "arrow-right-circle" icon masking a #d9d9d9 fill, cut off by the card edge.
+function VerticalArrow() {
+  return (
+    <svg className="vertical-card__arrow" width="71" height="71" viewBox="0 0 71 71" fill="none" aria-hidden="true">
+      <circle cx="35.5" cy="35.5" r="35.5" fill="currentColor" opacity="0.4" />
+      <path
+        d="M37.6 23.4a2.2 2.2 0 0 0 0 3.1l6.8 6.8H24.3a2.2 2.2 0 1 0 0 4.4h20.1l-6.8 6.8a2.2 2.2 0 1 0 3.1 3.1l10.5-10.5a2.2 2.2 0 0 0 0-3.1L40.7 23.4a2.2 2.2 0 0 0-3.1 0Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
 export function Verticals() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [atEnd, setAtEnd] = useState(false);
@@ -60,6 +73,7 @@ export function Verticals() {
                   <h3 className="vertical-card__title">{v.title}</h3>
                   <p className="vertical-card__body">{v.body}</p>
                 </div>
+                <VerticalArrow />
               </motion.article>
             ))}
           </Stagger>

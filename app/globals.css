@@ -12,6 +12,8 @@
   --footer-text: #aab1c3;
 
   --ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+  /* Figma "Gentle" spring (mass 1, stiffness 100, damping 15), sampled for CSS. */
+  --ease-gentle: linear(0, 0.097, 0.298, 0.514, 0.7, 0.839, 0.933, 0.989, 1.017, 1.027, 1.028, 1.023, 1.017, 1.011, 1.006, 1.003, 1.001, 1, 1);
   --ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
 
   --gutter: 58px;
@@ -703,17 +705,24 @@ button {
 }
 
 .service-card__cta {
-  display: inline-block;
-  margin-top: 70px;
-  padding: 10px 20px;
+  /* Figma "Frame" button, white/tertiary variant: hugs its label, 70px below the list. */
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 50px;
+  padding: 9px 19px;
   border: 1px solid currentColor;
   border-radius: 8px;
   font-size: 16px;
   font-weight: 600;
-  line-height: 17px;
+  line-height: 19px;
+  white-space: nowrap;
   color: inherit;
-  transition: background-color 200ms var(--ease-out-quint);
+  transition: background-color 200ms var(--ease-out-quint), transform 100ms ease-out;
 }
+
+.service-card__cta:active { transform: scale(0.97); }
 
 @media (hover: hover) and (pointer: fine) {
   .service-card__cta:hover { background: rgba(255, 255, 255, 0.12); }
@@ -760,7 +769,9 @@ button {
   scroll-snap-type: x mandatory;
   scroll-padding-left: var(--gutter);
   scrollbar-width: none;
-  padding: 0 var(--gutter);
+  /* Bottom padding keeps the hover shadow from being clipped by the scroller. */
+  padding: 0 var(--gutter) 36px;
+  margin-bottom: -36px;
 }
 
 .verticals__track::-webkit-scrollbar {
@@ -769,29 +780,50 @@ button {
 
 .verticals__list {
   display: flex;
+  align-items: flex-start;
+  /* Room for the taller hover variant, so the section doesn't jump. */
+  min-height: 280px;
   gap: 22px;
   width: max-content;
   padding-right: var(--gutter);
 }
 
+/* Card values come from the Figma "Frame 35" component set: Default and Variant2 (hover). */
 .vertical-card {
+  --vc-bg: var(--white);
+  --vc-title: var(--text);
+  --vc-body: var(--text-2);
+  --vc-icon: var(--text-2);
+  --vc-gap: 30px;
+  --vc-width: 316px;
+  --vc-height: 260px;
+  --vc-shadow: 0 0 0 rgba(15, 61, 237, 0);
+  --vc-arrow: 0;
+  position: relative;
+  overflow: hidden;
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  width: 316px;
-  min-height: 260px;
+  gap: var(--vc-gap);
+  width: var(--vc-width);
+  min-height: var(--vc-height);
   padding: 30px;
   border-radius: 10px;
-  background: var(--white);
-  transition: transform 250ms var(--ease-out-quint), box-shadow 250ms var(--ease-out-quint);
+  background: var(--vc-bg);
+  box-shadow: var(--vc-shadow);
+  transition-property: background-color, box-shadow, gap, width, min-height;
+  transition-duration: var(--vc-duration);
+  transition-timing-function: var(--ease-gentle);
+  /* Figma: On hover, Smart animate, Gentle spring (stiffness 100, damping 15). */
+  --vc-duration: 900ms;
 }
 
 .vertical-card__icon {
   display: block;
   width: 48px;
   height: 48px;
-  transition: transform 300ms var(--ease-out-quint);
+  color: var(--vc-icon);
+  transition: color var(--vc-duration) var(--ease-gentle);
 }
 
 .vertical-card__title {
@@ -799,22 +831,46 @@ button {
   font-weight: 700;
   line-height: 25px;
   margin-bottom: 9px;
+  color: var(--vc-title);
+  transition: color var(--vc-duration) var(--ease-gentle);
 }
 
 .vertical-card__body {
   font-size: 18px;
   line-height: 22px;
-  color: var(--text-2);
+  color: var(--vc-body);
+  transition: color var(--vc-duration) var(--ease-gentle);
+}
+
+.vertical-card__arrow {
+  position: absolute;
+  right: -9px;
+  bottom: -6px;
+  color: #d9d9d9;
+  opacity: var(--vc-arrow);
+  transform: translate(calc((1 - var(--vc-arrow)) * 24px), calc((1 - var(--vc-arrow)) * 24px));
+  transition:
+    opacity var(--vc-duration) var(--ease-gentle),
+    transform var(--vc-duration) var(--ease-gentle);
+  pointer-events: none;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .vertical-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(12, 14, 22, 0.08);
+    --vc-bg: var(--blue);
+    --vc-title: var(--white);
+    --vc-body: var(--white);
+    --vc-icon: var(--white);
+    --vc-gap: 20px;
+    --vc-width: 320px;
+    --vc-height: 280px;
+    --vc-shadow: 5px 15px 20px rgba(15, 61, 237, 0.2);
+    --vc-arrow: 1;
   }
-  .vertical-card:hover .vertical-card__icon {
-    transform: scale(1.08) rotate(-4deg);
-  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vertical-card { --vc-duration: 0ms; }
 }
 
 .verticals__next {
@@ -1753,6 +1809,7 @@ fieldset.field .field__label {
   .service-card .service-card__img { left: auto; right: -40px; }
 
   .verticals { padding: 48px 0; }
+  .verticals__list { align-items: stretch; min-height: 0; }
   .vertical-card { width: 280px; padding: 24px; gap: 24px; }
   .vertical-card__title { font-size: 19px; }
   .vertical-card__body { font-size: 16px; line-height: 21px; }
