@@ -3,7 +3,11 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Reveal, Stagger, fadeUpChild, EASE_OUT_QUINT } from "./motion";
+import Link from "next/link";
 import { asset } from "@/lib/asset";
+import { ROUTES } from "@/lib/routes";
+
+const MotionLink = motion.create(Link);
 
 // Matches the Figma "On hover → Smart animate" spring on the card variants.
 const FLIP_SPRING = { type: "spring", mass: 1, stiffness: 100, damping: 15 } as const;
@@ -12,6 +16,7 @@ const SERVICES = [
   {
     key: "it",
     title: ["Managed IT", "Services"],
+    href: ROUTES.managedIt,
     tags: ["Reliable technology", "Infrastructure Built for Growth", "Expert Support"],
     items: [
       "Managed IT Support",
@@ -28,6 +33,7 @@ const SERVICES = [
   {
     key: "security",
     title: ["Managed Security"],
+    href: ROUTES.managedSecurity,
     tags: ["Proactive Monitoring", "Continuous Protection", "Response Against Evolving Threats"],
     items: [
       "Vulnerability Assessment & Penetration Testing",
@@ -43,6 +49,7 @@ const SERVICES = [
   {
     key: "ai",
     title: ["AI Security"],
+    href: ROUTES.aiSecurity,
     tags: ["AI Adoption With Governance", "security built in", "Protection"],
     items: [
       "AI Security Assessment",
@@ -111,8 +118,8 @@ function ServiceCard({ s }: { s: Service }) {
                   </motion.li>
                 ))}
               </motion.ul>
-              <motion.a
-                href="#"
+              <MotionLink
+                href={s.href}
                 className="service-card__cta"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -120,7 +127,7 @@ function ServiceCard({ s }: { s: Service }) {
                 whileTap={{ scale: 0.97 }}
               >
                 View Service Details
-              </motion.a>
+              </MotionLink>
             </motion.div>
           ) : (
             <motion.ul
