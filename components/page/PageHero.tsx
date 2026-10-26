@@ -11,8 +11,8 @@ type Props = {
   image: string;
   /** Lines of the H1. Lines after the first are red, as in the Figma heroes. */
   title: string[];
-  lede: React.ReactNode;
-  actions: Action[];
+  lede?: React.ReactNode;
+  actions?: Action[];
   /** Where the navy overlay starts fading and where it is gone, in % of hero width (from the Figma gradient). */
   fade?: [number, number];
   /** Overlay colour as "r, g, b". */
@@ -30,7 +30,16 @@ const line = (i: number) => ({
 });
 
 /** Dark photo hero used by the inner pages (Services, About, Contact, service pages). */
-export function PageHero({ image, title, lede, actions, fade = [30.9, 80.2], tint = "6, 19, 51", copyWidth = 873, flow }: Props) {
+export function PageHero({
+  image,
+  title,
+  lede,
+  actions = [],
+  fade = [30.9, 80.2],
+  tint = "6, 19, 51",
+  copyWidth = 873,
+  flow,
+}: Props) {
   return (
     <section
       className="page-hero"
@@ -70,27 +79,31 @@ export function PageHero({ image, title, lede, actions, fade = [30.9, 80.2], tin
               ))}
             </h1>
           )}
-          <motion.p
-            className="page-hero__lede"
+          {lede && (
+            <motion.p
+              className="page-hero__lede"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: EASE_OUT_QUINT, delay: 0.3 }}
+            >
+              {lede}
+            </motion.p>
+          )}
+        </div>
+        {actions.length > 0 && (
+          <motion.div
+            className="page-hero__actions"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: EASE_OUT_QUINT, delay: 0.3 }}
+            transition={{ duration: 0.5, ease: EASE_OUT_QUINT, delay: 0.4 }}
           >
-            {lede}
-          </motion.p>
-        </div>
-        <motion.div
-          className="page-hero__actions"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: EASE_OUT_QUINT, delay: 0.4 }}
-        >
-          {actions.map((a) => (
-            <Link key={a.label} href={a.href} className={`btn btn--${a.variant}`}>
-              {a.label}
-            </Link>
-          ))}
-        </motion.div>
+            {actions.map((a) => (
+              <Link key={a.label} href={a.href} className={`btn btn--${a.variant}`}>
+                {a.label}
+              </Link>
+            ))}
+          </motion.div>
+        )}
       </div>
     </section>
   );

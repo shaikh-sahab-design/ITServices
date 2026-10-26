@@ -14,6 +14,7 @@ export const ROUTES = {
   database: "/database-management",
   about: "/about",
   blog: "/blog",
+  blogPost: "/blog/how-outsourced-it-support-services-boost-efficiency",
   caseStudies: "/case-studies",
   caseArcom: "/case-studies/arcom-it",
   caseActiveComply: "/case-studies/activecomply",
