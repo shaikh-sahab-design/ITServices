@@ -1,3 +1,7 @@
+"use client";
+
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import { Reveal } from "./motion";
 import { asset } from "@/lib/asset";
 
@@ -12,6 +16,15 @@ const CERTS = [
 ];
 
 export function TrustStrip() {
+  const reduce = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+  // Progress runs from the moment the whole strip is in view (its Figma resting
+  // layout) until it scrolls off the top, so it never shifts before you scroll past it.
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["end end", "end start"] });
+  // Two layers at different speeds: the heading rises faster than the page, the logos lag behind.
+  const introY = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [0, -70]);
+  const logosY = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [0, 35]);
+
   // The row is rendered twice so the CSS marquee can loop seamlessly.
   const row = (hidden: boolean) => (
     <ul className="marquee__row" aria-hidden={hidden || undefined}>
@@ -25,20 +38,22 @@ export function TrustStrip() {
   );
 
   return (
-    <section className="trust" aria-label="Trust and certification">
-      <Reveal className="trust__intro">
-        <h2 className="trust__title">TRUST / CERTIFICATION</h2>
-        <p className="trust__sub">
-          Trusted by <strong className="t-red">500+</strong> Organisations · Certified Partners
-        </p>
-      </Reveal>
+    <section ref={sectionRef} className="trust" aria-label="Trust and certification">
+      <motion.div className="trust__layer" style={{ y: introY }}>
+        <Reveal className="trust__intro">
+          <h2 className="trust__title">TRUST / CERTIFICATION</h2>
+          <p className="trust__sub">
+            Trusted by <strong className="t-red">500+</strong> Organisations · Certified Partners
+          </p>
+        </Reveal>
+      </motion.div>
       <div className="trust__divider" aria-hidden="true" />
-      <div className="marquee">
+      <motion.div className="marquee" style={{ y: logosY }}>
         <div className="marquee__track">
           {row(false)}
           {row(true)}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
