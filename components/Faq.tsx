@@ -37,8 +37,14 @@ const FAQS = [
   },
 ];
 
-export function Faq() {
-  const [open, setOpen] = useState<number | null>(1);
+type FaqItem = { q: string; a?: string };
+
+/**
+ * Accordion of questions. Service pages pass their own list; a question with no answer
+ * in Figma is shown without one and doesn't expand.
+ */
+export function Faq({ items = FAQS, defaultOpen = 1 }: { items?: FaqItem[]; defaultOpen?: number }) {
+  const [open, setOpen] = useState<number | null>(defaultOpen);
   const baseId = useId();
 
   return (
@@ -47,15 +53,16 @@ export function Faq() {
         <h2 className="h-display">Frequently Asked Questions</h2>
       </Reveal>
       <Stagger className="faq" stagger={0.05}>
-        {FAQS.map((item, i) => {
-          const isOpen = open === i;
+        {items.map((item, i) => {
+          const isOpen = open === i && Boolean(item.a);
           const panelId = `${baseId}-panel-${i}`;
           return (
-            <motion.div key={item.q} className="faq__item" data-open={isOpen} variants={fadeUpChild}>
+            <motion.div key={`${item.q}-${i}`} className="faq__item" data-open={isOpen} variants={fadeUpChild}>
               <button
                 className="faq__q"
-                aria-expanded={isOpen}
-                aria-controls={panelId}
+                aria-expanded={item.a ? isOpen : undefined}
+                aria-controls={item.a ? panelId : undefined}
+                disabled={!item.a}
                 onClick={() => setOpen(isOpen ? null : i)}
               >
                 <span>{item.q}</span>
