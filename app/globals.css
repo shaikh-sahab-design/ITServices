@@ -492,6 +492,10 @@ button {
   padding-left: var(--gutter);
 }
 
+.trust__layer {
+  flex: none;
+}
+
 .trust__intro {
   flex: none;
   width: 390px;
