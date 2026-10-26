@@ -21,6 +21,8 @@ type Props = {
   copyWidth?: number;
   /** Let the title segments run on as one paragraph and wrap naturally, instead of one line each. */
   flow?: boolean;
+  /** Short 230px band used by the sub-service pages; the image already has its navy wash baked in. */
+  compact?: boolean;
 };
 
 const line = (i: number) => ({
@@ -39,10 +41,11 @@ export function PageHero({
   tint = "6, 19, 51",
   copyWidth = 873,
   flow,
+  compact,
 }: Props) {
   return (
     <section
-      className="page-hero"
+      className={`page-hero${compact ? " page-hero--compact" : ""}`}
       style={
         {
           "--hero-img": `url(${asset(image)})`,
