@@ -11,11 +11,17 @@ const CLIENTS = [
   { src: "/images/client-io-solution.png", alt: "IO Solution", w: 142 },
 ];
 
-export function Clients() {
+export function Clients({
+  title = "Trusted By Businesses Worldwide",
+  className = "",
+}: {
+  title?: string;
+  className?: string;
+}) {
   return (
-    <section className="section container">
+    <section className={`section container ${className}`}>
       <Reveal className="section-head section-head--wide">
-        <h2 className="h-display">Trusted By Businesses Worldwide</h2>
+        <h2 className="h-display">{title}</h2>
         <p className="lede">
           Folio3 Managed IT supports organizations with daily IT operations, security, infrastructure, and technical
           support across industries and time zones.
