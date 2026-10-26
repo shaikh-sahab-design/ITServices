@@ -18,16 +18,19 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
-        <TrustStrip />
-        <Services />
-        <Verticals />
-        <Stats />
-        <Clients />
-        <CaseStudies />
-        <Journey />
-        <Testimonials />
-        <Faq />
-        <ContactForm />
+        {/* Everything after the banner scrolls up over it while the banner stays pinned. */}
+        <div className="hero-cover">
+          <TrustStrip />
+          <Services />
+          <Verticals />
+          <Stats />
+          <Clients />
+          <CaseStudies />
+          <Journey />
+          <Testimonials />
+          <Faq />
+          <ContactForm />
+        </div>
       </main>
       <Footer />
     </>

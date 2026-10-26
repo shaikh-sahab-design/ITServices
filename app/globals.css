@@ -302,12 +302,27 @@ button {
 
 /* ---------- Hero ---------- */
 .hero {
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 0;
   overflow: hidden;
   height: 894px;
   padding-top: 60px;
   /* Figma: linear gradient, transparent white at 15% to rgba(26,0,255,.14) at ~127% */
   background: linear-gradient(180deg, rgba(255, 255, 255, 0) 8.2%, rgba(26, 0, 255, 0.14) 128.7%);
+}
+
+/* Covers the pinned hero as the page scrolls. flow-root keeps the first
+   section's top margin inside, so the cover starts right under the banner. */
+.hero-cover {
+  position: relative;
+  z-index: 1;
+  display: flow-root;
+  background: var(--white);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero { position: relative; }
 }
 
 .hero__copy {
@@ -490,10 +505,6 @@ button {
   max-width: 1440px;
   margin: 60px auto 0;
   padding-left: var(--gutter);
-}
-
-.trust__layer {
-  flex: none;
 }
 
 .trust__intro {
