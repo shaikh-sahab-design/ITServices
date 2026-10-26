@@ -23,6 +23,7 @@ export default function ServicesPage() {
       <main className="inner-page">
         <PageHero
           image="/images/services-hero.webp"
+          tint="4, 16, 41"
           title={["Managed Services That Close", "Every IT, Security and AI Gap"]}
           lede="Managed services that bring cybersecurity, AI security and IT under one team, so your technology runs reliably, stays protected, and is ready for AI."
           actions={[
