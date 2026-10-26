@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useRef } from "react";
 import { Reveal, Stagger, fadeUpChild } from "../motion";
 import type { IconCard } from "./IconCards";
+import { asset } from "@/lib/asset";
 
 type Props = {
   title: string;
@@ -35,11 +36,11 @@ export function CardRail({ title, lede, cards, arrows }: Props) {
           <div className="rail__arrows">
             <button type="button" className="rail__arrow" aria-label="Previous" onClick={() => scroll(-1)}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/icons/arrow-prev.svg" alt="" width={48} height={48} />
+              <img src={asset("/icons/arrow-prev.svg")} alt="" width={48} height={48} />
             </button>
             <button type="button" className="rail__arrow" aria-label="Next" onClick={() => scroll(1)}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/icons/arrow-next.svg" alt="" width={48} height={48} />
+              <img src={asset("/icons/arrow-next.svg")} alt="" width={48} height={48} />
             </button>
           </div>
         )}
@@ -49,7 +50,7 @@ export function CardRail({ title, lede, cards, arrows }: Props) {
           {cards.map((c) => (
             <motion.article key={c.title} className="icon-card rail__card" variants={fadeUpChild}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="icon-card__icon" src={c.icon} alt="" width={48} height={48} />
+              <img className="icon-card__icon" src={asset(c.icon)} alt="" width={48} height={48} />
               <div className="icon-card__copy">
                 <h3 className="icon-card__title">{c.title}</h3>
                 <p className="icon-card__text">{c.text}</p>

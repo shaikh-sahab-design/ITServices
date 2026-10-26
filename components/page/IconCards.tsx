@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Reveal, Stagger, fadeUpChild } from "../motion";
+import { asset } from "@/lib/asset";
 
 export type IconCard = { icon: string; title: string; text: string; cta?: { label: string; href: string } };
 
@@ -38,7 +39,7 @@ export function IconCards({ eyebrow, title, lede, cta, cards, tone, tight }: Pro
           {cards.map((c) => (
             <motion.article key={c.title} className="icon-card" variants={fadeUpChild}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="icon-card__icon" src={c.icon} alt="" width={48} height={48} />
+              <img className="icon-card__icon" src={asset(c.icon)} alt="" width={48} height={48} />
               <div className="icon-card__copy">
                 <h3 className="icon-card__title">{c.title}</h3>
                 <p className="icon-card__text">{c.text}</p>

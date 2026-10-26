@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { EASE_OUT_QUINT, Reveal } from "../motion";
+import { asset } from "@/lib/asset";
 
 /** Accent colours used by tags and stat boxes in the Figma service blocks. */
 export type Accent = "yellow" | "red" | "blue" | "green" | "purple" | "grey";
@@ -72,7 +73,7 @@ export function SplitFeature({
           transition={{ duration: 0.7, ease: EASE_OUT_QUINT }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={image.src} alt={image.alt} width={560} height={550} loading="lazy" />
+          <img src={asset(image.src)} alt={image.alt} width={560} height={550} loading="lazy" />
           {stat && (
             <motion.div
               className={`stat-box stat-box--${stat.accent}`}
@@ -82,7 +83,7 @@ export function SplitFeature({
               transition={{ duration: 0.6, ease: EASE_OUT_QUINT, delay: 0.25 }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="stat-box__icon" src={stat.icon} alt="" width={48} height={48} />
+              <img className="stat-box__icon" src={asset(stat.icon)} alt="" width={48} height={48} />
               <p className="stat-box__value">{stat.value}</p>
               <p className="stat-box__label">{stat.label}</p>
             </motion.div>

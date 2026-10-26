@@ -24,7 +24,7 @@ const LINKS = [
 export function Nav() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const pathname = usePathname() ?? "/";
+  const pathname = (usePathname() ?? "/").replace(/(.)\/$/, "$1");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);

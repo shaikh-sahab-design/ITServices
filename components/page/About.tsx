@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { EASE_OUT_QUINT, Reveal, Stagger, fadeUpChild } from "../motion";
+import { asset } from "@/lib/asset";
 
 type Stat = { icon: string; value: string; label: string; note: string };
 
@@ -16,7 +17,7 @@ export function StatsBand({ stats }: { stats: Stat[] }) {
             {i > 0 && <span className="stats-band__rule" aria-hidden />}
             <div className="stats-band__item">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={s.icon} alt="" width={32} height={32} />
+              <img src={asset(s.icon)} alt="" width={32} height={32} />
               <p className="stats-band__value">{s.value}</p>
               <p className="stats-band__label">
                 {s.label}
@@ -70,7 +71,7 @@ export function Story({ tag, title, paragraphs, actions, image }: StoryProps) {
           transition={{ duration: 0.7, ease: EASE_OUT_QUINT }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={image.src} alt={image.alt} width={560} height={550} loading="lazy" />
+          <img src={asset(image.src)} alt={image.alt} width={560} height={550} loading="lazy" />
         </motion.div>
       </div>
     </section>
@@ -105,13 +106,13 @@ export function Timeline({ title, items }: { title: string; items: Milestone[] }
                 <p className="timeline__year">
                   {m.year}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  {m.badge && <img src={m.badge} alt="" width={24} height={24} />}
+                  {m.badge && <img src={asset(m.badge)} alt="" width={24} height={24} />}
                 </p>
                 <p className="timeline__text">{m.text}</p>
               </div>
             );
             // eslint-disable-next-line @next/next/no-img-element
-            const icon = <img className="timeline__icon" src={m.icon} alt="" width={48} height={48} />;
+            const icon = <img className="timeline__icon" src={asset(m.icon)} alt="" width={48} height={48} />;
             return (
               <motion.div key={m.year} className={`timeline__col timeline__col--${m.card}`} variants={fadeUpChild}>
                 <div className="timeline__slot timeline__slot--top">{m.card === "top" ? card : icon}</div>
@@ -146,7 +147,7 @@ export function ValuesBento({
   const card = (v: Value) => (
     <motion.article key={v.title} className="value-card" variants={fadeUpChild}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={v.icon} alt="" width={48} height={48} />
+      <img src={asset(v.icon)} alt="" width={48} height={48} />
       <div className="value-card__copy">
         <h3 className="value-card__title">{v.title}</h3>
         <p className="value-card__text">{v.text}</p>
@@ -198,7 +199,7 @@ export function Testimonial({ eyebrow, title, lede, photo, quote, name, role, lo
         </Reveal>
         <Reveal className="testimonial__card">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="testimonial__photo" src={photo.src} alt={photo.alt} width={400} height={400} loading="lazy" />
+          <img className="testimonial__photo" src={asset(photo.src)} alt={photo.alt} width={400} height={400} loading="lazy" />
           <figure className="testimonial__body">
             <blockquote className="testimonial__quote">{quote}</blockquote>
             <figcaption>
@@ -207,7 +208,7 @@ export function Testimonial({ eyebrow, title, lede, photo, quote, name, role, lo
             </figcaption>
           </figure>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="testimonial__logo" src={logo.src} alt={logo.alt} width={145} height={147} loading="lazy" />
+          <img className="testimonial__logo" src={asset(logo.src)} alt={logo.alt} width={145} height={147} loading="lazy" />
         </Reveal>
       </div>
     </section>

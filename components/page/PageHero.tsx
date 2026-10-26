@@ -1,7 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { EASE_OUT_QUINT } from "../motion";
+import { asset } from "@/lib/asset";
 
 type Action = { label: string; href: string; variant: "primary" | "ghost" };
 
@@ -32,7 +34,7 @@ export function PageHero({ image, title, lede, actions, fade = [30.9, 80.2], tin
       className="page-hero"
       style={
         {
-          "--hero-img": `url(${image})`,
+          "--hero-img": `url(${asset(image)})`,
           "--tint": tint,
           "--fade-from": `${fade[0]}%`,
           "--fade-to": `${fade[1]}%`,
@@ -67,9 +69,9 @@ export function PageHero({ image, title, lede, actions, fade = [30.9, 80.2], tin
           transition={{ duration: 0.5, ease: EASE_OUT_QUINT, delay: 0.4 }}
         >
           {actions.map((a) => (
-            <a key={a.label} href={a.href} className={`btn btn--${a.variant}`}>
+            <Link key={a.label} href={a.href} className={`btn btn--${a.variant}`}>
               {a.label}
-            </a>
+            </Link>
           ))}
         </motion.div>
       </div>
