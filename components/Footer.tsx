@@ -1,43 +1,54 @@
+import Link from "next/link";
+import { ROUTES } from "@/lib/routes";
 import { MailIcon, PhoneIcon, PinIcon } from "./icons";
 import { Reveal } from "./motion";
 import { asset } from "@/lib/asset";
+
+const R = ROUTES;
 
 const COLUMNS = [
   {
     title: "Managed IT",
     links: [
-      "Managed IT Support",
-      "Network & Infrastructure",
-      "Migration Services",
-      "Backup & Disaster Recovery",
-      "IT Strategy & vCIO",
-      "Database Management",
-      "Identity & Access Management",
+      ["Managed IT Support", R.managedIt],
+      ["Network & Infrastructure", R.networkDesign],
+      ["Migration Services", R.migration],
+      ["Backup & Disaster Recovery", R.disasterRecovery],
+      ["IT Strategy & vCIO", R.vcio],
+      ["Database Management", R.database],
+      ["Identity & Access Management", R.managedIt],
     ],
   },
   {
     title: "Managed Security",
     links: [
-      "Vulnerability Assessment & Penetration Testing",
-      "Security Operations Center (SOC)",
-      "Threat Detection & Incident Response",
-      "Cloud Security",
-      "Endpoint & Identity Security",
-      "Security Compliance & Risk",
+      ["Vulnerability Assessment & Penetration Testing", R.managedSecurity],
+      ["Security Operations Center (SOC)", R.soc],
+      ["Threat Detection & Incident Response", R.managedSecurity],
+      ["Cloud Security", R.managedSecurity],
+      ["Endpoint & Identity Security", R.managedSecurity],
+      ["Security Compliance & Risk", R.managedSecurity],
     ],
   },
   {
     title: "AI Security",
     links: [
-      "AI Security Assessment",
-      "AI Governance & Risk",
-      "AI Data Security",
-      "AI Application & LLM Security",
-      "AI Agent Security",
-      "AI Red Teaming",
+      ["AI Security Assessment", R.aiAssessment],
+      ["AI Governance & Risk", R.aiSecurity],
+      ["AI Data Security", R.aiSecurity],
+      ["AI Application & LLM Security", R.aiSecurity],
+      ["AI Agent Security", R.aiSecurity],
+      ["AI Red Teaming", R.aiSecurity],
     ],
   },
-  { title: "Company", links: ["About", "Careers", "Contact Us"] },
+  {
+    title: "Company",
+    links: [
+      ["About", R.about],
+      ["Careers", R.about],
+      ["Contact Us", R.contact],
+    ],
+  },
 ];
 
 const STANDARDS = ["ISO/IEC 27001", "NIST", "CIS Controls", "OWASP", "SOC 2", "GDPR"];
@@ -68,9 +79,9 @@ export function Footer() {
             <nav key={col.title} className="footer__col" aria-label={col.title}>
               <p className="footer__heading">{col.title}</p>
               <ul>
-                {col.links.map((l) => (
-                  <li key={l}>
-                    <a href="#" className="footer__link">{l}</a>
+                {col.links.map(([label, href]) => (
+                  <li key={label}>
+                    <Link href={href} className="footer__link">{label}</Link>
                   </li>
                 ))}
               </ul>

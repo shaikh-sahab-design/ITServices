@@ -2,7 +2,8 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import { ChatCheckTile } from "./icons";
+import { ChatCheckTile, MailIcon, PhoneIcon, PinIcon } from "./icons";
+import { PHONE } from "@/lib/routes";
 import { EASE_OUT_QUINT, Reveal } from "./motion";
 
 const SIZES = ["1–50 Employees", "51–200 Employees", "201–500 Employees", "501–1,000 Employees", "1,000+ Employees"];
@@ -17,7 +18,8 @@ const NEEDS = [
   "Other",
 ];
 
-export function ContactForm() {
+/** `page` is the standalone Contact page: shorter intro copy plus a "Get In Touch" list. */
+export function ContactForm({ className = "", variant = "home" }: { className?: string; variant?: "home" | "page" }) {
   const [size, setSize] = useState(SIZES[1]);
   const [needs, setNeeds] = useState<string[]>([NEEDS[0]]);
   const [sent, setSent] = useState(false);
@@ -26,7 +28,7 @@ export function ContactForm() {
     setNeeds((cur) => (cur.includes(n) ? cur.filter((x) => x !== n) : [...cur, n]));
 
   return (
-    <section className="contact" id="contact">
+    <section className={`contact${variant === "page" ? " contact--page" : ""} ${className}`} id="contact">
       <div className="contact__inner container">
         <Reveal className="contact__intro" y={32}>
           <div className="contact__intro-copy">
@@ -35,14 +37,42 @@ export function ContactForm() {
               Let’s Talk IT
             </p>
             <h2 className="contact__title">Tell Us About Your IT Environment</h2>
-            <p className="contact__text">
-              Whether you need additional IT capacity, stronger security, infrastructure support, migration assistance,
-              or a more proactive operating model, share a few details with our team.
-            </p>
-            <p className="contact__text">
-              We’ll use the information to understand your current setup and connect you with the right Managed IT
-              specialists.
-            </p>
+            {variant === "page" ? (
+              <>
+                <p className="contact__text">
+                  If you need more IT capacity, better security, infrastructure help, migration support, or a proactive
+                  model, share details with our team.
+                </p>
+                <div className="contact__touch">
+                  <p className="contact__touch-title">Get In Touch</p>
+                  <ul className="contact__touch-list">
+                    <li>
+                      <PhoneIcon />
+                      <a href={PHONE.href}>{PHONE.label}</a>
+                    </li>
+                    <li>
+                      <MailIcon />
+                      <a href="mailto:support-mspit@folio3.com">support-mspit@folio3.com</a>
+                    </li>
+                    <li>
+                      <PinIcon />
+                      <span>4010 Moorpark Ave, Suite 101, San Jose, CA 95117</span>
+                    </li>
+                  </ul>
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="contact__text">
+                  Whether you need additional IT capacity, stronger security, infrastructure support, migration assistance,
+                  or a more proactive operating model, share a few details with our team.
+                </p>
+                <p className="contact__text">
+                  We’ll use the information to understand your current setup and connect you with the right Managed IT
+                  specialists.
+                </p>
+              </>
+            )}
           </div>
           <div className="promise">
             <ChatCheckTile className="promise__icon" />

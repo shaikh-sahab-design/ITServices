@@ -3,7 +3,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Reveal, Stagger, fadeUpChild } from "./motion";
+import Link from "next/link";
 import { asset } from "@/lib/asset";
+import { ROUTES } from "@/lib/routes";
 
 // Matches the Figma "On hover" spring on the card variants.
 const FLIP_SPRING = { type: "spring", mass: 1, stiffness: 100, damping: 15 } as const;
@@ -12,6 +14,7 @@ const SERVICES = [
   {
     key: "it",
     title: ["Managed IT", "Services"],
+    href: ROUTES.managedIt,
     tags: ["Reliable technology", "Infrastructure Built for Growth", "Expert Support"],
     items: [
       "Managed IT Support",
@@ -28,6 +31,7 @@ const SERVICES = [
   {
     key: "security",
     title: ["Managed Security"],
+    href: ROUTES.managedSecurity,
     tags: ["Proactive Monitoring", "Continuous Protection", "Response Against Evolving Threats"],
     items: [
       "Vulnerability Assessment & Penetration Testing",
@@ -43,6 +47,7 @@ const SERVICES = [
   {
     key: "ai",
     title: ["AI Security"],
+    href: ROUTES.aiSecurity,
     tags: ["AI Adoption With Governance", "security built in", "Protection"],
     items: [
       "AI Security Assessment",
@@ -118,9 +123,9 @@ function ServiceCard({ s }: { s: Service }) {
                 <li key={item}>{item}</li>
               ))}
             </ul>
-            <a href="#" className="service-card__cta" tabIndex={open ? 0 : -1}>
+            <Link href={s.href} className="service-card__cta" tabIndex={open ? 0 : -1}>
               View Service Details
-            </a>
+            </Link>
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className="service-card__img service-card__img--faded" src={asset(s.img)} alt="" loading="lazy" />
