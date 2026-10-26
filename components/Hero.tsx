@@ -52,6 +52,26 @@ export function Hero() {
     handleRef.current?.setAttribute("aria-valuenow", String(shown));
   });
 
+  // The banner pins once its bottom edge reaches the bottom of the viewport (or
+  // under the nav if it fits), so the sections after it slide up and cover it.
+  const heroRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero) return;
+    const place = () => {
+      const navH = document.querySelector<HTMLElement>(".nav")?.offsetHeight ?? 0;
+      hero.style.top = `${Math.min(navH, window.innerHeight - hero.offsetHeight)}px`;
+    };
+    place();
+    const ro = new ResizeObserver(place);
+    ro.observe(hero);
+    window.addEventListener("resize", place);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", place);
+    };
+  }, []);
+
   useEffect(() => {
     const controls = animate(split, SPLIT_START, { duration: 1.1, ease: [0.645, 0.045, 0.355, 1], delay: 1.0 });
     return () => controls.stop();
@@ -79,7 +99,7 @@ export function Hero() {
   };
 
   return (
-    <section className="hero">
+    <section className="hero" ref={heroRef}>
       <div className="hero__copy">
         <h1 className="hero__title">
           <span className="line-mask">
