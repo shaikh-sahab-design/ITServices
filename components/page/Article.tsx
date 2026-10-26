@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Reveal } from "../motion";
 import { asset } from "@/lib/asset";
@@ -80,6 +81,14 @@ export function Article({ title, author, date, readTime, toc, bio, children }: P
                 <a href={`#${t.id}`} aria-current={active === t.id ? "location" : undefined}>
                   {t.label}
                 </a>
+                {/* The divider under the current section turns blue and slides as you read. */}
+                {active === t.id && (
+                  <motion.span
+                    className="toc__bar"
+                    layoutId="toc-bar"
+                    transition={{ type: "spring", stiffness: 500, damping: 40 }}
+                  />
+                )}
               </li>
             ))}
           </ol>
