@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ROUTES } from "@/lib/routes";
 import { Reveal, Stagger, fadeUpChild } from "../motion";
+import { asset } from "@/lib/asset";
 
 const MotionLink = motion.create(Link);
 
@@ -58,7 +59,7 @@ export function ServicePortfolio() {
               <span className="tag tag--cta">{c.pill}</span>
             </div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="service-card__img" src={c.img} alt={c.alt} loading="lazy" />
+            <img className="service-card__img" src={asset(c.img)} alt={c.alt} loading="lazy" />
           </MotionLink>
         ))}
       </Stagger>
