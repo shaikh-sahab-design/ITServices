@@ -17,7 +17,7 @@ const NEEDS = [
   "Other",
 ];
 
-export function ContactForm() {
+export function ContactForm({ className = "" }: { className?: string }) {
   const [size, setSize] = useState(SIZES[1]);
   const [needs, setNeeds] = useState<string[]>([NEEDS[0]]);
   const [sent, setSent] = useState(false);
@@ -26,7 +26,7 @@ export function ContactForm() {
     setNeeds((cur) => (cur.includes(n) ? cur.filter((x) => x !== n) : [...cur, n]));
 
   return (
-    <section className="contact" id="contact">
+    <section className={`contact ${className}`} id="contact">
       <div className="contact__inner container">
         <Reveal className="contact__intro" y={32}>
           <div className="contact__intro-copy">

@@ -1,21 +1,30 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ROUTES } from "@/lib/routes";
 import { EASE_OUT_QUINT } from "./motion";
 import { asset } from "@/lib/asset";
 
+const SERVICE_PATHS: string[] = [
+  ROUTES.services, ROUTES.managedIt, ROUTES.managedSecurity, ROUTES.aiSecurity, ROUTES.aiAssessment, ROUTES.soc,
+  ROUTES.networkDesign, ROUTES.migration, ROUTES.disasterRecovery, ROUTES.vcio, ROUTES.database,
+];
+
 const LINKS = [
-  { label: "Home", href: "#", active: true },
-  { label: "Our Services", href: "#services" },
-  { label: "About Us", href: "#about" },
-  { label: "Blogs", href: "#blogs" },
-  { label: "Case Studies", href: "#case-studies" },
+  { label: "Home", href: ROUTES.home, match: (p: string) => p === ROUTES.home },
+  { label: "Our Services", href: ROUTES.services, match: (p: string) => SERVICE_PATHS.includes(p) },
+  { label: "About Us", href: ROUTES.about, match: (p: string) => p === ROUTES.about },
+  { label: "Blogs", href: ROUTES.blog, match: (p: string) => p.startsWith(ROUTES.blog) },
+  { label: "Case Studies", href: ROUTES.caseStudies, match: (p: string) => p.startsWith(ROUTES.caseStudies) },
 ];
 
 export function Nav() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname() ?? "/";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -37,22 +46,22 @@ export function Nav() {
       transition={{ duration: 0.4, ease: EASE_OUT_QUINT }}
     >
       <div className="nav__inner">
-        <a href="#" className="nav__logo" aria-label="Folio3 Managed IT & Cybersecurity Services, home">
+        <Link href={ROUTES.home} className="nav__logo" aria-label="Folio3 Managed IT & Cybersecurity Services, home">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={asset("/images/logo-nav.png")} alt="" width={296} height={36} />
-        </a>
+        </Link>
 
         <nav className="nav__links" aria-label="Main">
           {LINKS.map((l) => (
-            <a key={l.label} href={l.href} className="nav__link" aria-current={l.active ? "page" : undefined}>
+            <Link key={l.label} href={l.href} className="nav__link" aria-current={l.match(pathname) ? "page" : undefined}>
               {l.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
-        <a href="#contact" className="btn btn--primary btn--sm nav__cta">
+        <Link href={ROUTES.contact} className="btn btn--primary btn--sm nav__cta">
           Get Free Consultation
-        </a>
+        </Link>
 
         <button
           className="nav__burger"
@@ -85,20 +94,20 @@ export function Nav() {
                   variants={{ hidden: { opacity: 0, x: -12 }, visible: { opacity: 1, x: 0 } }}
                   transition={{ duration: 0.25, ease: EASE_OUT_QUINT }}
                 >
-                  <a
+                  <Link
                     href={l.href}
                     className="nav__sheet-link"
-                    aria-current={l.active ? "page" : undefined}
+                    aria-current={l.match(pathname) ? "page" : undefined}
                     onClick={() => setOpen(false)}
                   >
                     {l.label}
-                  </a>
+                  </Link>
                 </motion.li>
               ))}
             </motion.ul>
-            <a href="#contact" className="btn btn--primary nav__sheet-cta" onClick={() => setOpen(false)}>
+            <Link href={ROUTES.contact} className="btn btn--primary nav__sheet-cta" onClick={() => setOpen(false)}>
               Get Free Consultation
-            </a>
+            </Link>
           </motion.div>
         )}
       </AnimatePresence>
