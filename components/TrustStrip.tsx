@@ -1,4 +1,5 @@
 import { Reveal } from "./motion";
+import { asset } from "@/lib/asset";
 
 const CERTS = [
   { src: "/images/cert-microsoft-gold.png", alt: "Microsoft Gold Partner", w: 132, h: 40, pill: 185 },
@@ -17,7 +18,7 @@ export function TrustStrip() {
       {CERTS.map((c) => (
         <li key={c.src} className="cert-pill" style={{ width: c.pill }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={c.src} alt={hidden ? "" : c.alt} width={c.w} height={c.h} loading="lazy" />
+          <img src={asset(c.src)} alt={hidden ? "" : c.alt} width={c.w} height={c.h} loading="lazy" />
         </li>
       ))}
     </ul>

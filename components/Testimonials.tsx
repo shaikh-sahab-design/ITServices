@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Reveal, Stagger, fadeUpChild } from "./motion";
+import { asset } from "@/lib/asset";
 
 const QUOTES = [
   {
@@ -38,7 +39,7 @@ export function Testimonials() {
         {QUOTES.map((q) => (
           <motion.figure key={q.name} className="quote-card" variants={fadeUpChild}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="quote-card__logo" src={q.logo} alt={q.alt} width={q.logoW} height={50} loading="lazy" />
+            <img className="quote-card__logo" src={asset(q.logo)} alt={q.alt} width={q.logoW} height={50} loading="lazy" />
             <blockquote className="quote-card__text">{q.quote}</blockquote>
             <figcaption>
               <span className="quote-card__name">{q.name}</span>

@@ -1,5 +1,6 @@
 import { MailIcon, PhoneIcon, PinIcon } from "./icons";
 import { Reveal } from "./motion";
+import { asset } from "@/lib/asset";
 
 const COLUMNS = [
   {
@@ -49,7 +50,7 @@ export function Footer() {
           <div className="footer__brand">
             <div className="footer__logo">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/folio3-mark.png" alt="folio3" width={74} height={36} />
+              <img src={asset("/images/folio3-mark.png")} alt="folio3" width={74} height={36} />
               <span className="footer__logo-rule" aria-hidden="true" />
               <span className="footer__logo-text">
                 Managed IT &amp;

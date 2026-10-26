@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Reveal, Stagger, fadeUpChild } from "./motion";
+import { asset } from "@/lib/asset";
 
 const CASES = [
   {
@@ -52,10 +53,10 @@ export function CaseStudies() {
         {CASES.map((c, i) => (
           <motion.a href="#" key={i} className="case-card" variants={fadeUpChild}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="case-card__mark" src={c.mark} alt="" loading="lazy" />
+            <img className="case-card__mark" src={asset(c.mark)} alt="" loading="lazy" />
             <div className="case-card__body">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="case-card__logo" src={c.logo} alt={c.alt} width={c.logoW} height={50} loading="lazy" />
+              <img className="case-card__logo" src={asset(c.logo)} alt={c.alt} width={c.logoW} height={50} loading="lazy" />
               <div className="case-card__copy">
                 <h3 className="case-card__title">{c.title}</h3>
                 <p className="case-card__text">{c.body}</p>

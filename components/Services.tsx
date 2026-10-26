@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Reveal, Stagger, fadeUpChild } from "./motion";
+import { asset } from "@/lib/asset";
 
 const SERVICES = [
   {
@@ -54,7 +55,7 @@ export function Services() {
               </ul>
             </div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="service-card__img" src={s.img} alt={s.alt} loading="lazy" />
+            <img className="service-card__img" src={asset(s.img)} alt={s.alt} loading="lazy" />
           </motion.a>
         ))}
       </Stagger>

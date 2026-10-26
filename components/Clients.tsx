@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Reveal, Stagger, fadeUpChild } from "./motion";
+import { asset } from "@/lib/asset";
 
 const CLIENTS = [
   { src: "/images/client-activecomply.png", alt: "ActiveComply", w: 263 },
@@ -24,7 +25,7 @@ export function Clients() {
         {CLIENTS.map((c) => (
           <motion.div key={c.alt} className="client-pill" variants={fadeUpChild}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={c.src} alt={c.alt} width={c.w} height={50} loading="lazy" />
+            <img src={asset(c.src)} alt={c.alt} width={c.w} height={50} loading="lazy" />
           </motion.div>
         ))}
       </Stagger>

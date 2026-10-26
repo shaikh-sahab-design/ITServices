@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { EASE_OUT_QUINT } from "./motion";
+import { asset } from "@/lib/asset";
 
 const LINKS = [
   { label: "Home", href: "#", active: true },
@@ -38,7 +39,7 @@ export function Nav() {
       <div className="nav__inner">
         <a href="#" className="nav__logo" aria-label="Folio3 Managed IT & Cybersecurity Services, home">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/logo-nav.png" alt="" width={296} height={36} />
+          <img src={asset("/images/logo-nav.png")} alt="" width={296} height={36} />
         </a>
 
         <nav className="nav__links" aria-label="Main">

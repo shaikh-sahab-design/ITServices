@@ -4,6 +4,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion
 import { useRef } from "react";
 import { ChartDuoIcon, HeadphonesDuoIcon, StopwatchDuoIcon, UsersDuoIcon } from "./icons";
 import { EASE_OUT_QUINT } from "./motion";
+import { asset } from "@/lib/asset";
 
 const BADGES = [
   { key: "clients", icon: <UsersDuoIcon />, top: "500+", bottom: "Enterprise Clients", tone: "blue", delay: 1.15, float: 0 },
@@ -77,7 +78,7 @@ export function Hero() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               className="hero__dash-light"
-              src="/images/hero-dashboard-light.png"
+              src={asset("/images/hero-dashboard-light.png")}
               alt="Managed IT dashboard showing remote access, cybersecurity, backup and service desk metrics"
               width={1050}
               height={512}
@@ -90,7 +91,7 @@ export function Hero() {
               transition={{ duration: 1.1, ease: [0.645, 0.045, 0.355, 1], delay: 1.0 }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/hero-dashboard-dark.png" alt="" width={660} height={522} />
+              <img src={asset("/images/hero-dashboard-dark.png")} alt="" width={660} height={522} />
             </motion.div>
 
             {BADGES.map((b) => (
