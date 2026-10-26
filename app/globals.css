@@ -2423,7 +2423,7 @@ fieldset.field .field__label {
 .case-tile__title { font-family: var(--font-display), sans-serif; font-weight: 400; font-size: 21px; line-height: 28px; }
 .case-tile__text { font-size: 16px; line-height: 1.48; color: var(--text-2); }
 .case-tile__tags { display: flex; flex-wrap: wrap; gap: 10px; align-content: flex-start; min-height: 66px; }
-.chip {
+.tag-chip {
   padding: 6px 14px;
   border-radius: 100px;
   border: 1px solid #d6dfe5;
@@ -2462,7 +2462,7 @@ fieldset.field .field__label {
 
 .case-services { padding: 40px 0; }
 .case-services__pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 22px; margin-top: 40px; }
-.chip--lg { padding: 10px 20px; font-size: 18px; font-weight: 500; line-height: 22px; letter-spacing: 0; }
+.tag-chip--lg { padding: 10px 20px; font-size: 18px; font-weight: 500; line-height: 22px; letter-spacing: 0; }
 
 .case-challenge { padding: 40px 0 80px; background: var(--white); }
 .case-challenge__inner { display: flex; align-items: center; justify-content: center; gap: 80px; }
@@ -2621,6 +2621,64 @@ fieldset.field .field__label {
 .toc__list a { display: block; font-size: 14px; font-weight: 500; line-height: 17px; color: var(--text-2); transition: color 200ms ease; }
 .toc__list a:hover, .toc__list a[aria-current] { color: var(--blue); }
 
+/* ---------- Contact page ---------- */
+.contact--page { margin-top: 0; }
+
+.contact--page .contact__intro {
+  justify-content: center;
+  gap: 22px;
+  padding: 34px 48px;
+}
+
+.contact--page .promise { border-color: #294056; }
+
+.contact__touch {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contact__touch-title {
+  font-family: var(--font-display), sans-serif;
+  font-size: 18px;
+  line-height: 25px;
+}
+
+.contact__touch-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  list-style: none;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 145%;
+}
+
+.contact__touch-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.contact__touch-list svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+.contact__touch-list a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 200ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .contact__touch-list a:hover { color: var(--yellow); }
+}
+
+@media (min-width: 1201px) {
+  .contact--page { --gutter: 58px; }
+}
+
 /* ---------- Inner pages: responsive ---------- */
 @media (max-width: 1200px) {
   .inner-page { --gutter: 40px; }
@@ -2778,7 +2836,7 @@ fieldset.field .field__label {
   .case-fact__value img { width: 36px; height: 36px; }
   .case-head__title { font-size: 32px; line-height: 36px; }
   .case-head__lede { font-size: 16px; }
-  .chip--lg { font-size: 15px; padding: 8px 16px; }
+  .tag-chip--lg { font-size: 15px; padding: 8px 16px; }
   .case-services__pills { gap: 10px; margin-top: 28px; }
   .case-challenge { padding: 24px 0 56px; }
   .case-kicker { font-size: 26px; line-height: 34px; }
@@ -2824,6 +2882,10 @@ fieldset.field .field__label {
   .article__title { font-size: 32px; line-height: 36px; }
   .author-box { flex-direction: column; padding: 24px; gap: 20px; }
   .author-box > img { width: 120px; height: 120px; }
+}
+
+@media (max-width: 768px) {
+  .contact--page .contact__intro { padding: 32px 24px; }
 }
 
 /* Continuous motion stops for users who ask for less of it. */

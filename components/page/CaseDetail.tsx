@@ -51,7 +51,7 @@ export function CaseServices({ services }: { services: NonNullable<CaseStudy["se
         </Reveal>
         <Stagger className="case-services__pills" stagger={0.05}>
           {services.pills.map((p) => (
-            <motion.span key={p} className="chip chip--lg" variants={fadeUpChild}>
+            <motion.span key={p} className="tag-chip tag-chip--lg" variants={fadeUpChild}>
               {p}
             </motion.span>
           ))}

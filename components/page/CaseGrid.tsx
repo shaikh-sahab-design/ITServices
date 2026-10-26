@@ -38,7 +38,7 @@ export function CaseGrid({ cards }: { cards: CaseCard[] }) {
               </div>
               <ul className="case-tile__tags">
                 {c.tags.map((t) => (
-                  <li key={t} className="chip">
+                  <li key={t} className="tag-chip">
                     {t}
                   </li>
                 ))}
