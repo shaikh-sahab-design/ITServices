@@ -2250,9 +2250,11 @@ fieldset.field .field__label {
   column-gap: 24px;
 }
 /* The line runs from the first dot to the last one. */
-.timeline__row::before {
-  content: "";
+.timeline__line {
+  --draw: 1;
   position: absolute;
+  transform: scaleX(var(--draw));
+  transform-origin: left center;
   top: calc(169px + 24px);
   left: calc(100% / 12);
   right: calc(100% / 12);
@@ -2617,7 +2619,8 @@ fieldset.field .field__label {
 }
 .toc__head { display: flex; align-items: center; gap: 4px; font-size: 18px; font-weight: 700; line-height: 22px; }
 .toc__list { display: flex; flex-direction: column; gap: 12px; }
-.toc__list li { padding-bottom: 10px; border-bottom: 1px solid #d0d5dd; }
+.toc__list li { padding-bottom: 10px; border-bottom: 1px solid #d0d5dd; position: relative; }
+.toc__bar { position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: var(--blue); }
 .toc__list a { display: block; font-size: 14px; font-weight: 500; line-height: 17px; color: var(--text-2); transition: color 200ms ease; }
 .toc__list a:hover, .toc__list a[aria-current] { color: var(--blue); }
 
@@ -2677,6 +2680,24 @@ fieldset.field .field__label {
 
 @media (min-width: 1201px) {
   .contact--page { --gutter: 58px; }
+}
+
+/* ---------- Inner pages: hover motion ---------- */
+.case-fact { transition: transform 250ms var(--ease-out-quint), box-shadow 250ms var(--ease-out-quint); }
+.story__media,
+.case-solution__media { overflow: hidden; border-radius: 15px; }
+.case-solution__media { border-radius: 10px; }
+.story__media { align-self: center; box-shadow: 0 14px 40px rgba(8, 8, 24, 0.1); }
+.story__media img { display: block; box-shadow: none; }
+.story__media img,
+.case-solution__media img { transition: transform 600ms var(--ease-out-quint); }
+.case-point__title::before { transition: transform 200ms var(--ease-out-quint); }
+
+@media (hover: hover) and (pointer: fine) {
+  .case-fact:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(8, 8, 24, 0.08); }
+  .story__media:hover img,
+  .case-solution__media:hover img { transform: scale(1.03); }
+  .case-point:hover .case-point__title::before { transform: scale(1.4); }
 }
 
 /* ---------- Inner pages: responsive ---------- */
@@ -2758,7 +2779,7 @@ fieldset.field .field__label {
 
   /* Timeline turns into a vertical list with the line on the left. */
   .timeline__row { grid-template-columns: 1fr; row-gap: 16px; max-width: 560px; margin-inline: auto; }
-  .timeline__row::before { top: 12px; bottom: 12px; left: 11px; right: auto; width: 2px; height: auto; }
+  .timeline__line { top: 12px; bottom: 12px; left: 11px; right: auto; width: 2px; height: auto; transform: scaleY(var(--draw)); transform-origin: center top; }
   .timeline__col { flex-direction: row; align-items: center; gap: 16px; }
   .timeline__track { order: -1; height: auto; flex: none; }
   .timeline__slot { height: auto; }

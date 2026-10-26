@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { EASE_OUT_QUINT, Reveal, Stagger, fadeUpChild } from "../motion";
 import { asset } from "@/lib/asset";
+import { StatValue } from "./StatValue";
 
 type Stat = { icon: string; value: string; label: string; note: string };
 
@@ -18,7 +19,9 @@ export function StatsBand({ stats }: { stats: Stat[] }) {
             <div className="stats-band__item">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={asset(s.icon)} alt="" width={32} height={32} />
-              <p className="stats-band__value">{s.value}</p>
+              <p className="stats-band__value">
+                <StatValue value={s.value} />
+              </p>
               <p className="stats-band__label">
                 {s.label}
                 <br />
@@ -97,6 +100,13 @@ export function Timeline({ title, items }: { title: string; items: Milestone[] }
           <h2 className="timeline__title">{title}</h2>
         </Reveal>
         <Stagger className="timeline__row" stagger={0.1}>
+          <motion.span
+            className="timeline__line"
+            aria-hidden
+            // A CSS variable, so the same draw works for the horizontal line and the stacked mobile one.
+            variants={{ hidden: { "--draw": 0 }, visible: { "--draw": 1 } } as Variants}
+            transition={{ duration: 1.2, ease: [0.645, 0.045, 0.355, 1] }}
+          />
           {items.map((m) => {
             const card = (
               <div className={`timeline__card${m.badge ? " is-key" : ""}`}>
