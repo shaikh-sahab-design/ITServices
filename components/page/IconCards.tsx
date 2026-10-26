@@ -9,30 +9,32 @@ export type IconCard = { icon: string; title: string; text: string; cta?: { labe
 type Props = {
   eyebrow?: string;
   title: string;
-  lede: string;
+  lede?: string;
   /** Button that sits between the heading and the cards. */
   cta?: { label: string; href: string };
   cards: IconCard[];
   /** "dark": glass cards on ink. "outline": bordered white cards. */
   tone: "dark" | "outline";
+  /** Smaller heading-to-button spacing used on the service detail pages. */
+  tight?: boolean;
 };
 
 /** Centered heading with a row of icon cards. */
-export function IconCards({ eyebrow, title, lede, cta, cards, tone }: Props) {
+export function IconCards({ eyebrow, title, lede, cta, cards, tone, tight }: Props) {
   return (
-    <section className={`icon-cards icon-cards--${tone}`}>
+    <section className={`icon-cards icon-cards--${tone}${tight ? " icon-cards--tight" : ""}`}>
       <div className="container">
         <Reveal className="icon-cards__head">
           {eyebrow && <p className="eyebrow">{eyebrow}</p>}
           <h2 className="icon-cards__title">{title}</h2>
-          <p className="icon-cards__lede">{lede}</p>
+          {lede && <p className="icon-cards__lede">{lede}</p>}
           {cta && (
             <Link href={cta.href} className="btn btn--primary btn--md icon-cards__cta">
               {cta.label}
             </Link>
           )}
         </Reveal>
-        <Stagger className={`icon-cards__grid icon-cards__grid--${cards.length}`} stagger={0.08}>
+        <Stagger className={`icon-cards__grid icon-cards__grid--${cards.length} icon-cards__grid--${tone}`} stagger={0.08}>
           {cards.map((c) => (
             <motion.article key={c.title} className="icon-card" variants={fadeUpChild}>
               {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -1730,10 +1730,10 @@ fieldset.field .field__label {
   align-items: center;
   padding: 100px 0;
   color: var(--white);
-  background-color: #041029;
-  /* Figma: navy holds solid to ~31% then fades out by ~80% across the photo. */
+  background-color: rgb(var(--tint));
+  /* Figma: navy holds solid, then fades out across the photo; stops come from each hero's gradient. */
   background-image:
-    linear-gradient(90deg, #041029 30.9%, rgba(5, 18, 50, 0) 80.2%),
+    linear-gradient(90deg, rgb(var(--tint)) var(--fade-from), rgba(var(--tint), 0) var(--fade-to)),
     var(--hero-img);
   background-size: cover, cover;
   background-position: center, right center;
@@ -1750,7 +1750,7 @@ fieldset.field .field__label {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  max-width: 873px;
+  max-width: var(--copy-w);
 }
 
 .page-hero__title {
@@ -1859,7 +1859,7 @@ fieldset.field .field__label {
   width: 560px;
 }
 
-.split__media img {
+.split__media > img {
   width: 100%;
   height: auto;
 }
@@ -1943,6 +1943,93 @@ fieldset.field .field__label {
 .cta-band__copy { max-width: 712px; }
 .cta-band--strip .cta-band__text { margin-top: 10px; }
 
+/* ---------- Service blocks: tag, lede and stat box ---------- */
+.split__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.split__lede {
+  font-size: 18px;
+  line-height: 31px;
+  color: var(--text-2);
+}
+
+.split--detailed .split__lists { gap: 22px; }
+
+.pill-tag {
+  display: inline-flex;
+  padding: 6px 14px;
+  border-radius: 100px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.pill-tag--yellow, .stat-box--yellow { --accent: #f5c300; --accent-soft: rgba(245, 195, 0, 0.15); --accent-ink: #d0a50a; --on-accent: var(--text); }
+.pill-tag--red, .stat-box--red { --accent: #ec2539; --accent-soft: rgba(236, 37, 57, 0.15); --accent-ink: #6e0d16; --on-accent: var(--white); }
+.pill-tag--blue, .stat-box--blue { --accent: #4a7dee; --accent-soft: rgba(74, 125, 238, 0.15); --accent-ink: #4a7dee; --on-accent: var(--white); }
+.pill-tag--green, .stat-box--green { --accent: #19cda6; --accent-soft: rgba(25, 205, 166, 0.15); --accent-ink: #094e3f; --on-accent: var(--text); }
+.pill-tag--purple, .stat-box--purple { --accent: #5732db; --accent-soft: rgba(87, 50, 219, 0.15); --accent-ink: #0c0e16; --on-accent: var(--white); }
+.pill-tag--grey, .stat-box--grey { --accent: #d6dfe5; --accent-soft: rgba(214, 223, 229, 0.15); --accent-ink: #41444e; --on-accent: var(--text); }
+
+.split__media { position: relative; }
+
+.stat-box {
+  position: absolute;
+  bottom: 0;
+  width: 230px;
+  height: 230px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  padding: 27px;
+  border-radius: 20px;
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+/* The box overhangs the photo's cut-out corner by the same amount as in Figma. */
+.split[data-image="right"] .stat-box { left: -42px; }
+.split[data-image="left"] .stat-box { right: -51px; }
+
+.stat-box__icon { width: 48px; height: 48px; }
+
+.stat-box__value {
+  font-family: var(--font-display), sans-serif;
+  font-size: 60px;
+  line-height: 36px;
+}
+
+.stat-box__label {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 29px;
+}
+
+/* Figma sets bullet rows on one line; Inter renders a touch wider in browsers, so keep them unwrapped on desktop. */
+@media (min-width: 1201px) {
+  .split--detailed .dot-list li { white-space: nowrap; }
+}
+
+/* ---------- Variants for the tighter Figma layouts ---------- */
+.icon-cards--tight .icon-cards__head { gap: 12px; }
+.icon-cards--tight .icon-cards__cta { margin-top: 18px; }
+.icon-cards--tight .icon-card__copy { gap: 10px; }
+.icon-cards__grid--4.icon-cards__grid--outline { gap: 22px; }
+.icon-cards--outline .icon-cards__head { max-width: 800px; gap: 12px; }
+
+.cta-band--tight { padding: 24px 32px; }
+.cta-band--tight .cta-band__copy { max-width: 920px; }
+.cta-band--tight .cta-band__text { margin-top: 6px; }
+
 /* ---------- Inner pages: responsive ---------- */
 @media (max-width: 1200px) {
   .inner-page { --gutter: 40px; }
@@ -1958,6 +2045,8 @@ fieldset.field .field__label {
   .split__media { width: 100%; max-width: 560px; }
   .split--flush { padding-top: 0; }
   .icon-cards__grid--3 { grid-template-columns: 1fr; }
+  .split[data-image="right"] .stat-box { left: 0; }
+  .split[data-image="left"] .stat-box { right: 0; }
 }
 
 @media (max-width: 768px) {
@@ -1979,6 +2068,13 @@ fieldset.field .field__label {
   .icon-cards__grid--4 { grid-template-columns: 1fr; }
   .icon-cards--dark .icon-card { min-height: 0; }
   .icon-card .btn { white-space: normal; }
+
+  .stat-box { width: 170px; height: 170px; padding: 18px; gap: 6px; border-radius: 16px; }
+  .stat-box__icon { width: 32px; height: 32px; }
+  .stat-box__value { font-size: 40px; }
+  .stat-box__label { font-size: 16px; line-height: 20px; }
+  .split__lede { font-size: 16px; line-height: 26px; }
+  .split--detailed .split__lists { gap: 12px; }
 
   .cta-strip { padding-bottom: 56px; }
   .cta-band--strip .btn { white-space: normal; }
