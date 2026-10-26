@@ -15,6 +15,9 @@ export const ROUTES = {
   about: "/about",
   blog: "/blog",
   caseStudies: "/case-studies",
+  caseArcom: "/case-studies/arcom-it",
+  caseActiveComply: "/case-studies/activecomply",
+  caseOpportune: "/case-studies/opportune",
   contact: "/contact",
 } as const;
 

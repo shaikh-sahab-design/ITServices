@@ -19,6 +19,8 @@ type Props = {
   tint?: string;
   /** Width of the text column in px, as set in Figma. */
   copyWidth?: number;
+  /** Let the title segments run on as one paragraph and wrap naturally, instead of one line each. */
+  flow?: boolean;
 };
 
 const line = (i: number) => ({
@@ -28,7 +30,7 @@ const line = (i: number) => ({
 });
 
 /** Dark photo hero used by the inner pages (Services, About, Contact, service pages). */
-export function PageHero({ image, title, lede, actions, fade = [30.9, 80.2], tint = "6, 19, 51", copyWidth = 873 }: Props) {
+export function PageHero({ image, title, lede, actions, fade = [30.9, 80.2], tint = "6, 19, 51", copyWidth = 873, flow }: Props) {
   return (
     <section
       className="page-hero"
@@ -44,15 +46,30 @@ export function PageHero({ image, title, lede, actions, fade = [30.9, 80.2], tin
     >
       <div className="container page-hero__inner">
         <div className="page-hero__copy">
-          <h1 className="page-hero__title">
-            {title.map((t, i) => (
-              <span key={t} className="line-mask">
-                <motion.span className={i > 0 ? "t-red" : undefined} {...line(i)}>
+          {flow ? (
+            <motion.h1
+              className="page-hero__title"
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: EASE_OUT_QUINT, delay: 0.1 }}
+            >
+              {title.map((t, i) => (
+                <span key={t} className={i > 0 ? "t-red" : undefined}>
                   {t}
-                </motion.span>
-              </span>
-            ))}
-          </h1>
+                </span>
+              ))}
+            </motion.h1>
+          ) : (
+            <h1 className="page-hero__title">
+              {title.map((t, i) => (
+                <span key={t} className="line-mask">
+                  <motion.span className={i > 0 ? "t-red" : undefined} {...line(i)}>
+                    {t}
+                  </motion.span>
+                </span>
+              ))}
+            </h1>
+          )}
           <motion.p
             className="page-hero__lede"
             initial={{ opacity: 0, y: 12 }}
