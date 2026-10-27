@@ -210,6 +210,7 @@ button {
 
 .nav__links {
   display: flex;
+  align-items: center;
   gap: 32px;
 }
 
@@ -300,6 +301,231 @@ button {
 .nav__sheet-link[aria-current="page"] {
   color: var(--blue);
   font-weight: 800;
+}
+
+/* ---------- Services mega menu ---------- */
+.nav__item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 72px;
+  margin-block: -16px;
+}
+
+.nav__toggle {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition: color 150ms ease, transform 250ms var(--ease-out-quint);
+}
+
+.nav__toggle[data-open="true"] {
+  color: var(--blue);
+  transform: rotate(180deg);
+}
+
+.nav__item:has(.nav__link[aria-current="page"]) .nav__toggle { color: var(--blue); }
+
+@media (hover: hover) and (pointer: fine) {
+  .nav__item:hover .nav__toggle { color: var(--blue); }
+}
+
+.mega {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--white);
+  border-top: 1px solid #e2e8f0;
+  box-shadow: 0 24px 48px rgba(12, 14, 22, 0.1);
+}
+
+.mega__inner {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr) 300px;
+  gap: 40px;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding: 36px 64px 40px;
+}
+
+.mega__head {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-bottom: 16px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #eef0f6;
+}
+
+.mega__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Bakbak One", sans-serif;
+  font-size: 20px;
+  line-height: 24px;
+  color: var(--text);
+  transition: color 150ms ease;
+}
+
+.mega__title svg { transition: transform 250ms var(--ease-out-quint); }
+
+.mega__tagline {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--text-2);
+}
+
+.mega__head[aria-current="page"] .mega__title { color: var(--blue); }
+
+.mega__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mega__link {
+  display: block;
+  margin-inline: -10px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--text);
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.mega__link[aria-current="page"] {
+  color: var(--blue);
+  font-weight: 700;
+}
+
+.mega__aside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 28px;
+  border-radius: 12px;
+  background: #061333;
+  color: var(--white);
+}
+
+.mega__aside-title {
+  font-family: "Bakbak One", sans-serif;
+  font-size: 22px;
+  line-height: 26px;
+}
+
+.mega__aside-text {
+  flex: 1;
+  font-size: 14px;
+  line-height: 21px;
+  color: #c9d1e6;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mega__head:hover .mega__title { color: var(--blue); }
+  .mega__head:hover .mega__title svg { transform: translateX(3px); }
+  .mega__link:hover {
+    background: var(--bg);
+    color: var(--blue);
+  }
+}
+
+.mega__head:focus-visible,
+.mega__link:focus-visible,
+.nav__toggle:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+@media (max-width: 1360px) {
+  .mega__inner {
+    grid-template-columns: repeat(3, 1fr) 240px;
+    gap: 28px;
+    padding-inline: 32px;
+  }
+}
+
+/* Mobile sheet: services expand under "Our Services" */
+.nav__sheet { overflow-y: auto; }
+
+.nav__sheet-row {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #eef0f6;
+}
+
+.nav__sheet-row .nav__sheet-link {
+  flex: 1;
+  border-bottom: 0;
+}
+
+.nav__sheet-toggle {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-right: -10px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+}
+
+.nav__sheet-toggle svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 250ms var(--ease-out-quint);
+}
+
+.nav__sheet-toggle[data-open="true"] { color: var(--blue); }
+.nav__sheet-toggle[data-open="true"] svg { transform: rotate(180deg); }
+
+.nav__sheet-services {
+  overflow: hidden;
+  border-bottom: 1px solid #eef0f6;
+}
+
+.nav__sheet-group { padding: 14px 0 6px 12px; }
+.nav__sheet-group + .nav__sheet-group { border-top: 1px solid #eef0f6; }
+
+.nav__sheet-group-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Bakbak One", sans-serif;
+  font-size: 17px;
+  line-height: 22px;
+}
+
+.nav__sheet-group-title[aria-current="page"],
+.nav__sheet-sublink[aria-current="page"] { color: var(--blue); }
+
+.nav__sheet-group ul {
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav__sheet-sublink {
+  display: block;
+  padding: 8px 0;
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--text-2);
 }
 
 /* ---------- Hero ---------- */
