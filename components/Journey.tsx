@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { ListIcon, LoginIcon, PieIcon, SearchListIcon, WaveSquareIcon } from "./icons";
 import { EASE_OUT_QUINT, Reveal } from "./motion";
@@ -16,12 +17,30 @@ const STEPS = [
 const LINE_DURATION = 1.2;
 const stepDelay = (i: number) => 0.15 + (i / (STEPS.length - 1)) * LINE_DURATION * 0.85;
 
-export function Journey() {
+type JourneyCta = { title: string; text: string; label: string; href: string };
+
+const HOME_CTA: JourneyCta = {
+  title: "Ready to strengthen your IT operations?",
+  text: "Let’s turn complexity into a clear, managed roadmap.",
+  label: "Get Started Today",
+  href: "#contact",
+};
+
+/** Home process band. Service pages reuse it with their own heading and CTA, and drop the top margin. */
+export function Journey({
+  title = "Start Your IT Management Journey With Folio3",
+  cta = HOME_CTA,
+  flush,
+}: {
+  title?: string;
+  cta?: JourneyCta;
+  flush?: boolean;
+}) {
   return (
-    <section className="journey">
+    <section className={`journey${flush ? " journey--flush" : ""}`}>
       <div className="container">
         <Reveal className="section-head">
-          <h2 className="h-display">Start Your IT Management Journey With Folio3</h2>
+          <h2 className="h-display">{title}</h2>
         </Reveal>
 
         <motion.div
@@ -65,10 +84,18 @@ export function Journey() {
 
         <Reveal className="cta-band">
           <div>
-            <p className="cta-band__title">Ready to strengthen your IT operations?</p>
-            <p className="cta-band__text">Let’s turn complexity into a clear, managed roadmap.</p>
+            <p className="cta-band__title">{cta.title}</p>
+            <p className="cta-band__text">{cta.text}</p>
           </div>
-          <a href="#contact" className="btn btn--yellow">Get Started Today</a>
+          {cta.href.startsWith("#") ? (
+            <a href={cta.href} className="btn btn--yellow">
+              {cta.label}
+            </a>
+          ) : (
+            <Link href={cta.href} className="btn btn--yellow">
+              {cta.label}
+            </Link>
+          )}
         </Reveal>
       </div>
     </section>
