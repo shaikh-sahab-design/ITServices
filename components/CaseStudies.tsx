@@ -1,11 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { Reveal, Stagger, fadeUpChild } from "./motion";
 import { asset } from "@/lib/asset";
+import { ROUTES } from "@/lib/routes";
 
 const CASES = [
   {
+    href: ROUTES.caseArcom,
     logo: "/images/client-arcom.png",
     logoW: 211,
     alt: "Arcom IT",
@@ -14,6 +17,7 @@ const CASES = [
     body: "Arcom IT needed additional technical capacity to support 35+ customer environments without compromising service quality.",
   },
   {
+    href: ROUTES.caseStudies,
     logo: "/images/client-io-solution.png",
     logoW: 168,
     alt: "IO Solution",
@@ -22,6 +26,7 @@ const CASES = [
     body: "The client needed to improve IT support and infrastructure management across a growing, distributed environment.",
   },
   {
+    href: ROUTES.caseActiveComply,
     logo: "/images/client-activecomply.png",
     logoW: 263,
     alt: "ActiveComply",
@@ -30,6 +35,7 @@ const CASES = [
     body: "Arcom IT needed additional technical capacity to support 35+ customer environments without compromising service quality.",
   },
   {
+    href: ROUTES.caseOpportune,
     logo: "/images/client-opportune.png",
     logoW: 154,
     alt: "Opportune",
@@ -51,18 +57,24 @@ export function CaseStudies() {
       </Reveal>
       <Stagger className="cases" stagger={0.1}>
         {CASES.map((c, i) => (
-          <motion.a href="#" key={i} className="case-card" variants={fadeUpChild}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="case-card__mark" src={asset(c.mark)} alt="" loading="lazy" />
-            <div className="case-card__body">
+          <motion.div key={i} variants={fadeUpChild}>
+            <Link href={c.href} className="case-card">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="case-card__logo" src={asset(c.logo)} alt={c.alt} width={c.logoW} height={50} loading="lazy" />
-              <div className="case-card__copy">
-                <h3 className="case-card__title">{c.title}</h3>
-                <p className="case-card__text">{c.body}</p>
+              <img className="case-card__mark" src={asset(c.mark)} alt="" loading="lazy" />
+              <div className="case-card__body">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img className="case-card__logo" src={asset(c.logo)} alt={c.alt} width={c.logoW} height={50} loading="lazy" />
+                <div className="case-card__copy">
+                  <h3 className="case-card__title">{c.title}</h3>
+                  <p className="case-card__text">{c.body}</p>
+                </div>
+                {/* Figma Variant 2: the button only shows on hover. */}
+                <div className="case-card__more" aria-hidden="true">
+                  <span className="case-card__btn">Read More</span>
+                </div>
               </div>
-            </div>
-          </motion.a>
+            </Link>
+          </motion.div>
         ))}
       </Stagger>
     </section>
