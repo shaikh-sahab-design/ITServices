@@ -26,7 +26,7 @@ export function AiaExposure({
 }: {
   title: string;
   lead: string;
-  text: string;
+  text?: string;
   cta: Cta;
   box: { title: string; items: string[] };
 }) {
@@ -36,7 +36,7 @@ export function AiaExposure({
         <Reveal className="aia-exposure__copy">
           <h2 className="aia-h2">{title}</h2>
           <p className="aia-lead">{lead}</p>
-          <p className="aia-text">{text}</p>
+          {text && <p className="aia-text">{text}</p>}
           <Btn cta={cta} />
         </Reveal>
         <Reveal className="aia-exposure__box" delay={0.1}>
