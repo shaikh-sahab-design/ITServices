@@ -3590,6 +3590,8 @@ fieldset.field .field__label {
 /* Short hero band used by the sub-service pages; the photo already carries its navy wash. */
 .page-hero--compact { min-height: 230px; padding: 52px 0; background-image: var(--hero-img); }
 .page-hero--compact .page-hero__title { font-size: 45px; line-height: 63px; }
+/* Figma lets the longest two-line titles run to about 900px. */
+.page-hero--compact .page-hero__copy { max-width: 920px; }
 
 .faq-section { padding: 80px 0; }
 .faq-section .section { padding-top: 0; }
