@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import Link from "next/link";
 import { useId, useState } from "react";
 import { CaretDownIcon } from "./icons";
 import { EASE_OUT_QUINT, Reveal, Stagger, fadeUpChild } from "./motion";
@@ -43,7 +44,15 @@ type FaqItem = { q: string; a?: string };
  * Accordion of questions. Service pages pass their own list; a question with no answer
  * in Figma is shown without one and doesn't expand.
  */
-export function Faq({ items = FAQS, defaultOpen = 1 }: { items?: FaqItem[]; defaultOpen?: number }) {
+export function Faq({
+  items = FAQS,
+  defaultOpen = 1,
+  cta,
+}: {
+  items?: FaqItem[];
+  defaultOpen?: number;
+  cta?: { label: string; href: string };
+}) {
   const [open, setOpen] = useState<number | null>(defaultOpen);
   const baseId = useId();
 
@@ -93,6 +102,13 @@ export function Faq({ items = FAQS, defaultOpen = 1 }: { items?: FaqItem[]; defa
           );
         })}
       </Stagger>
+      {cta && (
+        <Reveal className="faq-cta">
+          <Link href={cta.href} className="btn btn--primary">
+            {cta.label}
+          </Link>
+        </Reveal>
+      )}
     </section>
   );
 }
