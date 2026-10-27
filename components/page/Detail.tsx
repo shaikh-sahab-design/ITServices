@@ -190,7 +190,7 @@ export type DetailCardData = {
   label: string;
   title: string;
   text: string;
-  scope: string;
+  scope?: string;
   bullets: string[];
   outcome: { text: string; tone?: OutcomeTone; size?: "sm" | "md" | "lg" };
   cta: Cta;
@@ -236,7 +236,7 @@ export function DetailCard({
         </div>
       )}
       <p className={tone === "dark" ? "detail-card__text" : "detail-text"}>{card.text}</p>
-      <p className="detail-scope">{card.scope}</p>
+      {card.scope && <p className="detail-scope">{card.scope}</p>}
       <Bullets items={card.bullets} dot={tone === "dark" ? "yellow" : "blue"} />
       <Extras example={card.example} note={card.note} dark={tone === "dark"} />
       <Outcome {...card.outcome} tone={tone === "dark" ? "dark" : card.outcome.tone} />
@@ -287,12 +287,14 @@ export function ImageFeature({
   scope,
   bullets,
   example,
+  note,
 }: {
   title: string;
   statements: string[];
   scope?: string;
   bullets?: string[];
   example?: string;
+  note?: string;
   outcome: string;
   cta: Cta;
   image: { src: string; alt: string };
@@ -313,7 +315,7 @@ export function ImageFeature({
               ))}
               {scope && <p className="detail-scope">{scope}</p>}
               {bullets && <Bullets items={bullets} />}
-              <Extras example={example} />
+              <Extras example={example} note={note} />
               <Outcome text={outcome} tone="soft" size="lg" />
             </div>
             <DetailCta cta={cta} size="md" />

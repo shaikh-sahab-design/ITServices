@@ -16,7 +16,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       { label: "Managed IT Support", href: R.managedIt },
       { label: "Network & Infrastructure", href: R.networkDesign },
       { label: "Migration Services", href: R.migration },
-      { label: "Backup & Disaster Recovery", href: R.managedIt },
+      { label: "Backup & Disaster Recovery", href: R.disasterRecovery },
       { label: "IT Strategy & vCIO", href: R.vcio },
       { label: "Database Management", href: R.managedIt },
       { label: "Identity & Access Management", href: R.managedIt },
