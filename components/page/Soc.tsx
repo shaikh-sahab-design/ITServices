@@ -237,7 +237,8 @@ export function SocCompare({
   cta,
 }: {
   title: string;
-  text: string;
+  /** One paragraph, or several. */
+  text: string | string[];
   head: [string, string];
   rows: [string, string][];
   cta: Cta;
@@ -247,7 +248,11 @@ export function SocCompare({
       <div className="container">
         <Reveal className="soc-head soc-head--compare">
           <h2 className="soc-h2 soc-h2--center">{title}</h2>
-          <p className="soc-head__text">{text}</p>
+          {(Array.isArray(text) ? text : [text]).map((t) => (
+            <p key={t} className="soc-head__text">
+              {t}
+            </p>
+          ))}
         </Reveal>
         <Reveal className="soc-table-wrap">
           <table className="soc-table">
