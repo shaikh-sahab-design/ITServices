@@ -141,7 +141,11 @@ export function NumberCards({
     el.scrollBy({ left: dir * step, behavior: "smooth" });
   };
   const list = (
-    <Stagger className={layout === "rail" ? "rail__track num-cards__track" : "num-cards__grid"} stagger={0.06}>
+    <Stagger
+      className={layout === "rail" ? "rail__track num-cards__track" : "num-cards__grid"}
+      stagger={0.06}
+      style={layout === "grid" ? ({ "--cols": cards.length % 3 === 0 && cards.length > 4 ? 3 : Math.min(cards.length, 5) } as React.CSSProperties) : undefined}
+    >
       {cards.map((c, i) => (
         <motion.article key={c.text} className="num-card" variants={fadeUpChild}>
           <p className="num-card__n">{String(i + 1).padStart(2, "0")}</p>
@@ -191,7 +195,9 @@ export type DetailCardData = {
   title: string;
   text: string;
   scope?: string;
-  bullets: string[];
+  bullets?: string[];
+  /** Titled sub-lists, used instead of (or after) the single bullet list. */
+  groups?: { title: string; items: string[] }[];
   outcome: { text: string; tone?: OutcomeTone; size?: "sm" | "md" | "lg" };
   cta: Cta;
   example?: string;
@@ -237,7 +243,13 @@ export function DetailCard({
       )}
       <p className={tone === "dark" ? "detail-card__text" : "detail-text"}>{card.text}</p>
       {card.scope && <p className="detail-scope">{card.scope}</p>}
-      <Bullets items={card.bullets} dot={tone === "dark" ? "yellow" : "blue"} />
+      {card.bullets && <Bullets items={card.bullets} dot={tone === "dark" ? "yellow" : "blue"} />}
+      {card.groups?.map((g) => (
+        <div key={g.title} className="detail-group">
+          <p className="detail-group__title">{g.title}</p>
+          <Bullets items={g.items} dot={tone === "dark" ? "yellow" : "blue"} />
+        </div>
+      ))}
       <Extras example={card.example} note={card.note} dark={tone === "dark"} />
       <Outcome {...card.outcome} tone={tone === "dark" ? "dark" : card.outcome.tone} />
       <DetailCta cta={card.cta} />
@@ -445,8 +457,8 @@ export function CompareTable({
   cta,
 }: {
   title: string;
-  head: [string, string, string];
-  rows: [string, string, string][];
+  head: string[];
+  rows: string[][];
   note?: string;
   cta?: Cta;
 }) {
@@ -468,11 +480,12 @@ export function CompareTable({
               </tr>
             </thead>
             <tbody>
-              {rows.map(([a, b, c]) => (
+              {rows.map(([a, ...rest]) => (
                 <tr key={a}>
                   <th scope="row">{a}</th>
-                  <td>{b}</td>
-                  <td>{c}</td>
+                  {rest.map((c, i) => (
+                    <td key={i}>{c}</td>
+                  ))}
                 </tr>
               ))}
             </tbody>

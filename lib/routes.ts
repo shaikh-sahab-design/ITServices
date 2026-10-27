@@ -12,6 +12,7 @@ export const ROUTES = {
   disasterRecovery: "/disaster-recovery",
   vcio: "/vcio-services",
   database: "/database-management",
+  iam: "/identity-access-management",
   about: "/about",
   blog: "/blog",
   blogPost: "/blog/how-outsourced-it-support-services-boost-efficiency",
