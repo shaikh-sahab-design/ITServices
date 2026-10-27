@@ -9,6 +9,7 @@ export const ROUTES = {
   soc: "/soc-services",
   mdr: "/threat-detection-incident-response",
   cloudSecurity: "/cloud-security",
+  endpoint: "/endpoint-security",
   networkDesign: "/network-design",
   migration: "/migration-services",
   disasterRecovery: "/disaster-recovery",

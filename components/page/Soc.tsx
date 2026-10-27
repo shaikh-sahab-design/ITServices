@@ -347,7 +347,8 @@ export function SocWhy({
   cta?: Cta;
   highlight: { title: string; text: string };
   stats?: { value: string; label: string; tone: "blue" | "red" }[];
-  footer: { title: string; text: string };
+  /** text is optional: some docs give the closing card only a title. */
+  footer: { title: string; text?: string };
 }) {
   return (
     <section className="soc-why">
@@ -381,7 +382,7 @@ export function SocWhy({
           )}
           <motion.div className="soc-why__footer" variants={fadeUpChild}>
             <h3 className="soc-why__footer-title">{footer.title}</h3>
-            <p className="soc-why__small">{footer.text}</p>
+            {footer.text && <p className="soc-why__small">{footer.text}</p>}
           </motion.div>
         </Stagger>
       </div>
