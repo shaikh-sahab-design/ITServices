@@ -4310,3 +4310,237 @@ fieldset.field .field__label {
   .vcio-trust__panel { flex: none; min-height: 0; margin: -48px 16px 0; padding: 28px 24px; }
   .vcio-trust__logo { width: 140px; }
 }
+
+/* ================= AI Security Assessment page ================= */
+.aia-h2 {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 52px;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.aia-h2--light { color: var(--white); }
+.aia-h2--center { text-align: center; }
+
+.aia-lead { font-size: 21px; font-weight: 700; line-height: 25px; color: var(--text); }
+.aia-lead--muted { color: var(--text-2); }
+.aia-lead--light { color: var(--white); }
+.aia-text { font-size: 18px; line-height: 31px; color: var(--text-2); }
+
+.aia-stack { display: flex; flex-direction: column; align-items: flex-start; }
+.aia-stack--10 { gap: 10px; }
+.aia-stack--20 { gap: 20px; }
+.aia-stack--32 { gap: 32px; }
+
+.aia-split { display: flex; justify-content: space-between; gap: 92px; }
+.aia-split--center { align-items: center; }
+.aia-col-556 { flex: 0 1 556px; }
+.aia-col-664 { flex: 0 1 664px; }
+
+/* AI exposure */
+.aia-exposure { padding: 88px 0; background: var(--white); }
+.aia-exposure__copy { flex: 0 1 556px; display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
+.aia-exposure__box {
+  flex: 0 1 664px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 40px;
+  border-radius: 20px;
+  background: var(--bg);
+}
+.aia-numbered li { display: flex; align-items: center; gap: 20px; padding: 10px 0; font-size: 18px; line-height: 31px; color: var(--text); }
+.aia-numbered__num { flex: none; width: 24px; font-size: 16px; font-weight: 700; line-height: 19px; color: var(--blue); }
+
+/* Definition */
+.aia-definition { padding: 88px 0; background: var(--bg); }
+.aia-definition .aia-split { align-items: flex-start; }
+.aia-definition__band { margin-top: 40px; }
+.aia-definition__band .cta-band__text { font-size: 17px; line-height: 27px; }
+
+/* Why assess */
+.aia-why { padding: 88px 0; background: var(--white); }
+.aia-why__head { align-items: flex-start; margin-bottom: 42px; }
+.aia-why__title-col { flex: 0 1 760px; }
+.aia-why__aside { flex: 0 1 460px; }
+.aia-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+  padding: 28px 0;
+  border-top: 1px solid #dce2ee;
+}
+.aia-row__num {
+  flex: 0 0 48px;
+  font-family: var(--font-display), sans-serif;
+  font-size: 21px;
+  line-height: 28px;
+  color: var(--blue);
+}
+.aia-row__title { flex: 0 0 380px; font-size: 21px; font-weight: 700; line-height: 25px; color: var(--text); }
+.aia-row__text { flex: 1 1 0; font-size: 17px; line-height: 27px; color: var(--text-2); }
+
+/* Coverage */
+.aia-coverage { padding: 88px 0; background: var(--bg); }
+.aia-coverage__head { align-items: flex-start; margin-bottom: 44px; }
+.aia-coverage__title-col { flex: 0 1 700px; }
+.aia-coverage__aside { flex: 0 1 520px; }
+.aia-areas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.aia-area {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 334px;
+  padding: 32px;
+  border-radius: 16px;
+  background: var(--white);
+  transition: transform 250ms var(--ease-out-quint), box-shadow 250ms var(--ease-out-quint);
+}
+.aia-area__title { font-size: 22px; font-weight: 700; line-height: 26px; color: var(--text); }
+.aia-area__text { font-size: 14px; line-height: 20px; color: var(--text-2); }
+.aia-area__list { display: flex; flex-direction: column; gap: 8px; }
+.aia-area__list li { display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; color: var(--text); }
+.aia-area__list li::before { content: ""; flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); }
+
+/* Process */
+.aia-process { padding: 88px 0; background: #061333; }
+.aia-process__inner { display: flex; align-items: flex-start; gap: 40px; }
+.aia-process__copy { flex: 0 0 500px; display: flex; flex-direction: column; align-items: flex-start; gap: 24px; padding-bottom: 50px; }
+.aia-process__eyebrow { font-size: 18px; font-weight: 600; line-height: 22px; color: var(--blue); }
+.aia-steps { flex: 1 1 772px; display: flex; flex-direction: column; }
+.aia-step { display: flex; gap: 12px; }
+.aia-step__rail { flex: 0 0 24px; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-bottom: 4px; }
+.aia-step__line { flex: 1; width: 2px; border-radius: 2px; background: #28416c; }
+.aia-step__body { flex: 1; display: flex; flex-direction: column; gap: 10px; padding-bottom: 36px; }
+.aia-step__title { font-size: 24px; font-weight: 600; line-height: 29px; color: var(--white); }
+.aia-step__text { font-size: 17px; line-height: 27px; color: #c4cee2; }
+.aia-step__outcome {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid var(--blue);
+  border-radius: 10px;
+  color: var(--white);
+}
+.aia-step__outcome-label { font-size: 16px; font-weight: 600; line-height: 19px; }
+.aia-step__outcome-text { font-size: 15px; line-height: 18px; }
+
+/* Adoption */
+.aia-adoption { padding: 88px 0; background: var(--white); }
+.aia-adoption__head { display: flex; flex-direction: column; gap: 20px; max-width: 874px; margin: 0 auto 48px; }
+.aia-adoption__lede { text-align: center; }
+.aia-stages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.aia-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 28px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: var(--white);
+  transition: transform 250ms var(--ease-out-quint), box-shadow 250ms var(--ease-out-quint);
+}
+.aia-stage__title { font-size: 18px; font-weight: 700; line-height: 22px; color: var(--text); }
+.aia-adoption__cta { display: flex; justify-content: center; margin-top: 48px; }
+
+/* Audiences */
+.aia-audiences { padding: 88px 0; background: var(--bg); }
+.aia-audiences__inner { display: flex; align-items: flex-start; gap: 50px; }
+.aia-audiences__copy { flex: 0 1 470px; }
+.aia-audiences__list { flex: 1 1 792px; display: flex; flex-direction: column; gap: 16px; }
+.aia-audience {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px;
+  border: 1px solid #dce2ee;
+  border-radius: 10px;
+  background: var(--white);
+  transition: transform 250ms var(--ease-out-quint), box-shadow 250ms var(--ease-out-quint);
+}
+
+/* Figma lets the longest stage title run past the card padding on one line. */
+@media (min-width: 1201px) {
+  .aia-stage__title { white-space: nowrap; }
+}
+
+/* FAQ sits closer to the closing CTA band here. */
+.aia-faq { padding-bottom: 60px; }
+
+@media (hover: hover) and (pointer: fine) {
+  .aia-area:hover,
+  .aia-stage:hover,
+  .aia-audience:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 32px rgba(12, 14, 22, 0.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aia-area,
+  .aia-stage,
+  .aia-audience { transition: none; }
+}
+
+@media (max-width: 1200px) {
+  .aia-split { gap: 48px; }
+  .aia-areas { grid-template-columns: 1fr 1fr; }
+  .aia-stages { grid-template-columns: 1fr 1fr; }
+  .aia-row__title { flex-basis: 280px; }
+  .aia-process__copy { flex-basis: 380px; }
+}
+
+@media (max-width: 1024px) {
+  .aia-split,
+  .aia-process__inner,
+  .aia-audiences__inner { flex-direction: column; align-items: stretch; gap: 32px; }
+  .aia-split > *,
+  .aia-process__copy,
+  .aia-audiences__copy,
+  .aia-audiences__list,
+  .aia-steps { flex: none; }
+  .aia-process__copy { padding-bottom: 0; }
+  .aia-row { flex-wrap: wrap; gap: 8px 24px; }
+  .aia-row__title { flex: 1 1 0; }
+  .aia-row__text { flex: 1 1 100%; padding-left: 72px; }
+}
+
+@media (max-width: 768px) {
+  .aia-exposure,
+  .aia-definition,
+  .aia-why,
+  .aia-coverage,
+  .aia-process,
+  .aia-adoption,
+  .aia-audiences { padding: 56px 0; }
+  .aia-faq { padding-bottom: 40px; }
+  .aia-h2 { font-size: 32px; line-height: 38px; }
+  .aia-lead,
+  .aia-row__title { font-size: 19px; line-height: 24px; }
+  .aia-text,
+  .aia-numbered li,
+  .aia-row__text,
+  .aia-step__text { font-size: 16px; line-height: 26px; }
+  .aia-exposure__box { padding: 28px 24px; }
+  .aia-numbered li { align-items: flex-start; }
+  .aia-numbered__num { margin-top: 4px; }
+  .aia-row__text { padding-left: 0; }
+  .aia-areas,
+  .aia-stages { grid-template-columns: 1fr; }
+  .aia-area { min-height: 0; padding: 24px; }
+  .aia-step__title { font-size: 20px; line-height: 26px; }
+  .aia-coverage__head,
+  .aia-why__head { margin-bottom: 32px; }
+  .aia-adoption__head { margin-bottom: 32px; }
+  .aia-adoption__cta { margin-top: 32px; }
+  .aia-exposure .btn,
+  .aia-definition .btn,
+  .aia-why .btn,
+  .aia-coverage .btn,
+  .aia-process .btn,
+  .aia-adoption .btn,
+  .aia-audiences .btn { white-space: normal; }
+  .aia-definition__band { flex-direction: column; align-items: flex-start; }
+}

@@ -1,0 +1,11 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M4.5 10C4.5 9.17157 5.17157 8.5 6 8.5H22C22.8284 8.5 23.5 9.17157 23.5 10C23.5 10.8284 22.8284 11.5 22 11.5H6C5.17157 11.5 4.5 10.8284 4.5 10Z" fill="#4A7DEE"/>
+<path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M4.5 24C4.5 23.1716 5.17157 22.5 6 22.5H24C24.8284 22.5 25.5 23.1716 25.5 24C25.5 24.8284 24.8284 25.5 24 25.5H6C5.17157 25.5 4.5 24.8284 4.5 24Z" fill="#4A7DEE"/>
+<path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M34.5 24C34.5 23.1716 35.1716 22.5 36 22.5L42 22.5C42.8284 22.5 43.5 23.1716 43.5 24C43.5 24.8284 42.8284 25.5 42 25.5H36C35.1716 25.5 34.5 24.8284 34.5 24Z" fill="#4A7DEE"/>
+<path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M24.5 10C24.5 9.17157 25.1716 8.5 26 8.5L42 8.5C42.8284 8.5 43.5 9.17157 43.5 10C43.5 10.8284 42.8284 11.5 42 11.5L26 11.5C25.1716 11.5 24.5 10.8284 24.5 10Z" fill="#4A7DEE"/>
+<path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M22.5 38C22.5 37.1716 23.1716 36.5 24 36.5L42 36.5C42.8284 36.5 43.5 37.1716 43.5 38C43.5 38.8284 42.8284 39.5 42 39.5L24 39.5C23.1716 39.5 22.5 38.8284 22.5 38Z" fill="#4A7DEE"/>
+<path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M4.5 38C4.5 37.1716 5.17157 36.5 6 36.5H12C12.8284 36.5 13.5 37.1716 13.5 38C13.5 38.8284 12.8284 39.5 12 39.5H6C5.17157 39.5 4.5 38.8284 4.5 38Z" fill="#4A7DEE"/>
+<circle cx="14" cy="38" r="4" fill="#4A7DEE"/>
+<circle cx="34" cy="24" r="4" fill="#4A7DEE"/>
+<circle cx="24" cy="10" r="4" fill="#4A7DEE"/>
+</svg>
