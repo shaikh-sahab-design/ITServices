@@ -10,6 +10,7 @@ export const ROUTES = {
   mdr: "/threat-detection-incident-response",
   cloudSecurity: "/cloud-security",
   endpoint: "/endpoint-security",
+  vulnerability: "/vulnerability-assessment",
   networkDesign: "/network-design",
   migration: "/migration-services",
   disasterRecovery: "/disaster-recovery",
