@@ -2090,6 +2090,7 @@ fieldset.field .field__label {
   .service-card__title { font-size: 34px; line-height: 38px; }
   .service-card__body { padding: 32px 24px 0; }
   .service-card .service-card__img { left: auto; right: -40px; }
+  .services--portfolio .service-card .service-card__img { left: auto; right: -20px; }
 
   .verticals { padding: 48px 0; }
   .verticals__list { align-items: stretch; min-height: 0; }
@@ -2224,7 +2225,26 @@ fieldset.field .field__label {
 .section-head--portfolio { max-width: none; gap: 16px; }
 .section-head--portfolio .lede { max-width: 1032px; }
 
+/* The home cards paint their colour on a flip face; these cards have no face, so they carry it themselves. */
+.services--portfolio .service-card {
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 250ms var(--ease-out-quint), box-shadow 250ms var(--ease-out-quint);
+}
+.services--portfolio .service-card--it { background: var(--blue); box-shadow: 0 10px 48px rgba(11, 27, 43, 0.1); }
+.services--portfolio .service-card--security { background: var(--red); }
+.services--portfolio .service-card--ai { background: var(--yellow); }
 .services--portfolio .service-card__body { padding: 40px 29px 0; }
+
+/* Figma frame 1630:4165: each image sits on the card's lower right; offsets allow for the shadow baked into the export. */
+.services--portfolio .service-card--it .service-card__img { left: 63px; top: 196px; width: 368px; }
+.services--portfolio .service-card--security .service-card__img { left: 91px; top: 189px; width: 342px; }
+.services--portfolio .service-card--ai .service-card__img { left: 68px; top: 188px; width: 364px; }
+
+@media (hover: hover) and (pointer: fine) {
+  .services--portfolio .service-card:hover { transform: translateY(-4px); }
+  .services--portfolio .service-card:hover .service-card__img { transform: translateY(-6px); }
+}
 
 .service-card__text {
   font-size: 14px;
@@ -2237,7 +2257,7 @@ fieldset.field .field__label {
   transition: background-color 150ms ease;
 }
 
-.service-card--ai .tag--cta { border-color: rgba(12, 14, 22, 0.15); }
+.services--portfolio .tag--cta { border-color: var(--white); }
 
 @media (hover: hover) and (pointer: fine) {
   .service-card:hover .tag--cta { background: rgba(255, 255, 255, 0.22); }
