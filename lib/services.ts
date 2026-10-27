@@ -45,7 +45,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       { label: "AI Data Security", href: R.aiDataSecurity },
       { label: "AI Application & LLM Security", href: R.aiAppSecurity },
       { label: "AI Agent Security", href: R.aiAgentSecurity },
-      { label: "AI Red Teaming", href: R.aiSecurity },
+      { label: "AI Red Teaming", href: R.aiRedTeaming },
     ],
   },
 ];

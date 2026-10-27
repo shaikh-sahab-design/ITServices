@@ -9,6 +9,7 @@ export const ROUTES = {
   aiDataSecurity: "/ai-data-security",
   aiAppSecurity: "/ai-application-llm-security",
   aiAgentSecurity: "/ai-agent-security",
+  aiRedTeaming: "/ai-red-teaming",
   soc: "/soc-services",
   mdr: "/threat-detection-incident-response",
   cloudSecurity: "/cloud-security",
