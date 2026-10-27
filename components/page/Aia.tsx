@@ -137,7 +137,7 @@ export function AiaWhy({
 
 /* ---------- Coverage: six area cards with focus lists ---------- */
 
-type Area = { title: string; text: string; focus: string[] };
+type Area = { label?: string; title: string; text: string; focus: string[] };
 
 export function AiaCoverage({
   title,
@@ -166,6 +166,7 @@ export function AiaCoverage({
         <Stagger className="aia-areas" stagger={0.06}>
           {areas.map((a) => (
             <motion.article key={a.title} className="aia-area" variants={fadeUpChild}>
+              {a.label && <p className="aia-area__label">{a.label}</p>}
               <h3 className="aia-area__title">{a.title}</h3>
               <p className="aia-area__text">{a.text}</p>
               <p className="aia-area__text">Focus Areas:</p>
@@ -195,7 +196,7 @@ export function AiaProcess({
 }: {
   eyebrow: string;
   title: string;
-  lead: string;
+  lead?: string;
   cta: Cta;
   steps: Step[];
 }) {
@@ -205,7 +206,7 @@ export function AiaProcess({
         <Reveal className="aia-process__copy">
           <p className="aia-process__eyebrow">{eyebrow}</p>
           <h2 className="aia-h2 aia-h2--light">{title}</h2>
-          <p className="aia-lead aia-lead--light">{lead}</p>
+          {lead && <p className="aia-lead aia-lead--light">{lead}</p>}
           <Btn cta={cta} />
         </Reveal>
         <Stagger className="aia-steps" stagger={0.1}>
@@ -254,7 +255,7 @@ export function AiaAdoption({
           <h2 className="aia-h2 aia-h2--center">{title}</h2>
           <p className="aia-row__text aia-adoption__lede">{text}</p>
         </Reveal>
-        <Stagger className="aia-stages" stagger={0.08}>
+        <Stagger className={`aia-stages${stages.length === 3 ? " aia-stages--3" : ""}`} stagger={0.08}>
           {stages.map((s) => (
             <motion.article key={s.title} className="aia-stage" variants={fadeUpChild}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
