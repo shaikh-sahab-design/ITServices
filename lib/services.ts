@@ -31,7 +31,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       { label: "Security Operations Center (SOC)", href: R.soc },
       { label: "Threat Detection & Incident Response", href: R.mdr },
       { label: "Cloud Security", href: R.cloudSecurity },
-      { label: "Endpoint & Identity Security", href: R.managedSecurity },
+      { label: "Endpoint & Identity Security", href: R.endpoint },
       { label: "Security Compliance & Risk", href: R.managedSecurity },
     ],
   },
