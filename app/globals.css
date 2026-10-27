@@ -4888,3 +4888,8 @@ fieldset.field .field__label {
   .aia-audiences .btn { white-space: normal; }
   .aia-definition__band { flex-direction: column; align-items: flex-start; }
 }
+
+/* Long FAQ button labels wrap instead of pushing past the phone edge. */
+@media (max-width: 640px) {
+  .faq-cta .btn { white-space: normal; text-align: center; }
+}
