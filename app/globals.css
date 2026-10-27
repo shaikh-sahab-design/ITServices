@@ -2965,6 +2965,7 @@ fieldset.field .field__label {
 /* Infographic */
 .infographic { padding: 80px 0 20px; }
 .infographic__img { display: block; width: 100%; height: auto; }
+.infographic__video { aspect-ratio: 1312 / 718; object-fit: cover; }
 
 /* Comparison table */
 .compare { padding: 80px 0; background: var(--white); }

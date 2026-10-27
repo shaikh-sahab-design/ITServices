@@ -251,6 +251,7 @@ export default function NetworkDesignPage() {
 
         <Infographic
           src="/images/nd-sdwan.webp"
+          video="/videos/nd-sdwan"
           alt="How SD-WAN optimizes network connectivity, security, and performance: segmentation and security policies, a centralized control hub, automatic failover, bandwidth optimization, application-aware routing, and real-time monitoring."
           width={1312}
           height={718}
