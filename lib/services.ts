@@ -19,7 +19,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       { label: "Backup & Disaster Recovery", href: R.disasterRecovery },
       { label: "IT Strategy & vCIO", href: R.vcio },
       { label: "Database Management", href: R.database },
-      { label: "Identity & Access Management", href: R.managedIt },
+      { label: "Identity & Access Management", href: R.iam },
     ],
   },
   {

@@ -43,13 +43,15 @@ type StaggerProps = {
   stagger?: number;
   delay?: number;
   amount?: number;
+  style?: React.CSSProperties;
 };
 
 /** Parent that staggers any <motion.* variants={fadeUpChild}> children into view. */
-export function Stagger({ children, className, stagger = 0.08, delay = 0, amount = 0.2 }: StaggerProps) {
+export function Stagger({ children, className, stagger = 0.08, delay = 0, amount = 0.2, style }: StaggerProps) {
   return (
     <motion.div
       className={className}
+      style={style}
       variants={staggerParent(stagger, delay)}
       initial="hidden"
       whileInView="visible"
