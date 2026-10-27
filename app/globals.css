@@ -3591,7 +3591,7 @@ fieldset.field .field__label {
 .page-hero--compact { min-height: 230px; padding: 52px 0; background-image: var(--hero-img); }
 .page-hero--compact .page-hero__title { font-size: 45px; line-height: 63px; }
 /* Figma lets the longest two-line titles run to about 900px. */
-.page-hero--compact .page-hero__copy { max-width: 920px; }
+.page-hero--compact .page-hero__copy { max-width: 1040px; }
 
 .faq-section { padding: 80px 0; }
 .faq-section .section { padding-top: 0; }
@@ -4765,6 +4765,9 @@ fieldset.field .field__label {
 .aia-adoption__head { display: flex; flex-direction: column; gap: 20px; max-width: 874px; margin: 0 auto 48px; }
 .aia-adoption__lede { text-align: center; }
 .aia-stages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.aia-stages--3 { grid-template-columns: repeat(3, 1fr); }
+.aia-area__label { font-size: 14px; font-weight: 600; line-height: 18px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--blue); }
+.cta-band__note { margin-top: 12px; font-size: 14px; line-height: 20px; color: var(--white); opacity: 0.75; }
 .aia-stage {
   display: flex;
   flex-direction: column;
@@ -4827,6 +4830,7 @@ fieldset.field .field__label {
   .aia-split { gap: 48px; }
   .aia-areas { grid-template-columns: 1fr 1fr; }
   .aia-stages { grid-template-columns: 1fr 1fr; }
+  .aia-stages--3 { grid-template-columns: repeat(3, 1fr); }
   .aia-row__title { flex-basis: 280px; }
   .aia-process__copy { flex-basis: 380px; }
 }
