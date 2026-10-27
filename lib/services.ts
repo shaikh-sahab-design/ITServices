@@ -27,7 +27,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
     href: R.managedSecurity,
     tagline: "Managed security services that catch threats before they spread",
     links: [
-      { label: "Vulnerability Assessment & Penetration Testing", href: R.managedSecurity },
+      { label: "Vulnerability Assessment & Penetration Testing", href: R.vulnerability },
       { label: "Security Operations Center (SOC)", href: R.soc },
       { label: "Threat Detection & Incident Response", href: R.mdr },
       { label: "Cloud Security", href: R.cloudSecurity },
