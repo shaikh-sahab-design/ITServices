@@ -10,7 +10,7 @@ type BtnSize = "sm" | "md" | "lg";
 
 const sizeClass = { sm: " btn--sm", md: " btn--md", lg: "" } as const;
 
-function Btn({ cta, variant, size }: { cta: Cta; variant: "primary" | "ghost"; size: BtnSize }) {
+function Btn({ cta, variant, size }: { cta: Cta; variant: "primary" | "ghost" | "yellow"; size: BtnSize }) {
   return (
     <Link href={cta.href} className={`btn btn--${variant}${sizeClass[size]}`}>
       {cta.label}
@@ -26,13 +26,16 @@ export function SocIntro({
   eyebrow,
   title,
   text,
+  cta,
   heading,
   benefits,
   promo,
 }: {
   eyebrow: string;
   title: string;
-  text: string;
+  /** One paragraph, or several. */
+  text: string | string[];
+  cta?: Cta;
   heading: string;
   benefits: Benefit[];
   promo: { title: string; text: string; cta: Cta };
@@ -43,7 +46,12 @@ export function SocIntro({
         <Reveal className="soc-intro__head">
           <p className="soc-eyebrow">{eyebrow}</p>
           <h2 className="soc-intro__title">{title}</h2>
-          <p className="soc-intro__text">{text}</p>
+          {(Array.isArray(text) ? text : [text]).map((t) => (
+            <p key={t} className="soc-intro__text">
+              {t}
+            </p>
+          ))}
+          {cta && <Btn cta={cta} variant="primary" size="md" />}
         </Reveal>
         <Reveal>
           <h2 className="soc-h2 soc-h2--center">{heading}</h2>
@@ -77,6 +85,8 @@ export type ServiceTone = "navy" | "soft" | "white" | "blue";
 export type SocService = {
   icon: string;
   label: string;
+  /** Optional service name between the label and the title. */
+  name?: string;
   title: string;
   text: string;
   includes: string[];
@@ -99,6 +109,7 @@ function ServiceCard({ s, wide }: { s: SocService; wide?: boolean }) {
         <img src={asset(s.icon)} alt="" width={wide ? 48 : 32} height={wide ? 48 : 32} />
         <span>{s.label}</span>
       </div>
+      {s.name && <p className="soc-service__name">{s.name}</p>}
       <h3 className="soc-service__title">{s.title}</h3>
       <p className="soc-service__text">{s.text}</p>
       <p className="soc-service__includes">Includes:</p>
@@ -167,7 +178,8 @@ export function SocProcess({
   title: string;
   cta: Cta;
   stages: [Stage, Stage, Stage, Stage, Stage];
-  image: { src: string; alt: string; caption: string };
+  /** caption is the dark label Figma keeps over the photo; some frames hide it. */
+  image: { src: string; alt: string; caption?: string };
 }) {
   const [s1, s2, s3, s4, s5] = stages;
   return (
@@ -187,9 +199,11 @@ export function SocProcess({
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={asset(image.src)} alt={image.alt} width={360} height={339} loading="lazy" />
               {/* Figma keeps this dark caption over the photo. */}
-              <span className="soc-stage__caption" aria-hidden="true">
-                {image.caption}
-              </span>
+              {image.caption && (
+                <span className="soc-stage__caption" aria-hidden="true">
+                  {image.caption}
+                </span>
+              )}
             </div>
             <div className="soc-stage__body">
               <div className="soc-stage__head">
@@ -268,11 +282,14 @@ export function SocUseCases({
   text,
   cases,
   banner,
+  cta,
 }: {
   title: string;
   text: string;
   cases: { title: string; text: string; dark?: boolean }[];
-  banner: { title: string; text: string; cta: Cta };
+  banner?: { title: string; text: string; cta: Cta };
+  /** Centred button under the cards, for use without the banner. */
+  cta?: Cta;
 }) {
   return (
     <section className="soc-cases">
@@ -288,14 +305,21 @@ export function SocUseCases({
               <p className="soc-case__text">{c.text}</p>
             </motion.article>
           ))}
-          <motion.article className="soc-case soc-case--banner" variants={fadeUpChild}>
-            <h3 className="soc-case__banner-title">{banner.title}</h3>
-            <div className="soc-case__banner-row">
-              <p className="soc-case__text">{banner.text}</p>
-              <Btn cta={banner.cta} variant="ghost" size="md" />
-            </div>
-          </motion.article>
+          {banner && (
+            <motion.article className="soc-case soc-case--banner" variants={fadeUpChild}>
+              <h3 className="soc-case__banner-title">{banner.title}</h3>
+              <div className="soc-case__banner-row">
+                <p className="soc-case__text">{banner.text}</p>
+                <Btn cta={banner.cta} variant="ghost" size="md" />
+              </div>
+            </motion.article>
+          )}
         </Stagger>
+        {cta && (
+          <Reveal className="soc-compare__cta">
+            <Btn cta={cta} variant="primary" size="md" />
+          </Reveal>
+        )}
       </div>
     </section>
   );
@@ -315,9 +339,9 @@ export function SocWhy({
   eyebrow: string;
   title: string;
   paragraphs: string[];
-  cta: Cta;
+  cta?: Cta;
   highlight: { title: string; text: string };
-  stats: { value: string; label: string; tone: "blue" | "red" }[];
+  stats?: { value: string; label: string; tone: "blue" | "red" }[];
   footer: { title: string; text: string };
 }) {
   return (
@@ -333,13 +357,14 @@ export function SocWhy({
               {p}
             </p>
           ))}
-          <Btn cta={cta} variant="primary" size="md" />
+          {cta && <Btn cta={cta} variant="primary" size="md" />}
         </Reveal>
         <Stagger className="soc-why__cards" stagger={0.08}>
           <motion.div className="soc-why__highlight" variants={fadeUpChild}>
             <h3 className="soc-why__highlight-title">{highlight.title}</h3>
             <p className="soc-why__small">{highlight.text}</p>
           </motion.div>
+          {stats && stats.length > 0 && (
           <div className="soc-why__stats">
             {stats.map((s) => (
               <motion.div key={s.label} className="soc-why__stat" variants={fadeUpChild}>
@@ -348,11 +373,44 @@ export function SocWhy({
               </motion.div>
             ))}
           </div>
+          )}
           <motion.div className="soc-why__footer" variants={fadeUpChild}>
             <h3 className="soc-why__footer-title">{footer.title}</h3>
             <p className="soc-why__small">{footer.text}</p>
           </motion.div>
         </Stagger>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- Closing call to action ---------- */
+
+export function SocClosing({
+  title,
+  text,
+  primary,
+  secondary,
+  note,
+}: {
+  title: string;
+  text: string;
+  primary: Cta;
+  secondary?: Cta;
+  note?: string;
+}) {
+  return (
+    <section className="soc-closing">
+      <div className="container">
+        <Reveal className="soc-case soc-case--banner soc-closing__card">
+          <h2 className="soc-closing__title">{title}</h2>
+          <p className="soc-case__text">{text}</p>
+          <div className="soc-closing__actions">
+            <Btn cta={primary} variant="yellow" size="md" />
+            {secondary && <Btn cta={secondary} variant="ghost" size="md" />}
+          </div>
+          {note && <p className="soc-closing__note">{note}</p>}
+        </Reveal>
       </div>
     </section>
   );

@@ -4021,6 +4021,22 @@ fieldset.field .field__label {
   gap: 24px;
 }
 
+.soc-service__name {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 17px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+/* Closing call to action */
+.soc-closing { padding: 80px 0; background: var(--white); }
+.soc-closing__card { align-items: center; gap: 20px; padding: 56px 40px; text-align: center; }
+.soc-closing__title { font-family: var(--font-display), sans-serif; font-weight: 400; font-size: 42px; line-height: 46px; max-width: 900px; }
+.soc-closing__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 8px; }
+.soc-closing__note { max-width: 720px; font-size: 14px; line-height: 22px; color: rgba(255, 255, 255, 0.85); }
+
 /* Why Folio3 */
 .soc-why { padding: 80px 0; background: var(--bg); }
 
@@ -4178,7 +4194,11 @@ fieldset.field .field__label {
   .soc-compare,
   .soc-cases,
   .soc-why,
+  .soc-closing,
   .faq-section { padding: 56px 0; }
+  .soc-closing__card { padding: 40px 24px; }
+  .soc-closing__title { font-size: 30px; line-height: 36px; }
+  .soc-closing .btn { white-space: normal; }
   .soc-h2 { font-size: 32px; line-height: 38px; }
   .soc-why__title { line-height: 38px; }
   .soc-intro__title { font-size: 30px; line-height: 36px; }
