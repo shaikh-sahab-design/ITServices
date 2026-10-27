@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import { EASE_OUT_QUINT, Reveal, Stagger, fadeUpChild } from "../motion";
 import { asset } from "@/lib/asset";
@@ -359,14 +359,46 @@ export function PanelRows({ rows }: { rows: PanelRow[] }) {
   );
 }
 
-/** Full-width illustration in a thick blue frame. */
-export function Infographic({ src, alt, width, height }: { src: string; alt: string; width: number; height: number }) {
+/** Full-width illustration. With a video (path without extension, shipped as .webm and .mp4), the image is its poster and the video loops silently. */
+export function Infographic({
+  src,
+  alt,
+  width,
+  height,
+  video,
+}: {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  video?: string;
+}) {
+  const reduce = useReducedMotion();
   return (
     <section className="infographic">
       <div className="container">
         <Reveal>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="infographic__img" src={asset(src)} alt={alt} width={width} height={height} loading="lazy" />
+          {video ? (
+            <video
+              className="infographic__img infographic__video"
+              poster={asset(src)}
+              width={width}
+              height={height}
+              aria-label={alt}
+              autoPlay={!reduce}
+              controls={!!reduce}
+              muted
+              loop
+              playsInline
+              preload="metadata"
+            >
+              <source src={asset(`${video}.webm`)} type="video/webm" />
+              <source src={asset(`${video}.mp4`)} type="video/mp4" />
+            </video>
+          ) : (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img className="infographic__img" src={asset(src)} alt={alt} width={width} height={height} loading="lazy" />
+          )}
         </Reveal>
       </div>
     </section>
