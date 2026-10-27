@@ -194,7 +194,7 @@ export function AiaProcess({
   cta,
   steps,
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   lead?: string;
   cta: Cta;
@@ -204,7 +204,7 @@ export function AiaProcess({
     <section className="aia-process">
       <div className="container aia-process__inner">
         <Reveal className="aia-process__copy">
-          <p className="aia-process__eyebrow">{eyebrow}</p>
+          {eyebrow && <p className="aia-process__eyebrow">{eyebrow}</p>}
           <h2 className="aia-h2 aia-h2--light">{title}</h2>
           {lead && <p className="aia-lead aia-lead--light">{lead}</p>}
           <Btn cta={cta} />
