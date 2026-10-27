@@ -1204,9 +1204,15 @@ button {
   align-items: center;
   min-height: 250px;
   padding: 31px;
+  height: 100%;
   border-radius: 10px;
+  border: 1px solid transparent;
   background: var(--bg);
   overflow: hidden;
+  transition:
+    background-color 300ms var(--ease-out-quint),
+    border-color 300ms var(--ease-out-quint),
+    box-shadow 300ms var(--ease-out-quint);
 }
 
 .case-card__mark {
@@ -1219,7 +1225,7 @@ button {
   object-fit: cover;
   object-position: right top;
   pointer-events: none;
-  transition: transform 400ms var(--ease-out-quint);
+  transition: opacity 300ms var(--ease-out-quint);
 }
 
 .case-card__body {
@@ -1247,6 +1253,7 @@ button {
   font-size: 18px;
   font-weight: 700;
   line-height: 22px;
+  transition: color 300ms var(--ease-out-quint);
 }
 
 .case-card__text {
@@ -1259,10 +1266,60 @@ button {
   overflow: hidden;
 }
 
+/* Hidden "Read More" row; it opens to its full height on hover so the copy slides up. */
+.case-card__more {
+  display: grid;
+  grid-template-rows: 0fr;
+  margin-top: -16px;
+  opacity: 0;
+  transition:
+    grid-template-rows 300ms var(--ease-out-quint),
+    margin-top 300ms var(--ease-out-quint),
+    opacity 200ms ease-out;
+}
+
+.case-card__more > * {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.case-card__btn {
+  justify-self: start;
+  padding: 6px 10px;
+  border-radius: 4px;
+  background: var(--blue);
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 17px;
+}
+
+/* Figma Variant 2: white card with a border and shadow, faded mark, blue title and a Read More button. */
+.case-card:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
 @media (hover: hover) and (pointer: fine) {
-  .case-card:hover .case-card__mark {
-    transform: translateX(-12px) scale(1.04);
+  .case-card:hover {
+    background: var(--white);
+    border-color: var(--line);
+    box-shadow: 0 12px 32px rgba(18, 26, 61, 0.08);
   }
+  .case-card:hover .case-card__mark { opacity: 0.1; }
+  .case-card:hover .case-card__title { color: var(--blue); }
+  .case-card:hover .case-card__more {
+    grid-template-rows: 1fr;
+    margin-top: 0;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-card,
+  .case-card__mark,
+  .case-card__title,
+  .case-card__more { transition: none; }
 }
 
 /* ---------- Journey ---------- */
