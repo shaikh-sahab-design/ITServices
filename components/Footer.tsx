@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ROUTES } from "@/lib/routes";
+import { SERVICE_GROUPS } from "@/lib/services";
 import { MailIcon, PhoneIcon, PinIcon } from "./icons";
 import { Reveal } from "./motion";
 import { asset } from "@/lib/asset";
@@ -7,40 +8,7 @@ import { asset } from "@/lib/asset";
 const R = ROUTES;
 
 const COLUMNS = [
-  {
-    title: "Managed IT",
-    links: [
-      ["Managed IT Support", R.managedIt],
-      ["Network & Infrastructure", R.networkDesign],
-      ["Migration Services", R.migration],
-      ["Backup & Disaster Recovery", R.disasterRecovery],
-      ["IT Strategy & vCIO", R.vcio],
-      ["Database Management", R.database],
-      ["Identity & Access Management", R.managedIt],
-    ],
-  },
-  {
-    title: "Managed Security",
-    links: [
-      ["Vulnerability Assessment & Penetration Testing", R.managedSecurity],
-      ["Security Operations Center (SOC)", R.soc],
-      ["Threat Detection & Incident Response", R.managedSecurity],
-      ["Cloud Security", R.managedSecurity],
-      ["Endpoint & Identity Security", R.managedSecurity],
-      ["Security Compliance & Risk", R.managedSecurity],
-    ],
-  },
-  {
-    title: "AI Security",
-    links: [
-      ["AI Security Assessment", R.aiAssessment],
-      ["AI Governance & Risk", R.aiSecurity],
-      ["AI Data Security", R.aiSecurity],
-      ["AI Application & LLM Security", R.aiSecurity],
-      ["AI Agent Security", R.aiSecurity],
-      ["AI Red Teaming", R.aiSecurity],
-    ],
-  },
+  ...SERVICE_GROUPS.map((g) => ({ title: g.title, links: g.links.map((l) => [l.label, l.href]) })),
   {
     title: "Company",
     links: [
