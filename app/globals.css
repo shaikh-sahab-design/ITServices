@@ -4767,6 +4767,7 @@ fieldset.field .field__label {
 .aia-stages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 .aia-stages--3 { grid-template-columns: repeat(3, 1fr); }
 .aia-area__label { font-size: 14px; font-weight: 600; line-height: 18px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--blue); }
+.cta-band__actions { display: flex; flex-wrap: wrap; gap: 12px; flex-shrink: 0; }
 .cta-band__note { margin-top: 12px; font-size: 14px; line-height: 20px; color: var(--white); opacity: 0.75; }
 .aia-stage {
   display: flex;
