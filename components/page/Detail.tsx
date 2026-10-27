@@ -39,6 +39,21 @@ export function Bullets({ items, dot = "blue", columns = 2 }: { items: string[];
   );
 }
 
+/** "Example: ..." line, and an optional closing note, shown between the bullets and the outcome. */
+export function Extras({ example, note, dark }: { example?: string; note?: string; dark?: boolean }) {
+  const cls = dark ? "detail-card__text" : "detail-text";
+  return (
+    <>
+      {note && <p className={cls}>{note}</p>}
+      {example && (
+        <p className={`${cls} detail-example`}>
+          <strong>Example:</strong> {example}
+        </p>
+      )}
+    </>
+  );
+}
+
 /**
  * "Outcome" note. Figma uses a few surface colours and two text sizes for it,
  * so both are set per use rather than guessed from context.
@@ -179,6 +194,8 @@ export type DetailCardData = {
   bullets: string[];
   outcome: { text: string; tone?: OutcomeTone; size?: "sm" | "md" | "lg" };
   cta: Cta;
+  example?: string;
+  note?: string;
 };
 
 /**
@@ -221,6 +238,7 @@ export function DetailCard({
       <p className={tone === "dark" ? "detail-card__text" : "detail-text"}>{card.text}</p>
       <p className="detail-scope">{card.scope}</p>
       <Bullets items={card.bullets} dot={tone === "dark" ? "yellow" : "blue"} />
+      <Extras example={card.example} note={card.note} dark={tone === "dark"} />
       <Outcome {...card.outcome} tone={tone === "dark" ? "dark" : card.outcome.tone} />
       <DetailCta cta={card.cta} />
     </motion.article>
@@ -266,9 +284,15 @@ export function ImageFeature({
   outcome,
   cta,
   image,
+  scope,
+  bullets,
+  example,
 }: {
   title: string;
   statements: string[];
+  scope?: string;
+  bullets?: string[];
+  example?: string;
   outcome: string;
   cta: Cta;
   image: { src: string; alt: string };
@@ -287,6 +311,9 @@ export function ImageFeature({
                   {s}
                 </p>
               ))}
+              {scope && <p className="detail-scope">{scope}</p>}
+              {bullets && <Bullets items={bullets} />}
+              <Extras example={example} />
               <Outcome text={outcome} tone="soft" size="lg" />
             </div>
             <DetailCta cta={cta} size="md" />
@@ -311,10 +338,11 @@ export type PanelRow = {
   panel:
     | { kind: "photo"; image: { src: string; alt: string }; icon: string; caption: string }
     | { kind: "blue"; title: string; text: string };
-  title: string;
+  title?: string;
   text?: string;
   scope: string;
   bullets: string[];
+  note?: string;
   outcome: { text: string; tone: OutcomeTone };
   cta: Cta;
 };
@@ -324,8 +352,8 @@ export function PanelRows({ rows }: { rows: PanelRow[] }) {
   return (
     <section className="panel-rows">
       <div className="container">
-        {rows.map((r) => (
-          <div key={r.title} className="panel-row">
+        {rows.map((r, i) => (
+          <div key={i} className="panel-row">
             <Reveal className={`panel panel--${r.panel.kind}`}>
               {r.panel.kind === "photo" ? (
                 <>
@@ -345,10 +373,11 @@ export function PanelRows({ rows }: { rows: PanelRow[] }) {
               )}
             </Reveal>
             <Reveal className="panel-row__copy" delay={0.08}>
-              <h2 className="detail-h2">{r.title}</h2>
+              {r.title && <h2 className="detail-h2">{r.title}</h2>}
               {r.text && <p className="detail-text">{r.text}</p>}
               <p className="detail-scope">{r.scope}</p>
               <Bullets items={r.bullets} />
+              <Extras note={r.note} />
               <Outcome text={r.outcome.text} tone={r.outcome.tone} />
               <DetailCta cta={r.cta} />
             </Reveal>
@@ -406,7 +435,19 @@ export function Infographic({
 }
 
 /** Three-column comparison with the last column highlighted. */
-export function CompareTable({ title, head, rows }: { title: string; head: [string, string, string]; rows: [string, string, string][] }) {
+export function CompareTable({
+  title,
+  head,
+  rows,
+  note,
+  cta,
+}: {
+  title: string;
+  head: [string, string, string];
+  rows: [string, string, string][];
+  note?: string;
+  cta?: Cta;
+}) {
   return (
     <section className="compare">
       <div className="container">
@@ -435,6 +476,12 @@ export function CompareTable({ title, head, rows }: { title: string; head: [stri
             </tbody>
           </table>
         </Reveal>
+        {(note || cta) && (
+          <Reveal className="compare__after">
+            {note && <p className="detail-text">{note}</p>}
+            {cta && <DetailCta cta={cta} size="md" />}
+          </Reveal>
+        )}
       </div>
     </section>
   );
