@@ -4676,6 +4676,12 @@ fieldset.field .field__label {
 .aia-audiences__inner { display: flex; align-items: flex-start; gap: 50px; }
 .aia-audiences__copy { flex: 0 1 470px; }
 .aia-audiences__list { flex: 1 1 792px; display: flex; flex-direction: column; gap: 16px; }
+
+/* Left copy stays pinned below the nav while the steps and audiences scroll past. */
+@media (min-width: 1025px) {
+  .aia-process__copy,
+  .aia-audiences__copy { position: sticky; top: 112px; }
+}
 .aia-audience {
   display: flex;
   flex-direction: column;
