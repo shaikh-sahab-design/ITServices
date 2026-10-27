@@ -29,7 +29,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
     links: [
       { label: "Vulnerability Assessment & Penetration Testing", href: R.managedSecurity },
       { label: "Security Operations Center (SOC)", href: R.soc },
-      { label: "Threat Detection & Incident Response", href: R.managedSecurity },
+      { label: "Threat Detection & Incident Response", href: R.mdr },
       { label: "Cloud Security", href: R.managedSecurity },
       { label: "Endpoint & Identity Security", href: R.managedSecurity },
       { label: "Security Compliance & Risk", href: R.managedSecurity },

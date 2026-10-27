@@ -7,6 +7,7 @@ export const ROUTES = {
   aiSecurity: "/ai-security-services",
   aiAssessment: "/ai-security-assessment",
   soc: "/soc-services",
+  mdr: "/threat-detection-incident-response",
   networkDesign: "/network-design",
   migration: "/migration-services",
   disasterRecovery: "/disaster-recovery",
