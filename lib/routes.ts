@@ -31,6 +31,7 @@ export const ROUTES = {
   caseActiveComply: "/case-studies/activecomply",
   caseOpportune: "/case-studies/opportune",
   contact: "/contact",
+  thankYou: "/thank-you",
 } as const;
 
 export const PHONE = { label: "+1 (408) 412-3813", href: "tel:+14084123813" };

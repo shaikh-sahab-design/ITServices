@@ -1,9 +1,10 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ChatCheckTile, MailIcon, PhoneIcon, PinIcon } from "./icons";
-import { PHONE } from "@/lib/routes";
+import { PHONE, ROUTES } from "@/lib/routes";
 import { EASE_OUT_QUINT, Reveal } from "./motion";
 
 const SIZES = ["1–50 Employees", "51–200 Employees", "201–500 Employees", "501–1,000 Employees", "1,000+ Employees"];
@@ -23,6 +24,7 @@ export function ContactForm({ className = "", variant = "home" }: { className?: 
   const [size, setSize] = useState(SIZES[1]);
   const [needs, setNeeds] = useState<string[]>([NEEDS[0]]);
   const [sent, setSent] = useState(false);
+  const router = useRouter();
 
   const toggleNeed = (n: string) =>
     setNeeds((cur) => (cur.includes(n) ? cur.filter((x) => x !== n) : [...cur, n]));
@@ -89,6 +91,7 @@ export function ContactForm({ className = "", variant = "home" }: { className?: 
             onSubmit={(e) => {
               e.preventDefault();
               setSent(true);
+              router.push(ROUTES.thankYou);
             }}
           >
             <div className="form__row">
