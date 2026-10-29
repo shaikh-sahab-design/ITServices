@@ -11,6 +11,7 @@ export const ROUTES = {
   aiAgentSecurity: "/ai-agent-security",
   aiRedTeaming: "/ai-red-teaming",
   aiMonitoring: "/ai-security-monitoring",
+  aiGovernance: "/ai-governance-risk",
   soc: "/soc-services",
   mdr: "/threat-detection-incident-response",
   cloudSecurity: "/cloud-security",
