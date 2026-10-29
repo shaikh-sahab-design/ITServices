@@ -4999,6 +4999,7 @@ fieldset.field .field__label {
   color: rgba(255, 255, 255, 0.3);
   pointer-events: none;
   user-select: none;
+  transform-origin: 50% 100%;
 }
 
 .ty-options { padding: 88px 0 96px; background: var(--bg); }

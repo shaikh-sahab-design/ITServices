@@ -132,9 +132,10 @@ export function ThankYouHero() {
 
       <motion.h1
         className="ty-hero__word"
-        initial={{ opacity: 0, y: 60 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, ease: EASE_OUT_QUINT, delay: 0.2 }}
+        // Rises from behind the section below (the hero clips it), swells a little, then settles.
+        initial={{ y: "110%", scale: 1 }}
+        animate={{ y: ["110%", "0%", "0%"], scale: [1, 1.08, 1] }}
+        transition={{ duration: 1.6, times: [0, 0.55, 1], ease: EASE_OUT_QUINT, delay: 0.3 }}
       >
         Thank You!
       </motion.h1>
