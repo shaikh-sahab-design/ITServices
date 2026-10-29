@@ -47,32 +47,32 @@ export function ThankYouHero() {
       <span className="ty-hero__glow ty-hero__glow--yellow" aria-hidden="true" />
       <div className="ty-hero__confetti" aria-hidden="true">
         {CONFETTI.map((p, i) => (
-          <motion.span
+          <span
             key={i}
-            style={{
-              left: `${(p.x / 1440) * 100}%`,
-              top: `${(p.y / 649) * 100}%`,
-              width: p.w,
-              height: p.h,
-              borderRadius: p.r,
-              background: p.c,
-              rotate: p.rot,
-            }}
-            initial={{ opacity: 0, y: -24, scale: 0.6 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.6, ease: EASE_OUT_QUINT, delay: 0.25 + i * 0.04 }}
+            style={
+              {
+                left: `${(p.x / 1440) * 100}%`,
+                top: `${(p.y / 649) * 100}%`,
+                width: p.w,
+                height: p.h,
+                borderRadius: p.r,
+                background: p.c,
+                "--rot": `${p.rot}deg`,
+                "--sway": `${i % 2 ? -18 : 18}px`,
+                "--dur": `${4.2 + (i % 4) * 0.7}s`,
+                "--delay": `${(i * 0.37) % 2.6}s`,
+              } as React.CSSProperties
+            }
           />
         ))}
       </div>
 
       <div className="ty-hero__inner container">
         <div className="ty-badge" aria-hidden="true">
-          <motion.span
-            className="ty-badge__ring"
-            initial={{ opacity: 0, scale: 0.8, rotate: -40 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ duration: 0.8, ease: EASE_OUT_QUINT, delay: 0.15 }}
-          />
+          <span className="ty-badge__ring" />
+          <span className="ty-badge__wave" />
+          <span className="ty-badge__wave" />
+          <span className="ty-badge__wave" />
           <motion.span
             className="ty-badge__halo"
             initial={{ opacity: 0, scale: 0.6 }}

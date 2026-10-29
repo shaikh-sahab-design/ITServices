@@ -17,13 +17,16 @@ export default function ThankYouPage() {
       <Nav />
       <main className="inner-page">
         <ThankYouHero />
-        <ContactOptions />
-        <div className="ty-cta">
-          <CtaStrip
-            title="Still Have Questions?"
-            text="Tell us where you're facing challenges, and we'll help identify the right services and next steps."
-            cta={{ label: "Call Us Now", href: PHONE.href }}
-          />
+        {/* Everything after the banner scrolls up over it while the banner stays pinned, as on Home. */}
+        <div className="hero-cover ty-cover">
+          <ContactOptions />
+          <div className="ty-cta">
+            <CtaStrip
+              title="Still Have Questions?"
+              text="Tell us where you're facing challenges, and we'll help identify the right services and next steps."
+              cta={{ label: "Call Us Now", href: PHONE.href }}
+            />
+          </div>
         </div>
       </main>
       <Footer />
