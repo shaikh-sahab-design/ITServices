@@ -41,7 +41,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
     tagline: "AI security services for the tools your teams already use",
     links: [
       { label: "AI Security Assessment", href: R.aiAssessment },
-      { label: "AI Governance & Risk", href: R.aiSecurity },
+      { label: "AI Governance & Risk", href: R.aiGovernance },
       { label: "AI Data Security", href: R.aiDataSecurity },
       { label: "AI Application & LLM Security", href: R.aiAppSecurity },
       { label: "AI Agent Security", href: R.aiAgentSecurity },
