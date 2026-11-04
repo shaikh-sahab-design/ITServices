@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useMotionTemplate, useMotionValue, useReducedMotion, useSpring, useTransform } from "framer-motion";
 import { Reveal, Stagger, fadeUpChild } from "./motion";
 import Link from "next/link";
 import { asset } from "@/lib/asset";
@@ -9,6 +9,10 @@ import { ROUTES } from "@/lib/routes";
 
 // Matches the Figma "On hover" spring on the card variants.
 const FLIP_SPRING = { type: "spring", mass: 1, stiffness: 100, damping: 15 } as const;
+
+// Tilt on the flipped (back) side, after React Bits <TiltedCard /> with the settings Adil chose.
+const TILT = { rotateAmplitude: 12, scaleOnHover: 1.05, glare: 0.5, shadow: 0.5 };
+const TILT_SPRING = { damping: 30, stiffness: 100, mass: 2 };
 
 const SERVICES = [
   {
@@ -79,13 +83,51 @@ function CardTitle({ s }: { s: Service }) {
 
 function ServiceCard({ s }: { s: Service }) {
   const [open, setOpen] = useState(false);
+  const reduceMotion = useReducedMotion();
+
+  const rotateX = useSpring(0, TILT_SPRING);
+  const rotateY = useSpring(0, TILT_SPRING);
+  const scale = useSpring(1, TILT_SPRING);
+  const glare = useSpring(0, TILT_SPRING);
+  const glareX = useMotionValue(50);
+  const glareY = useMotionValue(50);
+  const glareBg = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0) 60%)`;
+  // The drop shadow leans away from the raised edge, strength set by TILT.shadow.
+  const shadowX = useTransform(rotateY, (v) => -v * 1.5);
+  const shadowY = useTransform(rotateX, (v) => 10 + v * 1.5);
+  const backShadow = useMotionTemplate`${shadowX}px ${shadowY}px 48px rgba(11, 27, 43, ${TILT.shadow * 0.3})`;
+
+  const resetTilt = () => {
+    rotateX.set(0);
+    rotateY.set(0);
+    scale.set(1);
+    glare.set(0);
+  };
+
+  const onPointerMove = (e: React.PointerEvent<HTMLElement>) => {
+    // Only the back side tilts, and only for a mouse or pen that can hover.
+    if (!open || reduceMotion || e.pointerType === "touch") return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const offsetX = e.clientX - rect.left - rect.width / 2;
+    const offsetY = e.clientY - rect.top - rect.height / 2;
+    rotateX.set((offsetY / (rect.height / 2)) * -TILT.rotateAmplitude);
+    rotateY.set((offsetX / (rect.width / 2)) * TILT.rotateAmplitude);
+    scale.set(TILT.scaleOnHover);
+    glare.set(TILT.glare);
+    glareX.set(((e.clientX - rect.left) / rect.width) * 100);
+    glareY.set(((e.clientY - rect.top) / rect.height) * 100);
+  };
 
   return (
     <motion.article
       className={`service-card service-card--${s.key}${open ? " is-open" : ""}`}
       variants={fadeUpChild}
       onHoverStart={() => setOpen(true)}
-      onHoverEnd={() => setOpen(false)}
+      onHoverEnd={() => {
+        setOpen(false);
+        resetTilt();
+      }}
+      onPointerMove={onPointerMove}
       onFocus={(e) => {
         // Keyboard focus opens the card; a tap is handled by onClick below.
         if (e.currentTarget.matches(":focus-visible")) setOpen(true);
@@ -101,35 +143,38 @@ function ServiceCard({ s }: { s: Service }) {
       tabIndex={0}
       aria-expanded={open}
     >
-      <motion.div className="service-card__inner" initial={false} animate={{ rotateY: open ? 180 : 0 }} transition={FLIP_SPRING}>
-        <div className="service-card__face service-card__face--front" aria-hidden={open}>
-          <div className="service-card__body">
-            <CardTitle s={s} />
-            <ul className="service-card__tags">
-              {s.tags.map((t) => (
-                <li key={t} className="tag">{t}</li>
-              ))}
-            </ul>
+      <motion.div className="service-card__tilt" style={{ rotateX, rotateY, scale }}>
+        <motion.div className="service-card__inner" initial={false} animate={{ rotateY: open ? 180 : 0 }} transition={FLIP_SPRING}>
+          <div className="service-card__face service-card__face--front" aria-hidden={open}>
+            <div className="service-card__body">
+              <CardTitle s={s} />
+              <ul className="service-card__tags">
+                {s.tags.map((t) => (
+                  <li key={t} className="tag">{t}</li>
+                ))}
+              </ul>
+            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="service-card__img" src={asset(s.img)} alt={s.alt} loading="lazy" />
           </div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="service-card__img" src={asset(s.img)} alt={s.alt} loading="lazy" />
-        </div>
 
-        <div className="service-card__face service-card__face--back" aria-hidden={!open}>
-          <div className="service-card__body">
-            <CardTitle s={s} />
-            <ul className="service-card__list">
-              {s.items.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-            <Link href={s.href} className="service-card__cta" tabIndex={open ? 0 : -1}>
-              View Service Details
-            </Link>
-          </div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="service-card__img service-card__img--faded" src={asset(s.img)} alt="" loading="lazy" />
-        </div>
+          <motion.div className="service-card__face service-card__face--back" aria-hidden={!open} style={{ boxShadow: backShadow }}>
+            <motion.span className="service-card__glare" aria-hidden="true" style={{ opacity: glare, background: glareBg }} />
+            <div className="service-card__body">
+              <CardTitle s={s} />
+              <ul className="service-card__list">
+                {s.items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              <Link href={s.href} className="service-card__cta" tabIndex={open ? 0 : -1}>
+                View Service Details
+              </Link>
+            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="service-card__img service-card__img--faded" src={asset(s.img)} alt="" loading="lazy" />
+          </motion.div>
+        </motion.div>
       </motion.div>
     </motion.article>
   );
