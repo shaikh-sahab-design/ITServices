@@ -49,5 +49,9 @@ if __name__ == '__main__':
             continue
         keys_in(json.load(open(f)), allkeys)
     json.dump(sorted(allkeys), open(os.path.join(DATA, 'media-manifest.json'), 'w'), indent=0)
+    pub = os.path.join(ROOT, '..', '..', 'public')
+    media = sorted(os.path.relpath(f, pub) for f in glob.glob(os.path.join(pub, '*', '*')))
+    media += sorted('svg/' + os.path.basename(f) for f in glob.glob(os.path.join(ROOT, '..', 'assets', 'svg', '*.svg')))
+    open(os.path.join(DATA, 'all-media.txt'), 'w').write('\n'.join(media) + '\n')
     gen = '\n'.join(open(f).read() for f in sorted(glob.glob(os.path.join(CSSDIR, '*.css'))))
     open(os.path.join(ROOT, '..', 'plugin', 'folio3-site', 'assets', 'generated.css'), 'w').write(gen)

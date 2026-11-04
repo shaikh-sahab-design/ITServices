@@ -14,7 +14,7 @@ const COMPUTED = ['display','position','flexDirection','flexWrap','justifyConten
   'borderTopLeftRadius','borderTopRightRadius','borderBottomRightRadius','borderBottomLeftRadius','boxShadow',
   'color','fontFamily','fontSize','fontWeight','fontStyle','lineHeight','letterSpacing','textTransform','textAlign','textDecorationLine','whiteSpace',
   'top','right','bottom','left','zIndex','opacity','overflow','overflowX','objectFit','objectPosition','aspectRatio','visibility',
-  'width','height','maxWidth','minHeight','flexGrow','flexShrink','flexBasis','mixBlendMode','filter','backdropFilter','listStyleType','transform','order'];
+  'width','height','maxWidth','minHeight','flexGrow','flexShrink','flexBasis','mixBlendMode','filter','backdropFilter','listStyleType','transform','order','maskImage','webkitMaskImage','clipPath'];
 const AUTHORED = ['width','max-width','min-width','height','min-height','max-height','flex','flex-grow','flex-shrink','flex-basis',
   'grid-template-columns','grid-column','aspect-ratio','margin-left','margin-right','margin-inline','margin','top','left','right','bottom','inset','align-self','justify-self'];
 
@@ -72,7 +72,7 @@ const PAGE_FN = (args) => {
     const node = { eid: eid++, tag: el.tagName.toLowerCase(), cls: el.getAttribute('class') || '', cs: pick(cs), au: authored(el),
       rect: [Math.round(r.left), Math.round(r.top + window.scrollY), Math.round(r.width), Math.round(r.height)], kids: [] };
     const attrs = {};
-    for (const a of ['href', 'src', 'alt', 'type', 'placeholder', 'aria-label', 'name', 'poster', 'id', 'role', 'aria-current', 'data-open', 'data-active', 'target']) {
+    for (const a of ['href', 'src', 'alt', 'type', 'placeholder', 'aria-label', 'name', 'poster', 'id', 'role', 'aria-current', 'data-open', 'data-active', 'target', 'data-answer', 'data-was-open']) {
       if (el.hasAttribute(a)) attrs[a] = el.getAttribute(a);
     }
     if (el.tagName === 'IMG') attrs.currentSrc = el.currentSrc;
@@ -125,8 +125,22 @@ const PAGE_FN = (args) => {
     await p.evaluate(() => window.scrollTo(0, 0));
     await p.waitForTimeout(300);
     // freeze motion: clear framer inline transforms/opacity
-    await p.addStyleTag({ content: '*{animation-play-state:paused!important;transition:none!important}' });
+    await p.addStyleTag({ content: '*{animation:none!important;transition:none!important}' });
     await p.evaluate(() => document.querySelectorAll('[style]').forEach(e => { e.style.transform = ''; e.style.opacity = ''; }));
+    // FAQ answers only exist in the DOM while open: open each one and keep its text on the item.
+    await p.evaluate(async () => {
+      const wait = (ms) => new Promise(r => setTimeout(r, ms));
+      const items = [...document.querySelectorAll('.faq__item')];
+      items.forEach((it, i) => { it.dataset.idx = i; if (it.dataset.open === 'true') it.dataset.wasOpen = '1'; });
+      for (const it of items) {
+        const btn = it.querySelector('.faq__q');
+        if (!it.querySelector('.faq__a') && btn && !btn.disabled) { btn.click(); await wait(450); }
+        const a = it.querySelector('.faq__a');
+        it.dataset.answer = a ? a.innerHTML : '';
+      }
+      const first = items.find(it => it.dataset.wasOpen === '1');
+      if (first && !first.querySelector('.faq__a')) { first.querySelector('.faq__q').click(); await wait(450); }
+    });
     const tree = await p.evaluate(PAGE_FN, { COMPUTED, AUTHORED });
     const name = r === '/' ? 'home' : r.slice(1).replace(/\//g, '__');
     fs.writeFileSync(`${outdir}/${name}.${W}.json`, JSON.stringify(tree));

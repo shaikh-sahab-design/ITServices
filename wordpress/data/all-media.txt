@@ -340,6 +340,7 @@ svg/1766c40009.svg
 svg/186a5f8f4f.svg
 svg/1a3148cdd8.svg
 svg/3a8df58066.svg
+svg/3f5112547a.svg
 svg/41954b9f3f.svg
 svg/51ac254af2.svg
 svg/520cc6731f.svg
@@ -347,6 +348,7 @@ svg/5bc58b946b.svg
 svg/5f17ca20f0.svg
 svg/6679c8d9d7.svg
 svg/6680b6e338.svg
+svg/6dba56725a.svg
 svg/6f4207af47.svg
 svg/73413c148f.svg
 svg/7bd5aba674.svg
@@ -356,6 +358,7 @@ svg/a32aa21a08.svg
 svg/a7205b1718.svg
 svg/aa22a08ea2.svg
 svg/b8f4c2296d.svg
+svg/cc4b0a8b7d.svg
 svg/d700316b9e.svg
 svg/d85f89d695.svg
 svg/f425124f91.svg

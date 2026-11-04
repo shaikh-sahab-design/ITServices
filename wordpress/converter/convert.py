@@ -243,7 +243,7 @@ def boxy(n):
                 or (cs['backgroundImage'] and cs['backgroundImage'] != 'none'))
 
 
-def inner_html(n, base_cs):
+def inner_html(n, base_cs, top=True):
     parts = []
     lines_as_blocks = any(not k.get('hidden') and 'text' not in k and k['cs']['display'] == 'block' for k in n.get('kids', []))
     for k in n.get('kids', []):
@@ -273,7 +273,9 @@ def inner_html(n, base_cs):
             style.append(f'font-size:{cs["fontSize"]}')
         if cs['textDecorationLine'] not in ('none', base_cs['textDecorationLine']):
             style.append(f'text-decoration:{cs["textDecorationLine"]}')
-        inner = inner_html(k, cs)
+        inner = inner_html(k, cs, False)
+        if lines_as_blocks and cs['display'] == 'block':
+            inner = re.sub(r'(<br>\s*)+$', '', inner)
         st = f' style="{";".join(style)}"' if style else ''
         if tag == 'a':
             href = k['attrs'].get('href', '')
@@ -286,7 +288,8 @@ def inner_html(n, base_cs):
         if lines_as_blocks and cs['display'] == 'block':
             parts.append('<br>')
     s = ''.join(parts)
-    s = re.sub(r'(<br>)+$', '', s)
+    if top:
+        s = re.sub(r'(<br>\s*)+$', '', s)
     return re.sub(r'\s+', ' ', s).strip()
 
 
@@ -382,6 +385,19 @@ def box_settings(cs, pre, au=None):
     if sh:
         s[f'{pre}box_shadow_box_shadow_type'] = 'yes'
         s[f'{pre}box_shadow_box_shadow'] = sh
+    if pre is not None:
+        op = float(cs.get('opacity') or 1)
+        if op < 1:
+            extra.append(f'opacity:{num(op)}')
+        if cs.get('overflowX') in ('auto', 'scroll'):
+            extra.append('overflow-x:auto')
+        tf = cs.get('transform')
+        if tf and tf != 'none':
+            extra.append(f'transform:{tf}')
+        for prop, css in (('maskImage', 'mask-image'), ('webkitMaskImage', '-webkit-mask-image'), ('clipPath', 'clip-path')):
+            v = cs.get(prop)
+            if v and v != 'none':
+                extra.append(f'{css}:{v}')
     for prop, css in (('backdropFilter', 'backdrop-filter'), ('mixBlendMode', 'mix-blend-mode'), ('filter', 'filter')):
         v = cs.get(prop)
         if v and v not in ('none', 'normal'):
@@ -454,8 +470,11 @@ class Converter:
         maxw = au.get('max-width')
         flex = au.get('flex')
         grow = float(cs['flexGrow'] or 0)
+        full_abs = False
         if cs['position'] == 'absolute':
-            width = width or f"{n['rect'][2]}px"
+            ins = (au.get('inset') or '').strip()
+            full_abs = ins in ('0', '0px') or all(au.get(k) in ('0', '0px') for k in ('top', 'left', 'right', 'bottom'))
+            width = '100%' if full_abs else (width or f"{n['rect'][2]}px")
 
         def width_value(v):
             v = v.strip()
@@ -545,6 +564,8 @@ class Converter:
                     key = '_offset_y' if side_v == 'top' else '_offset_y_end'
                     s[key] = size(float(v[:-1]), '%') if v.endswith('%') else size(px(cs[side_v]))
                     break
+        if full_abs:
+            s['_xtra'] = ['inset:0', 'height:100%']
         z = cs['zIndex']
         if z not in ('auto', None):
             s['z_index' if is_container else '_z_index'] = int(z)
@@ -618,7 +639,7 @@ class Converter:
             s.update(self.item_size(x, px_parent, w, True))
             b, extra = box_settings(cs, '')
             s.update(b)
-            s['_extra'] = extra
+            s['_extra'] = extra + s.pop('_xtra', [])
             return s
 
         s = self.merged(n, fn)
@@ -690,7 +711,7 @@ class Converter:
             s.update(b)
             if extra_fn:
                 s.update(extra_fn(x, w))
-            s['_extra'] = extra
+            s['_extra'] = extra + s.pop('_xtra', [])
             return s
         s = self.merged(n, fn)
         extra = {w: s.pop('_extra' + VP[w], None) or [] for w in (1024, 390)}
@@ -751,9 +772,6 @@ class Converter:
                     s['object-position'] = 'custom' if False else 'center center'
             if svg_key and (not wv or not wv.endswith('%')):
                 s['width'] = size(x['rect'][2])
-            op = float(x['cs']['opacity'])
-            if op < 1:
-                s['opacity'] = size(op)
             radii = [px(x['cs'][k]) for k in ('borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomRightRadius', 'borderBottomLeftRadius')]
             if any(radii):
                 s['image_border_radius'] = dims(*radii)

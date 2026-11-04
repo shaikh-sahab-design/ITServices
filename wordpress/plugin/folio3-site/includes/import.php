@@ -188,3 +188,30 @@ function folio3_sync_plugin( $ref, array $files ) {
 	update_option( 'folio3_assets_version', substr( $ref, 0, 8 ) );
 	return $out;
 }
+
+/**
+ * Import everything listed in wordpress/data/pages.json, plus header and footer.
+ * $only: optional list of page names to limit the run.
+ */
+function folio3_import_all( $ref, array $only = [] ) {
+	$out   = [];
+	$pages = json_decode( (string) folio3_fetch( FOLIO3_REPO_RAW . $ref . '/wordpress/data/pages.json' ), true );
+	if ( ! $only || in_array( 'header', $only, true ) ) {
+		$out['header'] = folio3_import_template( $ref, 'header.json', 'Site Header', 'folio3_header_template' );
+	}
+	if ( ! $only || in_array( 'footer', $only, true ) ) {
+		$out['footer'] = folio3_import_template( $ref, 'footer.json', 'Site Footer', 'folio3_footer_template' );
+	}
+	foreach ( (array) $pages as $p ) {
+		if ( $only && ! in_array( $p['name'], $only, true ) ) {
+			continue;
+		}
+		$r = folio3_import_page( $ref, $p['name'] . '.json', $p['slug'], $p['title'], $p['parent'] );
+		$out[ $p['name'] ] = is_array( $r ) ? ( $r['missing'] ? [ 'id' => $r['id'], 'missing' => $r['missing'] ] : $r['id'] ) : $r;
+		if ( 'home' === $p['name'] && is_array( $r ) ) {
+			update_option( 'show_on_front', 'page' );
+			update_option( 'page_on_front', $r['id'] );
+		}
+	}
+	return $out;
+}

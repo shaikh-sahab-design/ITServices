@@ -1,0 +1,226 @@
+[
+ {
+  "route": "/",
+  "name": "home",
+  "slug": "home",
+  "parent": "",
+  "title": "Home"
+ },
+ {
+  "route": "/services",
+  "name": "services",
+  "slug": "services",
+  "parent": "",
+  "title": "Managed IT, Security and AI Security Services"
+ },
+ {
+  "route": "/managed-it-services",
+  "name": "managed-it-services",
+  "slug": "managed-it-services",
+  "parent": "",
+  "title": "Managed IT Services"
+ },
+ {
+  "route": "/managed-security-services",
+  "name": "managed-security-services",
+  "slug": "managed-security-services",
+  "parent": "",
+  "title": "Managed Security Services"
+ },
+ {
+  "route": "/ai-security-services",
+  "name": "ai-security-services",
+  "slug": "ai-security-services",
+  "parent": "",
+  "title": "AI Security Services"
+ },
+ {
+  "route": "/ai-security-assessment",
+  "name": "ai-security-assessment",
+  "slug": "ai-security-assessment",
+  "parent": "",
+  "title": "AI Security Assessment"
+ },
+ {
+  "route": "/ai-data-security",
+  "name": "ai-data-security",
+  "slug": "ai-data-security",
+  "parent": "",
+  "title": "AI Data Security Services"
+ },
+ {
+  "route": "/ai-application-llm-security",
+  "name": "ai-application-llm-security",
+  "slug": "ai-application-llm-security",
+  "parent": "",
+  "title": "AI Application & LLM Security Services"
+ },
+ {
+  "route": "/ai-agent-security",
+  "name": "ai-agent-security",
+  "slug": "ai-agent-security",
+  "parent": "",
+  "title": "AI Agent Security"
+ },
+ {
+  "route": "/ai-red-teaming",
+  "name": "ai-red-teaming",
+  "slug": "ai-red-teaming",
+  "parent": "",
+  "title": "AI Red Teaming Services"
+ },
+ {
+  "route": "/ai-security-monitoring",
+  "name": "ai-security-monitoring",
+  "slug": "ai-security-monitoring",
+  "parent": "",
+  "title": "AI Security Monitoring"
+ },
+ {
+  "route": "/ai-governance-risk",
+  "name": "ai-governance-risk",
+  "slug": "ai-governance-risk",
+  "parent": "",
+  "title": "AI Governance Consulting Services"
+ },
+ {
+  "route": "/soc-services",
+  "name": "soc-services",
+  "slug": "soc-services",
+  "parent": "",
+  "title": "SOC Managed Security Services"
+ },
+ {
+  "route": "/threat-detection-incident-response",
+  "name": "threat-detection-incident-response",
+  "slug": "threat-detection-incident-response",
+  "parent": "",
+  "title": "Managed Detection and Response (MDR) Services"
+ },
+ {
+  "route": "/cloud-security",
+  "name": "cloud-security",
+  "slug": "cloud-security",
+  "parent": "",
+  "title": "Managed Cloud Security Services"
+ },
+ {
+  "route": "/endpoint-security",
+  "name": "endpoint-security",
+  "slug": "endpoint-security",
+  "parent": "",
+  "title": "Endpoint Security Service"
+ },
+ {
+  "route": "/vulnerability-assessment",
+  "name": "vulnerability-assessment",
+  "slug": "vulnerability-assessment",
+  "parent": "",
+  "title": "Vulnerability Management Services"
+ },
+ {
+  "route": "/network-design",
+  "name": "network-design",
+  "slug": "network-design",
+  "parent": "",
+  "title": "Network Design and SD-WAN Services"
+ },
+ {
+  "route": "/migration-services",
+  "name": "migration-services",
+  "slug": "migration-services",
+  "parent": "",
+  "title": "IT Migration Services"
+ },
+ {
+  "route": "/disaster-recovery",
+  "name": "disaster-recovery",
+  "slug": "disaster-recovery",
+  "parent": "",
+  "title": "Backup and Disaster Recovery Services"
+ },
+ {
+  "route": "/vcio-services",
+  "name": "vcio-services",
+  "slug": "vcio-services",
+  "parent": "",
+  "title": "Virtual CIO Consulting Services"
+ },
+ {
+  "route": "/database-management",
+  "name": "database-management",
+  "slug": "database-management",
+  "parent": "",
+  "title": "Database Management Services"
+ },
+ {
+  "route": "/identity-access-management",
+  "name": "identity-access-management",
+  "slug": "identity-access-management",
+  "parent": "",
+  "title": "Identity and Access Management Services"
+ },
+ {
+  "route": "/about",
+  "name": "about",
+  "slug": "about",
+  "parent": "",
+  "title": "About Us"
+ },
+ {
+  "route": "/blog",
+  "name": "blog",
+  "slug": "blog",
+  "parent": "",
+  "title": "Blog"
+ },
+ {
+  "route": "/blog/how-outsourced-it-support-services-boost-efficiency",
+  "name": "blog__how-outsourced-it-support-services-boost-efficiency",
+  "slug": "how-outsourced-it-support-services-boost-efficiency",
+  "parent": "blog",
+  "title": "How Outsourced IT Support Services Can Boost Your Company's Efficiency"
+ },
+ {
+  "route": "/case-studies",
+  "name": "case-studies",
+  "slug": "case-studies",
+  "parent": "",
+  "title": "Case Studies"
+ },
+ {
+  "route": "/case-studies/arcom-it",
+  "name": "case-studies__arcom-it",
+  "slug": "arcom-it",
+  "parent": "case-studies",
+  "title": "Arcom IT Case Study"
+ },
+ {
+  "route": "/case-studies/activecomply",
+  "name": "case-studies__activecomply",
+  "slug": "activecomply",
+  "parent": "case-studies",
+  "title": "ActiveComply Case Study"
+ },
+ {
+  "route": "/case-studies/opportune",
+  "name": "case-studies__opportune",
+  "slug": "opportune",
+  "parent": "case-studies",
+  "title": "Opportune Case Study"
+ },
+ {
+  "route": "/contact",
+  "name": "contact",
+  "slug": "contact",
+  "parent": "",
+  "title": "Contact Us"
+ },
+ {
+  "route": "/thank-you",
+  "name": "thank-you",
+  "slug": "thank-you",
+  "parent": "",
+  "title": "Thank You"
+ }
+]
