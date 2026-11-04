@@ -339,6 +339,7 @@ videos/nd-sdwan.webm
 svg/1766c40009.svg
 svg/186a5f8f4f.svg
 svg/1a3148cdd8.svg
+svg/23432b8da8.svg
 svg/3a8df58066.svg
 svg/3f5112547a.svg
 svg/41954b9f3f.svg
@@ -357,9 +358,14 @@ svg/9b3cd69507.svg
 svg/a32aa21a08.svg
 svg/a7205b1718.svg
 svg/aa22a08ea2.svg
+svg/aa7ffb20f8.svg
 svg/b8f4c2296d.svg
 svg/cc4b0a8b7d.svg
 svg/d700316b9e.svg
 svg/d85f89d695.svg
+svg/da3dba8b69.svg
+svg/dd2a2c31a9.svg
+svg/ef32cba49e.svg
 svg/f425124f91.svg
 svg/f621acd36c.svg
+svg/f7b3d91cf8.svg
