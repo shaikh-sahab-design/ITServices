@@ -17,3 +17,46 @@ body { overflow-x: hidden; background: #fff; color: var(--text); -webkit-font-sm
 .elementor-widget-button .elementor-button { white-space: nowrap; transition: background-color 150ms ease, color 150ms ease, box-shadow 200ms var(--ease-out-quint), transform 100ms ease-out; }
 .elementor-widget-button .elementor-button:active { transform: scale(0.97); }
 .elementor-widget-icon-list .elementor-icon-list-items { margin: 0; padding: 0; }
+
+/* ---------- Header ---------- */
+.f3-nav { position: sticky !important; top: 0; z-index: 50; transition: box-shadow 200ms ease; }
+.admin-bar .f3-nav { top: 32px; }
+.f3-nav.is-scrolled { box-shadow: 0 6px 24px rgba(12, 14, 22, 0.06); }
+.f3-nav__link .elementor-heading-title a { position: relative; transition: color 150ms ease; }
+.f3-nav__link .elementor-heading-title a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px; border-radius: 2px; background: var(--blue); transform: scaleX(0); transform-origin: left; transition: transform 250ms var(--ease-out-quint); }
+.f3-nav a[aria-current="page"] { color: var(--blue) !important; }
+.f3-nav__link a[aria-current="page"], .f3-nav__sheet-link a[aria-current="page"] { font-weight: 800 !important; }
+.f3-nav__item:has(a[aria-current="page"]) .f3-nav__toggle i, .f3-nav.is-services .f3-nav__item .f3-nav__link a { color: var(--blue); }
+.f3-nav__toggle { cursor: pointer; }
+.f3-nav__toggle .elementor-icon { transition: transform 250ms var(--ease-out-quint), color 150ms ease; }
+@media (hover: hover) and (pointer: fine) {
+  .f3-nav__link .elementor-heading-title a:hover { color: var(--blue); }
+  .f3-nav__link .elementor-heading-title a:hover::after { transform: scaleX(1); }
+  .f3-nav__item:hover .f3-nav__toggle .elementor-icon { color: var(--blue); fill: var(--blue); }
+}
+.f3-nav .f3-mega { position: absolute !important; top: 100%; left: 0; right: 0; opacity: 0; visibility: hidden; transform: translateY(-8px); transition: opacity 180ms ease, transform 220ms var(--ease-out-quint), visibility 0s linear 220ms; }
+@media (min-width: 1025px) {
+  .f3-nav:has(.f3-nav__item:hover) .f3-mega, .f3-nav .f3-mega:hover, .f3-nav.is-mega .f3-mega { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+  .f3-nav:has(.f3-nav__item:hover) .f3-nav__toggle .elementor-icon, .f3-nav.is-mega .f3-nav__toggle .elementor-icon { transform: rotate(180deg); color: var(--blue); }
+}
+.f3-mega__head .elementor-heading-title { transition: color 150ms ease; }
+.f3-mega__arrow .elementor-icon { transition: transform 250ms var(--ease-out-quint); }
+.f3-mega__head:hover .elementor-heading-title:not(:last-child), .f3-mega__head:hover .e-con .elementor-heading-title { color: var(--blue) !important; }
+.f3-mega__head:hover .f3-mega__arrow .elementor-icon { transform: translateX(3px); color: var(--blue); }
+.f3-mega__list .elementor-icon-list-item > a { display: block; margin-inline: -10px; padding: 7px 10px; border-radius: 6px; transition: background-color 150ms ease, color 150ms ease; }
+.f3-mega__list .elementor-icon-list-item > a:hover { background: var(--bg); }
+.f3-mega__list .elementor-icon-list-item > a:hover .elementor-icon-list-text { color: var(--blue) !important; }
+.f3-mega__list a[aria-current="page"] .elementor-icon-list-text { color: var(--blue) !important; font-weight: 700; }
+.f3-nav__burger { cursor: pointer; }
+.f3-nav .f3-nav__sheet { display: none; position: absolute !important; top: 100%; left: 0; right: 0; height: calc(100dvh - 64px); overflow-y: auto; border-top: 1px solid #e2e8f0; }
+@media (max-width: 1024px) { .f3-nav.is-open .f3-nav__sheet { display: flex; } }
+.f3-nav__sheet-link, .f3-nav__sheet-row { width: 100% !important; border-bottom: 1px solid #eef0f6; }
+.f3-nav__sheet-link { padding: 14px 0; }
+.f3-nav__sheet-row .f3-nav__sheet-link { border-bottom: 0; width: auto !important; flex: 1; }
+.f3-nav__sheet-toggle { cursor: pointer; padding: 14px 0 14px 20px; }
+.f3-nav__sheet-toggle .elementor-icon { transition: transform 250ms var(--ease-out-quint); }
+.f3-nav.is-services-open .f3-nav__sheet-toggle .elementor-icon { transform: rotate(180deg); color: var(--blue); }
+.f3-nav .f3-nav__sheet-services { display: none; border-bottom: 1px solid #eef0f6; }
+.f3-nav.is-services-open .f3-nav__sheet-services { display: flex; }
+.f3-nav__sheet-group + .f3-nav__sheet-group { border-top: 1px solid #eef0f6; }
+.f3-nav__sheet-group .elementor-heading-title a[aria-current="page"], .f3-nav__sheet-group a[aria-current="page"] .elementor-icon-list-text { color: var(--blue) !important; }

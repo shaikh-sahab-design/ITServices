@@ -37,6 +37,11 @@ if __name__ == '__main__':
         ks = set()
         keys_in(data, ks)
         print(nm, len(json.dumps(data)) // 1024, 'KB, media', len(ks))
+    if 'home' in names:
+        data, css = convert.convert_page(exdir, 'home', 'footer')
+        json.dump(data, open(os.path.join(DATA, 'footer.json'), 'w'), separators=(',', ':'))
+        open(os.path.join(CSSDIR, 'footer.css'), 'w').write(css)
+        print('footer', len(json.dumps(data)) // 1024, 'KB')
     # media manifest + generated css across all pages
     allkeys = set()
     for f in glob.glob(os.path.join(DATA, '*.json')):

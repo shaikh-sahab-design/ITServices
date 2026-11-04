@@ -955,6 +955,11 @@ def convert_page(exdir, name, root_selector='main'):
         return None
     root = find(body, root_selector)
     sections = []
+    if root_selector != 'main':
+        sections = conv.convert(root, None)
+        for s in sections:
+            s['isInner'] = False
+        return sections, extra_css(conv)
     for k in visible_kids(root):
         if 'hero-cover' in classes(k):
             for kk in visible_kids(k):

@@ -50,6 +50,7 @@ add_action( 'elementor/page_templates/canvas/after_content', function () {
 add_action( 'wp_enqueue_scripts', function () {
 	$v = get_option( 'folio3_assets_version', '1' );
 	wp_enqueue_style( 'folio3-site', FOLIO3_SITE_URL . 'assets/site.css', [], $v );
+	wp_enqueue_style( 'folio3-effects', FOLIO3_SITE_URL . 'assets/effects.css', [ 'folio3-site' ], $v );
 	if ( file_exists( FOLIO3_SITE_DIR . '/assets/generated.css' ) ) {
 		wp_enqueue_style( 'folio3-generated', FOLIO3_SITE_URL . 'assets/generated.css', [ 'folio3-site' ], $v );
 	}
