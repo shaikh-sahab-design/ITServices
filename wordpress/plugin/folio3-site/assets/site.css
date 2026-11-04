@@ -275,3 +275,9 @@ html.f3-js .f3-nav { animation: f3-nav-in 0.4s var(--ease-out-quint) both; }
 /* Thank-you steps: the status line under each title is light grey on the dark band. */
 .f3-ty-step__copy .elementor-heading-title { line-height: 22px; }
 .f3-ty-step__copy .elementor-heading-title span:last-child { color: rgba(255, 255, 255, 0.65) !important; font-size: 14px; line-height: 17px; }
+
+/* Comparison tables keep their 720px table width and scroll sideways on small screens, as on the old site. */
+.f3-compare__scroll { overflow-x: auto !important; }
+.f3-compare__table { min-width: 720px; }
+/* Nothing pokes out sideways (the old site clips decorative overflow too); clip keeps sticky working. */
+html, body { overflow-x: clip; }

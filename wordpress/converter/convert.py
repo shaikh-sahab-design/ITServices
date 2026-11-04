@@ -560,7 +560,9 @@ class Converter:
             if re.match(r'^[\d.]+px$', aw.strip()) and abs(px(aw) - n['rect'][2]) <= 1:
                 noshrink = True
         # 'flex: 0 1 650px' -> a 650px basis that may still shrink
-        fparts = (flex or '').split()
+        fm = re.match(r'^\s*(\S+)\s+(\S+)\s+(.+?)\s*$', flex or '')
+        fparts = [fm.group(1), fm.group(2), fm.group(3)] if fm else (flex or '').split()
+        basis = fparts[2] if len(fparts) == 3 and fparts[2] not in ('0', '0px', '0%', 'auto') else None
         if prow and not width and len(fparts) == 3 and re.match(r'^[\d.]+(px|%)$', fparts[2]) and fparts[0] in ('0', '0.0'):
             width = fparts[2]
         full_abs = False
@@ -584,7 +586,7 @@ class Converter:
                 s['_flex_size'] = 'grow'
                 s['width'] = custom('auto') if not width else width_value(width)
                 if not width:
-                    s['width'] = size(0, 'px') if False else custom('0')
+                    s['width'] = custom(basis) if basis else custom('0')
                     s['_flex_size'] = 'custom'
                     s['_flex_grow'] = num(grow or 1)
                     s['_flex_shrink'] = 1
@@ -606,7 +608,7 @@ class Converter:
             if prow and (grow > 0 or (flex and flex.split()[0] not in ('0', 'none'))):
                 s['_flex_size'] = 'grow'
                 s['_element_width'] = 'initial'
-                s['_element_custom_width'] = custom('0') if not width else width_value(width)
+                s['_element_custom_width'] = (custom(basis) if basis else custom('0')) if not width else width_value(width)
             elif width and width != 'auto' and n['tag'] not in ('img', 'svg', 'video'):
                 s['_element_width'] = 'initial'
                 s['_element_custom_width'] = width_value(width)
@@ -747,6 +749,14 @@ class Converter:
             return s
 
         s = self.merged(n, fn)
+        # Elementor forces containers to 100% wide on mobile unless width_mobile is set explicitly.
+        if 'width' in s and 'width_mobile' not in s and self.p.at(n, 390) is not None:
+            eff = s.get('width_tablet', s['width'])
+            if eff not in (size(100, '%'), custom('100%')):
+                s['width_mobile'] = eff
+        # ...and grids to a single column on mobile unless grid_columns_grid_mobile is set.
+        if 'grid_columns_grid' in s and 'grid_columns_grid_mobile' not in s and self.p.at(n, 390) is not None:
+            s['grid_columns_grid_mobile'] = s.get('grid_columns_grid_tablet', s['grid_columns_grid'])
         extra = {w: s.pop('_extra' + VP[w], None) for w in (1024, 390)}
         extra[1440] = s.pop('_extra', [])
         tag = n['tag']
