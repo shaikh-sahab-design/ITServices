@@ -1,0 +1,19 @@
+/* Folio3 site styles that sit next to the Elementor settings: tokens, resets, the form, and motion. */
+:root {
+  --text: #0c0e16; --text-2: #41444e; --bg: #f4f5fb; --white: #fff; --blue: #4a7dee; --red: #ec2539; --yellow: #f5c300;
+  --line: #d8dbe8; --footer: #090c21; --footer-text: #aab1c3;
+  --ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-gentle: linear(0, 0.097, 0.298, 0.514, 0.7, 0.839, 0.933, 0.989, 1.017, 1.027, 1.028, 1.023, 1.017, 1.011, 1.006, 1.003, 1.001, 1, 1);
+  --gutter: 58px; --section-gap: 100px;
+}
+@media (max-width: 1200px) { :root { --gutter: 40px; } }
+@media (max-width: 768px) { :root { --gutter: 20px; --section-gap: 72px; } }
+
+html { scroll-behavior: smooth; }
+body { overflow-x: hidden; background: #fff; color: var(--text); -webkit-font-smoothing: antialiased; }
+.elementor-widget-text-editor p:last-child, .elementor-widget-text-editor p { margin-block: 0; }
+.elementor-heading-title { margin: 0; }
+.elementor-widget-image img { display: block; }
+.elementor-widget-button .elementor-button { white-space: nowrap; transition: background-color 150ms ease, color 150ms ease, box-shadow 200ms var(--ease-out-quint), transform 100ms ease-out; }
+.elementor-widget-button .elementor-button:active { transform: scale(0.97); }
+.elementor-widget-icon-list .elementor-icon-list-items { margin: 0; padding: 0; }
