@@ -29,7 +29,7 @@ INNER = ':is(.elementor-heading-title,.elementor-button,.elementor-icon-list-tex
 
 def conv_selector(sel, pseudo=False):
     sel = re.sub(r'\.([a-zA-Z][\w-]*)', r'.f3-\1', sel)
-    sel = re.sub(r'(?<![\w-])svg\b', 'img', sel)
+    sel = re.sub(r'(?<![\w-])svg\b', ':is(img,svg)', sel)
     # wrappers became Elementor containers or widgets
     sel = re.sub(r'(?<![\w.:#-])(span|div|article|section|p)\b(?![\w-])', ':is(.e-con,.elementor-widget)', sel)
     # list items became Icon List items or, when they hold more than text, Text Editor / containers tagged f3-tag-li
@@ -70,10 +70,24 @@ def port(rules):
         inter = [s for s in live if INTERACTIVE.search(s)]
         base = [s for s in live if not INTERACTIVE.search(s)]
         if inter:
+            # Card "lifts" (translateY on hover) never show on the old site: Framer's inline
+            # transform from the reveal animation overrides them, so cards only change shadow.
+            ds = [(n, v, i) for n, v, i in ds if not (n == 'transform' and re.fullmatch(r'translateY\(-?[\d.]+px\)', v))]
+            if not ds:
+                continue
             body = ';'.join(f'{n}:{v} !important' for n, v, _ in ds)
             targets = []
+            paint = any(n in ('background', 'background-color', 'border-color', 'box-shadow') for n, _, _ in ds)
             for s in inter:
                 c = conv_selector(s)
+                m = re.search(r':hover(?=[^ >+~]*$)', c)
+                if paint and m:
+                    # on button widgets the paint belongs on the inner <a class="elementor-button">, not the wrapper
+                    targets.append(c[:m.start()] + ':not(.elementor-widget-button)' + c[m.start():])
+                    targets.append(c[:m.start()] + '.elementor-widget-button:hover .elementor-button' + c[m.end():])
+                    if any(n == 'color' for n, _, _ in ds):
+                        targets.append(f'{c} {INNER}')
+                    continue
                 targets.append(c)
                 if any(n == 'color' for n, _, _ in ds):
                     targets.append(f'{c} {INNER}')

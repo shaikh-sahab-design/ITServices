@@ -13,6 +13,23 @@
     var services = ['/services'];
     nav.querySelectorAll('.f3-mega a[href]').forEach(function (a) { try { services.push(norm(new URL(a.href).pathname)); } catch (e) {} });
     if (services.indexOf(here) > -1) nav.classList.add('is-services');
+    // Top-level links stay current across their section (case studies, blog posts, service pages).
+    nav.querySelectorAll('.f3-nav__link a[href], .f3-nav__sheet-link a[href]').forEach(function (a) {
+      try {
+        var p = norm(new URL(a.href).pathname);
+        var inSection = p !== '/' && here.indexOf(p + '/') === 0;
+        var isServices = p === '/services' && services.indexOf(here) > -1;
+        if (inSection || isServices) a.setAttribute('aria-current', 'page');
+      } catch (e) {}
+    });
+    var burger = nav.querySelector('.f3-nav__burger'), sheetToggle = nav.querySelector('.f3-nav__sheet-toggle');
+    if (burger) { burger.setAttribute('role', 'button'); burger.setAttribute('tabindex', '0'); burger.setAttribute('aria-label', 'Open menu'); burger.setAttribute('aria-expanded', 'false'); }
+    if (sheetToggle) { sheetToggle.setAttribute('role', 'button'); sheetToggle.setAttribute('tabindex', '0'); sheetToggle.setAttribute('aria-label', 'Show all services'); }
+    var mo = new MutationObserver(function () {
+      if (burger) { var o = nav.classList.contains('is-open'); burger.setAttribute('aria-expanded', String(o)); burger.setAttribute('aria-label', o ? 'Close menu' : 'Open menu'); }
+      if (sheetToggle) sheetToggle.setAttribute('aria-label', nav.classList.contains('is-services-open') ? 'Hide services' : 'Show all services');
+    });
+    mo.observe(nav, { attributes: true, attributeFilter: ['class'] });
     var onScroll = function () { nav.classList.toggle('is-scrolled', window.scrollY > 4); };
     window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
     var on = function (sel, fn) { var el = nav.querySelector(sel); if (el) el.addEventListener('click', fn); };
@@ -37,8 +54,8 @@
   });
   // Carousels: "next" arrow on Verticals, prev/next arrows on card rails.
   var step = function (track, dir) {
-    var card = track.querySelector('.e-con .e-con');
-    var w = card ? card.getBoundingClientRect().width + 22 : 320;
+    var card = track.querySelector('.f3-vertical-card, .f3-rail__card') || track.querySelector('.e-con .e-con');
+    var w = card ? card.offsetWidth + 22 : 320;
     track.scrollBy({ left: dir * w, behavior: 'smooth' });
   };
   document.querySelectorAll('.f3-verticals__next').forEach(function (b) {

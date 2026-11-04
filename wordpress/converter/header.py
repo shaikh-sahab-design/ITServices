@@ -164,7 +164,7 @@ def build():
             cls='f3-nav__sheet-row', flex_direction='row', flex_justify_content='space-between', flex_align_items='center'),
         con(sheet_groups, cls='f3-nav__sheet-services'),
         *[heading(t, h, cls='f3-nav__sheet-link', **sheet_link) for t, h in nav_links[1:]],
-        button('Get Free Consultation', R['contact'], sz=18, lh=22, _element_width='inherit', align='justify', margin=dims(24, 0, 0, 0)),
+        button('Get Free Consultation', R['contact'], sz=18, lh=22, _element_width='inherit', align='justify', _margin=dims(24, 0, 0, 0)),
     ], cls='f3-nav__sheet', padding=dims(16, 20, 32, 20), background_background='classic', background_color='#ffffff',
         hide_desktop='hidden-desktop')
 

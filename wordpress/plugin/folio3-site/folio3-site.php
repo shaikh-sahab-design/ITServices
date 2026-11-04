@@ -40,10 +40,15 @@ function folio3_render_template( $option ) {
 	echo \Elementor\Plugin::instance()->frontend->get_builder_content_for_display( $id, true ); // phpcs:ignore
 }
 add_action( 'elementor/page_templates/canvas/before_content', function () {
+	// Wrapper is the sticky element: sticky on the inner nav is clamped to the template's own height.
+	echo '<div class="f3-site-header">';
 	folio3_render_template( 'folio3_header_template' );
+	echo '</div>';
 } );
 add_action( 'elementor/page_templates/canvas/after_content', function () {
+	echo '<div class="f3-site-footer">';
 	folio3_render_template( 'folio3_footer_template' );
+	echo '</div>';
 } );
 
 /* Site CSS and JS. */

@@ -19,7 +19,8 @@ body { overflow-x: hidden; background: #fff; color: var(--text); -webkit-font-sm
 .elementor-widget-icon-list .elementor-icon-list-items { margin: 0; padding: 0; }
 
 /* ---------- Header ---------- */
-.f3-nav { position: sticky !important; top: 0; z-index: 50; transition: box-shadow 200ms ease; }
+.f3-site-header { position: sticky; top: var(--wp-admin--admin-bar--height, 0px); z-index: 50; }
+.f3-nav { position: relative !important; z-index: 50; transition: box-shadow 200ms ease; }
 .admin-bar .f3-nav { top: 32px; }
 .f3-nav.is-scrolled { box-shadow: 0 6px 24px rgba(12, 14, 22, 0.06); }
 .f3-nav__link .elementor-heading-title a { position: relative; transition: color 150ms ease; }
@@ -30,7 +31,8 @@ body { overflow-x: hidden; background: #fff; color: var(--text); -webkit-font-sm
 .f3-nav__toggle { cursor: pointer; }
 .f3-nav__toggle .elementor-icon { transition: transform 250ms var(--ease-out-quint), color 150ms ease; }
 @media (hover: hover) and (pointer: fine) {
-  .f3-nav__link .elementor-heading-title a:hover { color: var(--blue); }
+  .f3-nav__link .elementor-heading-title a:hover, .f3-nav__item:hover .f3-nav__link .elementor-heading-title a { color: var(--blue) !important; }
+  .f3-nav__item:hover .f3-nav__link .elementor-heading-title a::after { transform: scaleX(1); }
   .f3-nav__link .elementor-heading-title a:hover::after { transform: scaleX(1); }
   .f3-nav__item:hover .f3-nav__toggle .elementor-icon { color: var(--blue); fill: var(--blue); }
 }
@@ -149,6 +151,16 @@ body { overflow-x: hidden; background: #fff; color: var(--text); -webkit-font-sm
 /* ---------- FAQ accordion ---------- */
 .f3-faq .e-n-accordion-item-title-text { flex: 1; }
 .f3-faq .e-n-accordion-item-title { justify-content: space-between; }
+/* Old site: the whole item is one bordered box (blue when open) with the answer inside it. */
+.f3-faq .e-n-accordion-item { border: 1px solid #41444e; border-radius: 6px; background: #fff; overflow: hidden; transition: border-color 200ms ease; }
+.f3-faq .e-n-accordion-item[open] { border-color: #4a7dee; }
+.f3-faq .e-n-accordion-item-title { border: 0 !important; border-radius: 0 !important; background: transparent !important; padding: 10px !important; align-items: center; }
+.f3-faq .e-n-accordion-item[open] .e-n-accordion-item-title-text { font-weight: 700; color: #4a7dee; }
+.f3-faq .e-n-accordion-item > [role="region"] { border: 0 !important; border-radius: 0 !important; background: transparent !important; padding: 0 10px 10px !important; }
+.f3-faq .e-n-accordion-item-title-icon { display: grid; width: 24px; height: 24px; flex: none; transition: transform 250ms cubic-bezier(0.645, 0.045, 0.355, 1); }
+.f3-faq .e-n-accordion-item-title-icon svg { width: 24px; height: 24px; }
+.f3-faq .e-n-accordion-item[open] .e-n-accordion-item-title-icon { transform: rotate(180deg); }
+@media (max-width: 767px) { .f3-faq .e-n-accordion-item-title { align-items: flex-start; } }
 
 /* ---------- Eyebrow dot pulse ---------- */
 .f3-eyebrow__dot { animation: pulse 2.4s ease-out infinite; }
@@ -194,8 +206,8 @@ html.f3-js .f3-nav { animation: f3-nav-in 0.4s var(--ease-out-quint) both; }
 
 /* Service cards: back side tilts toward the pointer with a glare. */
 .f3-service-card__tilt { transition: transform 0.45s var(--ease-out-quint); }
-.f3-service-card.is-tilting .f3-service-card__tilt { transition: transform 0.12s linear; }
-.f3-service-card__glare { pointer-events: none; transition: opacity 0.3s ease; }
+.f3-service-card.is-tilting .f3-service-card__tilt { transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+.f3-service-card__glare { pointer-events: none; opacity: 0; transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
 .f3-service-card__face--back { transition: box-shadow 0.3s ease; }
 
 /* Verticals: the arrow turns round once the last card is in view. */
@@ -210,3 +222,23 @@ html.f3-js .f3-nav { animation: f3-nav-in 0.4s var(--ease-out-quint) both; }
 
 /* Lists that lost their <li> keep the original bullet offset. */
 .f3-tag-li { position: relative; }
+
+/* ---------- Mobile burger: two lines that turn into an X ---------- */
+.f3-nav__burger { padding: 0 !important; }
+.f3-nav__burger .elementor-icon { position: relative; display: block; width: 40px; height: 40px; border-radius: 8px; font-size: 0; }
+.f3-nav__burger .elementor-icon svg, .f3-nav__burger .elementor-icon i { display: none; }
+.f3-nav__burger .elementor-icon::before, .f3-nav__burger .elementor-icon::after { content: ""; position: absolute; left: 10px; width: 20px; height: 2px; border-radius: 2px; background: var(--text); transition: transform 250ms var(--ease-out-quint); }
+.f3-nav__burger .elementor-icon::before { top: 16px; }
+.f3-nav__burger .elementor-icon::after { top: 22px; }
+.f3-nav.is-open .f3-nav__burger .elementor-icon::before { transform: translateY(3px) rotate(45deg); }
+.f3-nav.is-open .f3-nav__burger .elementor-icon::after { transform: translateY(-3px) rotate(-45deg); }
+
+/* ---------- Footer links: underline grows on hover ---------- */
+.f3-site-footer .elementor-icon-list-item > a .elementor-icon-list-text { background-image: linear-gradient(currentColor, currentColor); background-size: 0% 1px; background-position: 0 100%; background-repeat: no-repeat; transition: color 150ms ease, background-size 250ms var(--ease-out-quint); }
+@media (hover: hover) and (pointer: fine) {
+  .f3-site-footer .elementor-icon-list-item > a:hover .elementor-icon-list-text { color: #fff !important; background-size: 100% 1px; }
+}
+
+/* ---------- Old-site details the widgets don't carry ---------- */
+.elementor-widget-button .elementor-button { border-color: transparent; }
+.f3-case-card__logo img { display: block; mix-blend-mode: multiply; }

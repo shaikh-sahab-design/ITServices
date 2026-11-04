@@ -132,8 +132,11 @@ def gradient(bg):
     m = re.match(r'linear-gradient\((?:(-?[\d.]+)deg,\s*)?(rgba?\([^)]*\))(?:\s+([\d.]+)%)?,\s*(rgba?\([^)]*\))(?:\s+([\d.]+)%)?\)$', bg.strip())
     if not m:
         return None
-    return {'angle': num(float(m.group(1) or 180)), 'a': color(m.group(2)) or 'rgba(255,255,255,0)', 'a_stop': num(float(m.group(3) or 0)),
-            'b': color(m.group(4)) or 'rgba(255,255,255,0)', 'b_stop': num(float(m.group(5) or 100))}
+    def stop(c):
+        # keep the hue of a fully transparent stop so the fade doesn't go through white
+        return color(c) or re.sub(r'\s+', '', re.sub(r'^rgba?\(([^,]+),([^,]+),([^,)]+).*$', r'rgba(\1,\2,\3,0)', c))
+    return {'angle': num(float(m.group(1) or 180)), 'a': stop(m.group(2)), 'a_stop': num(float(m.group(3) or 0)),
+            'b': stop(m.group(4)), 'b_stop': num(float(m.group(5) or 100))}
 
 
 def split_layers(bg):
@@ -335,13 +338,16 @@ def box_settings(cs, pre, au=None):
         if key:
             s[f'{pre}background_background'] = 'classic'
             s[f'{pre}background_image'] = media(key)
-            pos = cs['backgroundPosition']
+            li = layers.index(urls[0])
+            poss = [x.strip() for x in cs['backgroundPosition'].split(',')]
+            pos = poss[li] if li < len(poss) else poss[-1]
             s[f'{pre}background_position'] = 'initial'
             xs = pos.split(' ')
             if len(xs) >= 2:
                 s[f'{pre}background_xpos'] = size(float(xs[0][:-1]), '%') if xs[0].endswith('%') else size(px(xs[0]))
                 s[f'{pre}background_ypos'] = size(float(xs[1][:-1]), '%') if xs[1].endswith('%') else size(px(xs[1]))
-            bs = cs['backgroundSize']
+            bss = [x.strip() for x in cs['backgroundSize'].split(',')]
+            bs = bss[li] if li < len(bss) else bss[-1]
             s[f'{pre}background_size'] = bs if bs in ('cover', 'contain', 'auto') else 'cover'
             s[f'{pre}background_repeat'] = 'no-repeat' if 'no-repeat' in cs['backgroundRepeat'] else 'repeat'
             if bgc:
@@ -377,9 +383,10 @@ def box_settings(cs, pre, au=None):
         s[f'{pre}border_border'] = style
         s[f'{pre}border_width'] = dims(*widths)
         cols = [color(cs[f'border{side}Color']) for side, w in zip(('Top', 'Right', 'Bottom', 'Left'), widths) if w]
-        global_color(s, f'{pre}border_color', cols[0] if cols else '#000000')
-    radii = [px(cs[k]) for k in ('borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomRightRadius', 'borderBottomLeftRadius')]
-    if any(radii):
+        global_color(s, f'{pre}border_color', cols[0] if cols else 'transparent')
+    rkeys = ('borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomRightRadius', 'borderBottomLeftRadius')
+    radii = [px(cs[k]) for k in rkeys]
+    if any(radii) or any(str(cs[k]).endswith('%') and not str(cs[k]).startswith('0') for k in rkeys):
         if any(cs[k].endswith('%') for k in ('borderTopLeftRadius',)):
             s[f'{pre}border_radius'] = dims(50, 50, 50, 50, '%')
         else:
@@ -388,6 +395,8 @@ def box_settings(cs, pre, au=None):
     if sh:
         s[f'{pre}box_shadow_box_shadow_type'] = 'yes'
         s[f'{pre}box_shadow_box_shadow'] = sh
+        if 'inset' in cs['boxShadow']:
+            s[f'{pre}box_shadow_box_shadow_position'] = 'inset'
     if pre is not None:
         op = float(cs.get('opacity') or 1)
         if op < 1:
@@ -525,6 +534,11 @@ class Converter:
         maxw = au.get('max-width')
         flex = au.get('flex')
         grow = float(cs['flexGrow'] or 0)
+        noshrink = cs.get('flexShrink') == '0'
+        # 'flex: 0 1 650px' -> a 650px basis that may still shrink
+        fparts = (flex or '').split()
+        if prow and not width and len(fparts) == 3 and re.match(r'^[\d.]+(px|%)$', fparts[2]) and fparts[0] in ('0', '0.0'):
+            width = fparts[2]
         full_abs = False
         if cs['position'] == 'absolute':
             ins = (au.get('inset') or '').strip()
@@ -552,13 +566,14 @@ class Converter:
                     s['_flex_shrink'] = 1
             elif width and width not in ('auto',):
                 s['width'] = width_value(width)
-                if prow or cs['position'] == 'absolute':
+                if (prow and noshrink) or cs['position'] == 'absolute':
                     s['_flex_size'] = 'none'
             elif prow or (pcs and pcs['alignItems'] not in ('normal', 'stretch') and not pgrid
                           and cs['alignSelf'] in ('auto', 'normal')) or cs['alignSelf'] not in ('auto', 'normal', 'stretch') \
                     or cs['display'] in ('inline-flex', 'inline-block', 'inline-grid'):
                 s['width'] = custom('auto' if not maxw else f'min(100%, {maxw})')
-                s['_flex_size'] = 'none'
+                if noshrink or not prow:
+                    s['_flex_size'] = 'none'
             else:
                 s['width'] = custom('100%' if not maxw else f'min(100%, {maxw})')
             if maxw and 'width' in s and s['width'].get('unit') != 'custom':
@@ -689,6 +704,9 @@ class Converter:
                 s['min_height'] = size(px(cs['height'] if au.get('height') else cs['minHeight']) or x['rect'][3]) if 'px' in mh and 'calc' not in mh else custom(mh)
             elif mh is None or mh in ('auto', '0', '0px'):
                 s['min_height'] = size(0)
+            if not visible_kids(x) and x['rect'][3] > 0 and s.get('min_height', size(0)) == size(0):
+                # empty decorative boxes (lines, dots, glows) keep their drawn height
+                s['min_height'] = size(x['rect'][3])
             if cs['overflow'] == 'hidden' or cs['overflowX'] == 'hidden':
                 s['overflow'] = 'hidden'
             s.update(self.item_size(x, px_parent, w, True))
@@ -766,6 +784,10 @@ class Converter:
                 s['_padding'] = dims(*pad)
             b, extra = box_settings(x['cs'], '_')
             s.update(b)
+            hv = x.get('au', {}).get('height')
+            if hv and re.match(r'^[\d.]+px$', hv.strip()) and x['cs']['display'] in ('grid', 'flex', 'inline-grid', 'inline-flex'):
+                # fixed-size badges/circles with centred text (e.g. journey milestones)
+                extra += [f"height:{hv.strip()}", 'display:grid', 'place-items:center', 'box-sizing:border-box']
             if extra_fn:
                 s.update(extra_fn(x, w))
             s['_extra'] = extra + s.pop('_xtra', [])
@@ -853,6 +875,15 @@ class Converter:
             s = typo(cs)
             s['text_padding'] = dims(*spacing(cs, 'padding'))
             s['align'] = ''
+            pp = parent if w == 1440 else (self.p.at(parent, w) if parent else None)
+            if pp:
+                pad = spacing(pp['cs'], 'padding')
+                inner = pp['rect'][2] - pad[1] - pad[3]
+                if inner > 0 and x['rect'][2] >= inner - 2 and x['rect'][2] > 120:
+                    # full-width buttons (mobile hero/CTA rows)
+                    s['align'] = 'justify'
+                    s['_element_width'] = 'inherit'
+                    s['_flex_size'] = 'none'
             return s
         s = self.widget_common(n, parent, fn)
         # move box styling from wrapper onto the button itself
@@ -905,7 +936,9 @@ class Converter:
             if not xi:
                 return {}
             f = xi[0]
-            s = typo(f['cs'], 'icon_typography_')
+            fk = visible_kids(f)
+            tnode = fk[0] if len(fk) == 1 and fk[0]['tag'] in ('a', 'span', 'strong') else f
+            s = typo(tnode['cs'], 'icon_typography_')
             s['space_between'] = size(px(x['cs']['rowGap']) if x['cs']['rowGap'] != 'normal' else (xi[1]['rect'][1] - f['rect'][1] - f['rect'][3] if len(xi) > 1 else 0))
             if dot:
                 s['icon_size'] = size(px(f['before']['width']) or 6)
