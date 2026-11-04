@@ -1,5 +1,8 @@
+.f3x-bc0370d{opacity:0.75}
+.f3x-cdf45d1{opacity:0.75}
+.f3x-dd9df6e{opacity:0.75}
 
-@media (max-width: 767px){.f3x-fc0a42b{background-image:linear-gradient(90deg, rgba(4, 16, 41, 0.92) 0px, rgba(4, 16, 41, 0.7) 100%), url("http://localhost:3000/images/hero-ai-security.webp")}}
+@media (max-width: 767px){.f3x-fc0a42b{background-image:linear-gradient(90deg, rgba(4, 16, 41, 0.92) 0px, rgba(4, 16, 41, 0.7) 100%), url("@@url:images/hero-ai-security.webp")}}
 .f3x-768abaf{overflow-x:auto}
 
 .f3x-923c840{filter:drop-shadow(rgba(94, 88, 144, 0.1) 0px -18px 45px)}
@@ -41,7 +44,7 @@
 .f3x-b8f8f5c{opacity:0}
 .f3x-802fee3{mix-blend-mode:multiply}
 .f3x-0237d2f{mix-blend-mode:multiply}
-@media (max-width: 767px){.f3x-9dfecfb{background-image:linear-gradient(90deg, rgba(4, 16, 41, 0.92) 0px, rgba(4, 16, 41, 0.7) 100%), url("http://localhost:3000/images/hero-managed-it.webp")}}
-@media (max-width: 767px){.f3x-d813e3c{background-image:linear-gradient(90deg, rgba(4, 16, 41, 0.92) 0px, rgba(4, 16, 41, 0.7) 100%), url("http://localhost:3000/images/hero-managed-security.webp")}}
+@media (max-width: 767px){.f3x-9dfecfb{background-image:linear-gradient(90deg, rgba(4, 16, 41, 0.92) 0px, rgba(4, 16, 41, 0.7) 100%), url("@@url:images/hero-managed-it.webp")}}
+@media (max-width: 767px){.f3x-d813e3c{background-image:linear-gradient(90deg, rgba(4, 16, 41, 0.92) 0px, rgba(4, 16, 41, 0.7) 100%), url("@@url:images/hero-managed-security.webp")}}
 .f3x-b4a61e3{overflow-x:auto}
-@media (max-width: 767px){.f3x-7be2acb{background-image:linear-gradient(90deg, rgba(4, 16, 41, 0.92) 0px, rgba(4, 16, 41, 0.7) 100%), url("http://localhost:3000/images/services-hero.webp")}}
+@media (max-width: 767px){.f3x-7be2acb{background-image:linear-gradient(90deg, rgba(4, 16, 41, 0.92) 0px, rgba(4, 16, 41, 0.7) 100%), url("@@url:images/services-hero.webp")}}

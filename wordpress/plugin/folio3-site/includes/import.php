@@ -181,6 +181,9 @@ function folio3_sync_plugin( $ref, array $files ) {
 			$out[ $f ] = $body->get_error_message();
 			continue;
 		}
+		if ( 'assets/generated.css' === $f ) {
+			$body = folio3_resolve( $body );
+		}
 		$dest = FOLIO3_SITE_DIR . '/' . $f;
 		wp_mkdir_p( dirname( $dest ) );
 		$out[ $f ] = false !== file_put_contents( $dest, $body ) ? strlen( $body ) : 'write failed';
