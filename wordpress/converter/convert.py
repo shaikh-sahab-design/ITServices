@@ -747,7 +747,9 @@ class Converter:
                 s['min_height'] = size(px(cs['height'] if au.get('height') else cs['minHeight']) or x['rect'][3]) if 'px' in mh and 'calc' not in mh else custom(mh)
             elif mh is None or mh in ('auto', '0', '0px'):
                 s['min_height'] = size(0)
-            if (not visible_kids(x) or cs['position'] == 'absolute') and x['rect'][3] > 0 and s.get('min_height', size(0)) == size(0):
+            vk = visible_kids(x)
+            only_abs = bool(vk) and all(k['cs'].get('position') in ('absolute', 'fixed') for k in vk)
+            if (not vk or only_abs or cs['position'] == 'absolute') and x['rect'][3] > 0 and s.get('min_height', size(0)) == size(0):
                 # empty decorative boxes (lines, dots, glows) keep their drawn height
                 s['min_height'] = size(x['rect'][3])
             if cs['overflow'] == 'hidden' or cs['overflowX'] == 'hidden':
@@ -762,7 +764,16 @@ class Converter:
         # Elementor forces containers to 100% wide on mobile unless width_mobile is set explicitly.
         if 'width' in s and 'width_mobile' not in s and self.p.at(n, 390) is not None:
             eff = s.get('width_tablet', s['width'])
-            if eff not in (size(100, '%'), custom('100%'), custom('auto')):
+            m = self.p.at(n, 390)
+            mp = self.p.at(parent, 390) if parent else None
+            content_sized = False
+            if mp is not None:
+                ppad = spacing(mp['cs'], 'padding')
+                content_sized = m['rect'][2] < mp['rect'][2] - ppad[1] - ppad[3] - 2
+            if eff == custom('auto'):
+                if content_sized:
+                    s['width_mobile'] = eff
+            elif eff not in (size(100, '%'), custom('100%')):
                 s['width_mobile'] = eff
         # ...and grids to a single column on mobile unless grid_columns_grid_mobile is set.
         if 'grid_columns_grid' in s and 'grid_columns_grid_mobile' not in s and self.p.at(n, 390) is not None:
