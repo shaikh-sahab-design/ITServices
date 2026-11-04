@@ -5142,3 +5142,18 @@ fieldset.field .field__label {
 @media (prefers-reduced-motion: reduce) {
   .ty-hero { position: relative; }
 }
+
+/* Back-side tilt (React Bits TiltedCard motion): the wrapper tilts, the inner still flips. */
+.service-card__tilt {
+  height: 100%;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.service-card__glare {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+}
