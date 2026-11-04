@@ -60,6 +60,10 @@ add_action( 'wp_enqueue_scripts', function () {
 
 /* Brand fonts (Bakbak One, Inter, Geist) for the header/footer templates and form. */
 add_action( 'wp_head', function () {
+	// Lets the motion CSS hide elements before they animate in; skipped inside the Elementor editor.
+	if ( ! isset( $_GET['elementor-preview'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+		echo "<script>document.documentElement.classList.add('f3-js')</script>";
+	}
 	echo '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
 	echo '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bakbak+One&family=Geist:wght@600&family=Inter:wght@400;500;600;700;800&display=swap">';
 }, 1 );

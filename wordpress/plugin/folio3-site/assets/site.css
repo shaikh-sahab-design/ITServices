@@ -80,14 +80,25 @@ body { overflow-x: hidden; background: #fff; color: var(--text); -webkit-font-sm
 .f3-chips, .f3-options { display: flex; flex-wrap: wrap; gap: 8px; clear: both; }
 .f3-chip, .f3-option { position: relative; cursor: pointer; margin: 0; }
 .f3-chip input, .f3-option input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
-.f3-chip span { display: block; padding: 7px 11px; border: 1px solid transparent; border-radius: 100px; background: var(--bg); font-size: 12px; line-height: 15px; color: #667085; transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease; }
-.f3-chip input:checked + span { border-color: var(--blue); background: #f4f9ff; color: var(--blue); font-weight: 600; }
+.f3-chips { position: relative; }
+.f3-chip { border-radius: 100px; background: var(--bg); }
+.f3-chip span { position: relative; z-index: 2; display: block; padding: 7px 11px; border-radius: 100px; font-size: 12px; line-height: 15px; color: #667085; transition: color 150ms ease; }
+.f3-chip input:checked + span { color: var(--blue); font-weight: 600; }
+.f3-chips:not(.has-hl) .f3-chip input:checked + span { box-shadow: inset 0 0 0 1px var(--blue); background: #f4f9ff; }
+.f3-chip-hl { position: absolute; z-index: 1; top: 0; left: 0; border: 1px solid var(--blue); border-radius: 100px; background: #f4f9ff; pointer-events: none; transition: transform 0.35s cubic-bezier(0.3, 1.25, 0.5, 1), width 0.35s cubic-bezier(0.3, 1.25, 0.5, 1), height 0.35s ease; }
 .f3-chip input:focus-visible + span, .f3-option input:focus-visible ~ span:last-child { outline: 2px solid var(--blue); outline-offset: 2px; }
 .f3-option { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 6px; background: #fafbfd; font-size: 13px; font-weight: 500; line-height: 16px; color: var(--text); transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease, transform 100ms ease-out; }
 .f3-option:active { transform: scale(0.97); }
 .f3-option__box { display: grid; place-items: center; width: 16px; height: 16px; border: 1px solid var(--line); border-radius: 3px; background: #fff; font-size: 10px; font-weight: 800; line-height: 12px; color: transparent; transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease; }
 .f3-option:has(input:checked) { border-color: var(--blue); background: #f4f9ff; color: var(--blue); font-weight: 600; }
 .f3-option:has(input:checked) .f3-option__box { border-color: var(--blue); background: var(--blue); color: #fff; }
+.f3-option__check { display: block; transform: scale(0.4); opacity: 0; transition: transform 0.1s ease, opacity 0.1s ease; }
+.f3-option:has(input:checked) .f3-option__check { transform: scale(1); opacity: 1; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease; }
+.f3-form__submit { overflow: hidden; }
+.f3-form__submit-label { display: inline-block; }
+.f3-form__submit-label.is-out { transform: translateY(-16px); opacity: 0; transition: transform 0.2s var(--ease-out-quint), opacity 0.2s ease; }
+.f3-form__submit-label.is-in { animation: f3-label-in 0.2s var(--ease-out-quint) both; }
+@keyframes f3-label-in { from { transform: translateY(16px); opacity: 0; } }
 .f3-form__footer { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: auto; }
 .f3-form__micro { max-width: 440px; margin: 0; font-size: 13px; line-height: 19px; color: var(--text-2); }
 .f3-form .f3-form__submit { min-width: 167px; padding: 10px 20px; border: 1px solid transparent; border-radius: 8px; background: var(--blue); color: #fff; font: 600 18px/22px Inter, sans-serif; white-space: nowrap; cursor: pointer; transition: background-color 150ms ease, box-shadow 200ms var(--ease-out-quint), transform 100ms ease-out; }
@@ -142,3 +153,60 @@ body { overflow-x: hidden; background: #fff; color: var(--text); -webkit-font-sm
 /* ---------- Eyebrow dot pulse ---------- */
 .f3-eyebrow__dot { animation: pulse 2.4s ease-out infinite; }
 @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(245, 195, 0, 0.6); } 70%, 100% { box-shadow: 0 0 0 8px rgba(245, 195, 0, 0); } }
+
+/* ---------- Motion ported from the Framer components ---------- */
+/* Scroll / load reveals: each element's start state comes from generated.css (html.f3-js .f3m-*:not(.f3-in)). */
+.f3-rv.f3-in:not(.f3-done) {
+  transition: opacity var(--f3t, 0.5s) var(--f3e, var(--ease-out-quint)) var(--f3d, 0s), transform var(--f3t, 0.5s) var(--f3e, var(--ease-out-quint)) var(--f3d, 0s) !important;
+}
+html.f3-js .f3-faq .e-n-accordion-item:not(.f3-in) { opacity: 0; transform: translateY(24px); }
+.f3-faq .e-n-accordion-item.f3-in:not(.f3-done) { transition: opacity 0.5s var(--ease-out-quint) var(--f3d, 0s), transform 0.5s var(--ease-out-quint) var(--f3d, 0s); }
+/* Title lines slide up from behind a mask. */
+html.f3-js .f3-rv-lines:not(.f3-lines-ready) :is(.elementor-heading-title, .elementor-widget-container) { visibility: hidden; }
+.f3-lm { display: block; overflow: hidden; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.f3-lm > span { display: block; transform: translateY(100%); }
+.f3-rv-lines.f3-in .f3-lm > span { transform: none; transition: transform 0.7s var(--ease-out-quint) var(--f3d, 0.15s); }
+/* Thank You: the big word rises, overshoots and settles. */
+.f3-ty-hero__word.f3-in:not(.f3-done) { transition: none !important; animation: f3-ty-word 1.6s var(--ease-out-quint) 0.3s both; }
+@keyframes f3-ty-word { 0% { transform: translateY(110%) scale(1); } 55% { transform: translateY(0) scale(1.08); } 100% { transform: translateY(0) scale(1); } }
+/* Header drops in on load; mega menu and mobile sheet ease in. */
+html.f3-js .f3-nav { animation: f3-nav-in 0.4s var(--ease-out-quint) both; }
+@keyframes f3-nav-in { from { transform: translateY(-72px); opacity: 0; } }
+@media (max-width: 1024px) { .f3-nav.is-open .f3-nav__sheet { animation: f3-sheet-in 0.25s var(--ease-out-quint) both; } }
+@keyframes f3-sheet-in { from { opacity: 0; transform: translateY(-8px); } }
+.f3-nav.is-services-open .f3-nav__sheet-services { animation: f3-fade-down 0.3s var(--ease-out-quint) both; }
+@keyframes f3-fade-down { from { opacity: 0; transform: translateY(-6px); } }
+/* Everything below the home and Thank You banners scrolls up over them while they stay pinned. */
+.f3-hero-cover { position: relative !important; z-index: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .f3-rv, .f3-faq .e-n-accordion-item { opacity: 1 !important; transform: none !important; }
+  .f3-lm > span { transform: none !important; }
+  .f3-hero, .f3-ty-hero { position: relative !important; }
+}
+/* Never hide anything inside the Elementor editor. */
+.elementor-editor-active .f3-rv, .elementor-editor-active .f3-faq .e-n-accordion-item { opacity: 1 !important; transform: none !important; }
+
+/* Buttons: hover lift shadows from the design. */
+@media (hover: hover) and (pointer: fine) {
+  .f3-btn--primary .elementor-button:hover { box-shadow: 0 8px 20px rgba(74, 125, 238, 0.3); }
+  .f3-btn--yellow .elementor-button:hover { box-shadow: 0 8px 20px rgba(245, 195, 0, 0.3); }
+}
+
+/* Service cards: back side tilts toward the pointer with a glare. */
+.f3-service-card__tilt { transition: transform 0.45s var(--ease-out-quint); }
+.f3-service-card.is-tilting .f3-service-card__tilt { transition: transform 0.12s linear; }
+.f3-service-card__glare { pointer-events: none; transition: opacity 0.3s ease; }
+.f3-service-card__face--back { transition: box-shadow 0.3s ease; }
+
+/* Verticals: the arrow turns round once the last card is in view. */
+.f3-verticals__next { cursor: pointer; transition: transform 0.4s var(--ease-out-quint); }
+.f3-verticals__next.is-end { transform: rotate(180deg); }
+.f3-rail__arrow { cursor: pointer; }
+
+/* Article table of contents: current section in blue with a sliding bar. */
+.f3-toc__list > .e-con { position: relative; }
+.f3-toc__list a.is-current, .f3-toc__list .is-current .elementor-heading-title, .f3-toc__list .is-current a { color: var(--blue) !important; }
+.f3-toc-bar { position: absolute; left: 0; bottom: -1px; height: 1px; background: var(--blue); pointer-events: none; transition: transform 0.35s var(--ease-out-quint), width 0.35s var(--ease-out-quint); z-index: 2; }
+
+/* Lists that lost their <li> keep the original bullet offset. */
+.f3-tag-li { position: relative; }

@@ -157,6 +157,9 @@ def split_layers(bg):
 class Page:
     def __init__(self, exdir, name):
         self.name = name
+        mf = os.path.join(exdir, '..', 'motion', f'{name}.json')
+        self.motion = json.load(open(mf)) if os.path.exists(mf) else {}
+        self.vars = self.motion.pop('__vars__', {})  # inline custom properties (--delay, --hero-img ...)
         self.trees = {}
         self.index = {}
         for w in WIDTHS:
@@ -404,6 +407,14 @@ def box_settings(cs, pre, au=None):
             extra.append(f'{css}:{v}')
             if prop == 'backdropFilter':
                 extra.append(f'-webkit-backdrop-filter:{v}')
+    if cs.get('whiteSpace') in ('nowrap', 'pre', 'pre-line', 'pre-wrap'):
+        extra.append(f"white-space:{cs['whiteSpace']}")
+    if cs.get('position') == 'sticky':
+        extra.append('position:sticky')
+        extra.append(f"top:{cs.get('top') if cs.get('top') not in (None, 'auto') else '0px'}")
+        extra.append('align-self:flex-start')
+    if cs.get('position') in ('relative', 'sticky') and cs.get('zIndex') not in (None, 'auto'):
+        extra.append(f"z-index:{cs['zIndex']}")
     return s, extra
 
 
@@ -416,6 +427,46 @@ class Converter:
     def __init__(self, page):
         self.p = page
         self.extra = {}       # class -> {vp: [decls]}
+        self.motion_css = {}  # class -> (opacity, transform, delay, group)
+
+    # ---- classes: original classes as f3-*, tag marker for list items, scroll/load reveal from Framer start states
+    MOTION_SKIP = ('hero__dash-inner', 'service-card__glare', 'nav')
+
+    def node_classes(self, n):
+        cl = ['f3-' + c for c in classes(n)]
+        if n.get('tag') == 'li':
+            cl.append('f3-tag-li')
+        path = n.get('_path', '')
+        mot = self.p.motion
+        m = mot.get(path)
+        if m and (m['cls'] or '') == (n.get('cls') or '') and not any(x in (m['cls'] or '').split() for x in self.MOTION_SKIP):
+            parent = path.rsplit('/', 1)[0]
+            sib = sorted((k for k in mot if k.rsplit('/', 1)[0] == parent and not any(x in (mot[k]['cls'] or '').split() for x in self.MOTION_SKIP)),
+                         key=lambda k: int(re.search(r'(\d+)$', k).group(1)))
+            delay, dur, ease = (round(sib.index(path) * 0.08, 2) if len(sib) > 1 else 0), 0.5, ''
+            grp = f'f3g-{eid(self.p.name + parent)}' if len(sib) > 1 else ''
+            mcls = (m['cls'] or '').split()
+            for c in mcls:
+                if c in TIMING:
+                    delay, dur, ease = TIMING[c]
+            jm = re.search(r'^(.*/div\.journey__process\d+)/ol\.journey__steps\d+/li\.journey__step(\d+)/', path)
+            if jm:
+                count = len({re.search(r'li\.journey__step(\d+)', k).group(1) for k in mot if k.startswith(jm.group(1) + '/ol.')})
+                i = int(jm.group(2))
+                sd = 0.15 + (i / max(count - 1, 1)) * 1.2 * 0.85
+                delay, dur, ease = (sd, 0.6, SPRING) if 'milestone' in mcls else (sd + 0.05, 0.5, '')
+                grp = f'f3g-{eid(self.p.name + jm.group(1))}'
+            if 'journey__line' in mcls:
+                delay, dur, ease = 0.15, 1.2, 'cubic-bezier(0.645,0.045,0.355,1)'
+                grp = f'f3g-{eid(self.p.name + path.split("/div.journey__track")[0])}'
+            mc = f'f3m-{eid(self.p.name + path)}'
+            self.motion_css[mc] = (m['o'], m['t'], round(delay, 3), dur, ease)
+            cl += ['f3-rv', mc] + ([grp] if grp else [])
+        # text whose lines slide up from behind a mask (hero titles)
+        if any(k.startswith(path + '/') and (v['t'] or '').endswith('(100%)') for k, v in mot.items()) and not el_kids(n) == []:
+            if is_inline_only(n):
+                cl.append('f3-rv-lines')
+        return ' '.join(cl)
 
     # ---- responsive merge
     def merged(self, node, fn, responsive_keys=None):
@@ -451,6 +502,10 @@ class Converter:
         return s
 
     def add_extra(self, s, node, key, decls_by_vp):
+        v = self.p.vars.get(node.get('_path'))
+        if v:
+            decls_by_vp = dict(decls_by_vp)
+            decls_by_vp[1440] = list(v) + list(decls_by_vp.get(1440) or [])
         if not any(decls_by_vp.values()):
             return
         cls = f'f3x-{eid(self.p.name + node["_path"] + key)}'
@@ -651,10 +706,12 @@ class Converter:
             s['link'] = link(n['attrs']['href'])
         elif tag in ('section', 'header', 'footer', 'nav', 'article', 'aside', 'main', 'figure', 'ul', 'ol', 'li'):
             s['html_tag'] = {'ul': 'div', 'ol': 'div', 'li': 'div', 'figure': 'div'}.get(tag, tag)
-        cl = ' '.join('f3-' + c for c in classes(n))
+        cl = self.node_classes(n)
         if cl:
             s['css_classes'] = cl
-        if any(extra.values()):
+        if n['attrs'].get('id'):
+            s['_element_id'] = n['attrs']['id']
+        if any(extra.values()) or self.p.vars.get(n['_path']):
             self.add_extra(s, n, 'css_classes', {w: extra.get(w) or [] for w in WIDTHS})
         s.update(self.hide_flags(n))
         kids = kids_override if kids_override is not None else self.children(n)
@@ -716,10 +773,12 @@ class Converter:
         s = self.merged(n, fn)
         extra = {w: s.pop('_extra' + VP[w], None) or [] for w in (1024, 390)}
         extra[1440] = s.pop('_extra', [])
-        cl = ' '.join('f3-' + c for c in classes(n))
+        cl = self.node_classes(n)
         if cl:
             s['_css_classes'] = cl
-        if any(extra.values()):
+        if n['attrs'].get('id'):
+            s['_element_id'] = n['attrs']['id']
+        if any(extra.values()) or self.p.vars.get(n['_path']):
             self.add_extra(s, n, '_css_classes', extra)
         s.update(self.hide_flags(n))
         return s
@@ -931,6 +990,17 @@ class Converter:
         return [self.container(n, parent)]
 
 
+# on-load / in-view timings from the Framer components: class -> (delay s, duration s, easing)
+SPRING = 'cubic-bezier(0.34,1.56,0.64,1)'
+TIMING = {
+    'hero__lede': (0.45, 0.6, ''), 'hero__actions': (0.55, 0.6, ''), 'hero__dash': (0.6, 0.9, ''), 'hero__handle': (1.9, 0.6, SPRING),
+    'badge--clients': (1.15, 0.6, SPRING), 'badge--sla': (1.25, 0.6, SPRING), 'badge--support': (1.35, 0.6, SPRING), 'badge--response': (1.45, 0.6, SPRING),
+    'page-hero__title': (0.1, 0.7, ''), 'page-hero__lede': (0.3, 0.5, ''), 'page-hero__actions': (0.4, 0.5, ''),
+    'ty-badge__halo': (0.1, 0.6, ''), 'ty-badge__core': (0, 0.6, SPRING), 'ty-track': (0.3, 0.5, ''), 'ty-hero__actions': (0.42, 0.5, ''),
+    'ty-hero__word': (0.3, 1.6, ''),
+}
+
+
 # special-case hooks keyed by original class name
 SPECIAL = {}
 
@@ -953,6 +1023,14 @@ def extra_css(conv):
                 continue
             rule = f'.{cls}{{{";".join(decls)}}}'
             out.append(rule if not mq[w] else f'@media {mq[w]}{{{rule}}}')
+    for cls, (o, t, d, dur, ease) in conv.motion_css.items():
+        st = []
+        if o is not None:
+            st.append(f'opacity:{o}')
+        if t:
+            st.append(f'transform:{t}')
+        vars_ = (f'--f3d:{d}s;' if d else '') + (f'--f3t:{dur}s;' if dur != 0.5 else '') + (f'--f3e:{ease};' if ease else '')
+        out.append(f'html.f3-js .{cls}:not(.f3-in){{{";".join(st)}}}' + (f'.{cls}{{{vars_}}}' if vars_ else ''))
     return '\n'.join(out)
 
 
@@ -979,11 +1057,7 @@ def convert_page(exdir, name, root_selector='main'):
             s['isInner'] = False
         return sections, extra_css(conv)
     for k in visible_kids(root):
-        if 'hero-cover' in classes(k):
-            for kk in visible_kids(k):
-                sections.extend(conv.convert(kk, None))
-        else:
-            sections.extend(conv.convert(k, None))
+        sections.extend(conv.convert(k, None))
     for s in sections:
         s['isInner'] = False
     return sections, extra_css(conv)

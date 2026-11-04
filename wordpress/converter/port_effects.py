@@ -16,15 +16,24 @@ INTERACTIVE = re.compile(r':hover|:active|:focus-visible|:focus-within')
 MOTION_PROPS = {'transition', 'transition-property', 'transition-duration', 'transition-timing-function', 'transition-delay',
                 'animation', 'animation-name', 'animation-duration', 'animation-timing-function', 'animation-iteration-count',
                 'animation-delay', 'animation-play-state', 'will-change', 'transform-style', 'perspective', 'backface-visibility',
-                '-webkit-backface-visibility', 'transform-origin', 'cursor'}
+                '-webkit-backface-visibility', 'transform-origin', 'cursor',
+                # static properties Elementor has no control for
+                'scroll-snap-type', 'scroll-snap-align', 'scroll-padding', 'scroll-padding-left', 'scroll-margin-top', 'scrollbar-width',
+                'pointer-events', 'user-select', 'text-wrap', 'text-overflow', '-webkit-line-clamp', '-webkit-box-orient', 'line-clamp',
+                'font-variant-numeric', 'font-feature-settings', 'isolation', 'overscroll-behavior-x', 'touch-action', 'hyphens',
+                'word-break', 'overflow-wrap', 'text-underline-offset', 'text-decoration-thickness', 'list-style'}
+PSEUDO = re.compile(r'::(before|after|-webkit-scrollbar)')
 SKIP = re.compile(r'^\s*(\.nav|\.mega|\.btn|:root|\*|html|body|a\b|button|img|h1|ul|fieldset|:focus)')
 INNER = ':is(.elementor-heading-title,.elementor-button,.elementor-icon-list-text,.elementor-widget-text-editor)'
 
 
-def conv_selector(sel):
+def conv_selector(sel, pseudo=False):
     sel = re.sub(r'\.([a-zA-Z][\w-]*)', r'.f3-\1', sel)
     sel = re.sub(r'(?<![\w-])svg\b', 'img', sel)
-    sel = re.sub(r'(?<![\w.-])li\b', '.elementor-icon-list-item', sel)
+    # wrappers became Elementor containers or widgets
+    sel = re.sub(r'(?<![\w.:#-])(span|div|article|section|p)\b(?![\w-])', ':is(.e-con,.elementor-widget)', sel)
+    # list items became Icon List items or, when they hold more than text, Text Editor / containers tagged f3-tag-li
+    sel = re.sub(r'(?<![\w.:-])li\b', '.f3-tag-li' if pseudo else ':is(.elementor-icon-list-item,.f3-tag-li)', sel)
     return sel
 
 
@@ -52,6 +61,9 @@ def port(rules):
             continue
         sels = [s.strip() for s in tinycss2.serialize(r.prelude).split(',')]
         ds = decls(r.content)
+        pseudo = [s for s in sels if PSEUDO.search(s) and not SKIP.match(s) and '[data-' not in s and '::placeholder' not in s]
+        if pseudo:
+            out.append(','.join(conv_selector(x, pseudo=True) for x in pseudo) + '{' + ';'.join(f'{n}:{v} !important' for n, v, _ in ds) + '}')
         live = [s for s in sels if not SKIP.match(s) and '[data-' not in s and '::' not in s]
         if not live:
             continue
@@ -67,7 +79,7 @@ def port(rules):
                     targets.append(f'{c} {INNER}')
             out.append(','.join(targets) + '{' + body + '}')
         if base:
-            mot = [(n, v) for n, v, _ in ds if n in MOTION_PROPS]
+            mot = [(n, v) for n, v, _ in ds if n in MOTION_PROPS or n.startswith('--')]
             if mot:
                 out.append(','.join(conv_selector(s) for s in base) + '{' + ';'.join(f'{n}:{v}' for n, v in mot) + '}')
     return out

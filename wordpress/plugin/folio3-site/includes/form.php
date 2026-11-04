@@ -57,7 +57,7 @@ add_shortcode( 'folio3_contact_form', function () {
 			<legend class="f3-field__label">What Do You Need Help With?</legend>
 			<div class="f3-options">
 				<?php foreach ( FOLIO3_NEEDS as $i => $n ) : ?>
-					<label class="f3-option"><input type="checkbox" name="needs[]" value="<?php echo esc_attr( $n ); ?>" <?php checked( 0, $i ); ?>><span class="f3-option__box" aria-hidden="true">✓</span><span><?php echo esc_html( $n ); ?></span></label>
+					<label class="f3-option"><input type="checkbox" name="needs[]" value="<?php echo esc_attr( $n ); ?>" <?php checked( 0, $i ); ?>><span class="f3-option__box" aria-hidden="true"><span class="f3-option__check">✓</span></span><span><?php echo esc_html( $n ); ?></span></label>
 				<?php endforeach; ?>
 			</div>
 		</fieldset>
@@ -65,7 +65,7 @@ add_shortcode( 'folio3_contact_form', function () {
 			<textarea class="f3-field__input f3-field__input--area" name="challenges" placeholder="Tell us what you’re looking to improve, migrate, secure, or manage."></textarea></label>
 		<div class="f3-form__footer">
 			<p class="f3-form__micro">Our team will review your request and connect you with the appropriate Managed IT specialist.</p>
-			<button type="submit" class="f3-form__submit">Submit Inquiry</button>
+			<button type="submit" class="f3-form__submit"><span class="f3-form__submit-label">Submit Inquiry</span></button>
 		</div>
 	</form>
 	<?php

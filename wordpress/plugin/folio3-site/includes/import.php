@@ -90,7 +90,7 @@ function folio3_resolve( $data, &$missing = [] ) {
 			}
 			return (int) $map[ $m[1] ];
 		}
-		return preg_replace_callback( '/@@(url|link):([^"\'\s<>]+?)(?=$|["\'\s<>])/', function ( $m ) use ( $map, &$missing ) {
+		return preg_replace_callback( '/@@(url|link):([^"\'\s<>]+?)(?=$|["\'\s<>)])/', function ( $m ) use ( $map, &$missing ) {
 			if ( 'url' === $m[1] ) {
 				if ( empty( $map[ $m[2] ] ) ) {
 					$missing[] = $m[2];
