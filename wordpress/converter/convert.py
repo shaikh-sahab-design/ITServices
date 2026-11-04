@@ -251,7 +251,12 @@ def boxy(n):
 
 def inner_html(n, base_cs, top=True):
     parts = []
-    lines_as_blocks = any(not k.get('hidden') and 'text' not in k and k['cs']['display'] == 'block' for k in n.get('kids', []))
+    ncs = n.get('cs') or {}
+    flex_row = ncs.get('display') in ('flex', 'inline-flex') and str(ncs.get('flexDirection', 'row')).startswith('row')
+    # flex items are blockified, but in a row they still sit side by side
+    lines_as_blocks = not flex_row and any(not k.get('hidden') and 'text' not in k and k['cs']['display'] == 'block' for k in n.get('kids', []))
+    el_kids = [k for k in n.get('kids', []) if 'text' not in k and not k.get('hidden') and k['tag'] != 'br']
+    row_gap = px(ncs.get('columnGap')) if flex_row and ncs.get('columnGap') not in (None, 'normal') else 0
     for k in n.get('kids', []):
         if 'text' in k:
             parts.append(html.escape(k['text']))
@@ -279,6 +284,8 @@ def inner_html(n, base_cs, top=True):
             style.append(f'font-size:{cs["fontSize"]}')
         if cs['textDecorationLine'] not in ('none', base_cs['textDecorationLine']):
             style.append(f'text-decoration:{cs["textDecorationLine"]}')
+        if flex_row and len(el_kids) > 1 and k is not el_kids[-1] and k.get('rect'):
+            style.append(f"display:inline-block;min-width:{num(k['rect'][2])}px;margin-right:{num(row_gap)}px")
         inner = inner_html(k, cs, False)
         if lines_as_blocks and cs['display'] == 'block':
             inner = re.sub(r'(<br>\s*)+$', '', inner)
@@ -528,13 +535,30 @@ class Converter:
         s = {}
         pre = '' if is_container else '_'
         pdisp = pcs['display'] if pcs else 'block'
-        prow = pdisp in ('flex', 'inline-flex') and pcs['flexDirection'].startswith('row')
+        prow = (pdisp in ('flex', 'inline-flex') and pcs['flexDirection'].startswith('row')) or pdisp == 'table-row'
         pgrid = pdisp in ('grid', 'inline-grid')
         width = au.get('width')
         maxw = au.get('max-width')
         flex = au.get('flex')
         grow = float(cs['flexGrow'] or 0)
         noshrink = cs.get('flexShrink') == '0'
+        if pdisp == 'table-row' and parent['rect'][2] > 0:
+            width = f"{round(n['rect'][2] / parent['rect'][2] * 100, 3)}%"
+            flex = None
+        if prow and not noshrink:
+            # Items in an overflowing row (rails, marquees, timelines) never shrank on the old site.
+            sib = [k for k in visible_kids(parent) if k.get('cs', {}).get('position') not in ('absolute', 'fixed')]
+            gap = px(pcs.get('columnGap')) if pcs.get('columnGap') not in (None, 'normal') else 0
+            ppad = spacing(pcs, 'padding')
+            inner = parent['rect'][2] - ppad[1] - ppad[3]
+            total = sum(k['rect'][2] for k in sib) + gap * max(len(sib) - 1, 0)
+            if inner > 0 and total > inner + 2:
+                noshrink = True
+            if (parent.get('au') or {}).get('width', '').strip() in ('max-content', 'fit-content') or pcs.get('overflowX') in ('auto', 'scroll'):
+                noshrink = True
+            aw = au.get('width', '')
+            if re.match(r'^[\d.]+px$', aw.strip()) and abs(px(aw) - n['rect'][2]) <= 1:
+                noshrink = True
         # 'flex: 0 1 650px' -> a 650px basis that may still shrink
         fparts = (flex or '').split()
         if prow and not width and len(fparts) == 3 and re.match(r'^[\d.]+(px|%)$', fparts[2]) and fparts[0] in ('0', '0.0'):
@@ -596,7 +620,7 @@ class Converter:
                 s['_element_width'] = 'auto'
             else:
                 s['_element_width'] = 'inherit'
-            if prow and cs['flexShrink'] == '0':
+            if prow and noshrink:
                 s['_flex_size'] = s.get('_flex_size') or 'none'
         if cs['alignSelf'] not in ('auto', 'normal'):
             a = {'flex-start': 'flex-start', 'start': 'flex-start', 'flex-end': 'flex-end', 'end': 'flex-end',
@@ -690,6 +714,13 @@ class Converter:
                                              'baseline': 'baseline'}.get(ai, ai)
                     s['flex_wrap'] = 'wrap' if cs['flexWrap'] == 'wrap' else 'nowrap'
                     rg, cg = px(cs['rowGap']), px(cs['columnGap'])
+                elif d == 'table-row':
+                    # table rows become rows of fixed-share cells
+                    s['flex_direction'] = 'row'
+                    s['flex_justify_content'] = 'flex-start'
+                    s['flex_align_items'] = 'stretch'
+                    s['flex_wrap'] = 'nowrap'
+                    rg = cg = 0
                 else:
                     s['flex_direction'] = 'column'
                     s['flex_justify_content'] = 'flex-start'
@@ -704,7 +735,7 @@ class Converter:
                 s['min_height'] = size(px(cs['height'] if au.get('height') else cs['minHeight']) or x['rect'][3]) if 'px' in mh and 'calc' not in mh else custom(mh)
             elif mh is None or mh in ('auto', '0', '0px'):
                 s['min_height'] = size(0)
-            if not visible_kids(x) and x['rect'][3] > 0 and s.get('min_height', size(0)) == size(0):
+            if (not visible_kids(x) or cs['position'] == 'absolute') and x['rect'][3] > 0 and s.get('min_height', size(0)) == size(0):
                 # empty decorative boxes (lines, dots, glows) keep their drawn height
                 s['min_height'] = size(x['rect'][3])
             if cs['overflow'] == 'hidden' or cs['overflowX'] == 'hidden':

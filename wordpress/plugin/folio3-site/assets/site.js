@@ -35,9 +35,14 @@
     var on = function (sel, fn) { var el = nav.querySelector(sel); if (el) el.addEventListener('click', fn); };
     on('.f3-nav__burger', function (e) { e.preventDefault(); nav.classList.toggle('is-open'); document.documentElement.style.overflow = nav.classList.contains('is-open') ? 'hidden' : ''; });
     on('.f3-nav__sheet-toggle', function (e) { e.preventDefault(); nav.classList.toggle('is-services-open'); });
-    on('.f3-nav__toggle', function (e) { e.preventDefault(); nav.classList.toggle('is-mega'); });
+    var toggle = nav.querySelector('.f3-nav__toggle');
+    if (toggle) { toggle.setAttribute('role', 'button'); toggle.setAttribute('tabindex', '0'); toggle.setAttribute('aria-label', 'Show services menu'); toggle.setAttribute('aria-expanded', 'false'); }
+    var closeMega = function () { nav.classList.remove('is-mega'); nav.classList.add('is-mega-closed'); if (toggle) toggle.setAttribute('aria-expanded', 'false'); };
+    on('.f3-nav__toggle', function (e) { e.preventDefault(); var o = nav.classList.toggle('is-mega'); nav.classList.toggle('is-mega-closed', !o); if (toggle) toggle.setAttribute('aria-expanded', String(o)); });
+    if (toggle) toggle.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle.click(); } });
+    nav.addEventListener('mouseleave', function () { nav.classList.remove('is-mega-closed'); });
     document.addEventListener('click', function (e) { if (!nav.contains(e.target)) nav.classList.remove('is-mega'); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { nav.classList.remove('is-mega', 'is-open'); document.documentElement.style.overflow = ''; } });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeMega(); nav.classList.remove('is-open'); document.documentElement.style.overflow = ''; } });
   }
 })();
 

@@ -38,7 +38,7 @@ body { overflow-x: hidden; background: #fff; color: var(--text); -webkit-font-sm
 }
 .f3-nav .f3-mega { position: absolute !important; top: 100%; left: 0; right: 0; opacity: 0; visibility: hidden; transform: translateY(-8px); transition: opacity 180ms ease, transform 220ms var(--ease-out-quint), visibility 0s linear 220ms; }
 @media (min-width: 1025px) {
-  .f3-nav:has(.f3-nav__item:hover) .f3-mega, .f3-nav .f3-mega:hover, .f3-nav.is-mega .f3-mega { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+  .f3-nav:not(.is-mega-closed):has(.f3-nav__item:hover) .f3-mega, .f3-nav:not(.is-mega-closed) .f3-mega:hover, .f3-nav.is-mega .f3-mega { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
   .f3-nav:has(.f3-nav__item:hover) .f3-nav__toggle .elementor-icon, .f3-nav.is-mega .f3-nav__toggle .elementor-icon { transform: rotate(180deg); color: var(--blue); }
 }
 .f3-mega__head .elementor-heading-title { transition: color 150ms ease; }
@@ -242,3 +242,36 @@ html.f3-js .f3-nav { animation: f3-nav-in 0.4s var(--ease-out-quint) both; }
 /* ---------- Old-site details the widgets don't carry ---------- */
 .elementor-widget-button .elementor-button { border-color: transparent; }
 .f3-case-card__logo img { display: block; mix-blend-mode: multiply; }
+
+/* ---------- About timeline: vertical list with the line on the left below 1025px (as the old site) ---------- */
+@media (max-width: 1024px) {
+  .f3-timeline__col { flex-direction: row !important; align-items: center !important; gap: 16px !important; }
+  .f3-timeline__track { order: -1; min-height: 0 !important; height: auto !important; width: auto !important; flex: none !important; }
+  .f3-timeline__dot { width: 24px !important; height: 24px !important; min-height: 24px !important; flex: none !important; }
+  .f3-timeline__line { top: 12px !important; bottom: 12px !important; left: 11px !important; right: auto !important; width: 2px !important; height: auto !important; min-height: 0 !important; transform-origin: center top; }
+  .f3-timeline__slot { min-height: 0 !important; height: auto !important; flex: 1 1 auto !important; width: auto !important; }
+  .f3-timeline__slot:has(.f3-timeline__icon) { display: none !important; }
+}
+/* Hover lifts the old site does show (these cards aren't driven by a reveal transform there). */
+@media (hover: hover) and (pointer: fine) {
+  .f3-timeline__card:hover { transform: translateY(-3px); }
+  .f3-vcio-trust__item:hover .f3-vcio-trust__panel { transform: translateY(-6px); }
+}
+.f3-case-card { border-color: transparent !important; transition: border-color 200ms ease, box-shadow 200ms ease; }
+.f3-case-card:hover { border-color: #d8dbe8 !important; }
+.f3-testimonial__photo img, .f3-testimonial__photo { border-radius: 10px; }
+
+
+/* Services chevron: blue and flipped while hovered or open (Elementor's icon rules win without !important). */
+.f3-nav__toggle .elementor-icon svg, .f3-nav__toggle .elementor-icon i { transition: transform 250ms var(--ease-out-quint), color 150ms ease, fill 150ms ease; }
+@media (min-width: 1025px) {
+  .f3-nav__item:hover .f3-nav__toggle .elementor-icon, .f3-nav.is-mega .f3-nav__toggle .elementor-icon { color: var(--blue) !important; fill: var(--blue) !important; }
+  .f3-nav__item:hover .f3-nav__toggle .elementor-icon svg, .f3-nav.is-mega .f3-nav__toggle .elementor-icon svg,
+  .f3-nav__item:hover .f3-nav__toggle .elementor-icon i, .f3-nav.is-mega .f3-nav__toggle .elementor-icon i { transform: rotate(180deg) !important; fill: var(--blue) !important; color: var(--blue) !important; }
+  .f3-nav__item:hover .f3-nav__toggle .elementor-icon svg path, .f3-nav.is-mega .f3-nav__toggle .elementor-icon svg path { fill: var(--blue) !important; }
+}
+/* FAQ question turns blue on hover. */
+@media (hover: hover) and (pointer: fine) { .f3-faq .e-n-accordion-item-title:hover .e-n-accordion-item-title-text { color: #4a7dee; } }
+/* Thank-you steps: the status line under each title is light grey on the dark band. */
+.f3-ty-step__copy .elementor-heading-title { line-height: 22px; }
+.f3-ty-step__copy .elementor-heading-title span:last-child { color: rgba(255, 255, 255, 0.65) !important; font-size: 14px; line-height: 17px; }
