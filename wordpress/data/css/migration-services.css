@@ -3,6 +3,8 @@
 .f3x-b163626{white-space:pre-line}
 .f3x-deadd7d{white-space:nowrap}
 .f3x-6384c78{white-space:nowrap}
+@media (max-width: 1024px){.f3x-6384c78{white-space:normal}}
+@media (max-width: 767px){.f3x-6384c78{white-space:normal}}
 .f3x-7c78e43{overflow-x:auto}
 .f3x-3922b9c{white-space:pre-line}
 .f3x-be81ebd{white-space:pre-line}
@@ -39,6 +41,7 @@
 .f3x-0ef30df{height:42px;display:grid;place-items:center;box-sizing:border-box}
 .f3x-7609cac{white-space:nowrap}
 .f3x-dc9fc12{white-space:nowrap}
+@media (max-width: 767px){.f3x-dc9fc12{white-space:normal}}
 html.f3-js .f3m-e220ce7:not(.f3-in){opacity:0;transform:translateY(24px)}
 html.f3-js .f3m-cae78e7:not(.f3-in){opacity:0;transform:translateY(24px)}.f3m-cae78e7{--f3d:0.08s;}
 html.f3-js .f3m-580fb5e:not(.f3-in){opacity:0;transform:translateY(24px)}

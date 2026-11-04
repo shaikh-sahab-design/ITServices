@@ -281,3 +281,18 @@ html.f3-js .f3-nav { animation: f3-nav-in 0.4s var(--ease-out-quint) both; }
 .f3-compare__table { min-width: 720px; }
 /* Nothing pokes out sideways (the old site clips decorative overflow too); clip keeps sticky working. */
 html, body { overflow-x: clip; }
+
+/* Button text follows the wrapper's white-space so long CTA labels wrap on phones like the old site. */
+.elementor-widget-button .elementor-button, .elementor-widget-button .elementor-button-content-wrapper { white-space: inherit; }
+.elementor-widget-button .elementor-button-text { min-width: 0; }
+
+/* About stats band: one row on desktop, 2x2 grid below 1025px, single column on phones (Elementor can't switch flex to grid per breakpoint). */
+@media (max-width: 1024px) {
+  .f3-stats-band__row { display: grid !important; grid-template-columns: 1fr 1fr; row-gap: 32px; column-gap: 28px; }
+  .f3-stats-band__rule { display: none !important; }
+  .f3-stats-band__group { justify-content: center !important; width: auto !important; }
+  .f3-stats-band__item { width: auto !important; flex: 1 1 auto !important; }
+}
+@media (max-width: 767px) {
+  .f3-stats-band__row { grid-template-columns: 1fr; }
+}

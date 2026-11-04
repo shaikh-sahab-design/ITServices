@@ -434,6 +434,16 @@ def box_settings(cs, pre, au=None):
     return s, extra
 
 
+def nowrap_reset(n, extra, page):
+    """white-space:nowrap set on desktop must be undone where the old site wraps (e.g. mobile buttons)."""
+    if not any('white-space:nowrap' in d for d in (extra.get(1440) or [])):
+        return
+    for w in (1024, 390):
+        x = page.at(n, w)
+        if x is not None and x['cs'].get('whiteSpace') == 'normal':
+            extra[w] = list(extra.get(w) or []) + ['white-space:normal']
+
+
 def spacing(cs, kind):
     vals = [px(cs[f'{kind}{side}']) for side in ('Top', 'Right', 'Bottom', 'Left')]
     return vals
@@ -752,13 +762,14 @@ class Converter:
         # Elementor forces containers to 100% wide on mobile unless width_mobile is set explicitly.
         if 'width' in s and 'width_mobile' not in s and self.p.at(n, 390) is not None:
             eff = s.get('width_tablet', s['width'])
-            if eff not in (size(100, '%'), custom('100%')):
+            if eff not in (size(100, '%'), custom('100%'), custom('auto')):
                 s['width_mobile'] = eff
         # ...and grids to a single column on mobile unless grid_columns_grid_mobile is set.
         if 'grid_columns_grid' in s and 'grid_columns_grid_mobile' not in s and self.p.at(n, 390) is not None:
             s['grid_columns_grid_mobile'] = s.get('grid_columns_grid_tablet', s['grid_columns_grid'])
         extra = {w: s.pop('_extra' + VP[w], None) for w in (1024, 390)}
         extra[1440] = s.pop('_extra', [])
+        nowrap_reset(n, extra, self.p)
         tag = n['tag']
         if tag == 'a' and n['attrs'].get('href'):
             s['html_tag'] = 'a'
@@ -836,6 +847,7 @@ class Converter:
         s = self.merged(n, fn)
         extra = {w: s.pop('_extra' + VP[w], None) or [] for w in (1024, 390)}
         extra[1440] = s.pop('_extra', [])
+        nowrap_reset(n, extra, self.p)
         cl = self.node_classes(n)
         if cl:
             s['_css_classes'] = cl

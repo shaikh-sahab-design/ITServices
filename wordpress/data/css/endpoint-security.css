@@ -1,26 +1,38 @@
 .f3x-70592c5{--hero-img:url(/images/hero-soc.webp);--tint:6, 19, 51;--fade-from:30.9%;--fade-to:80.2%;--copy-w:873px}
 .f3x-2b62859{white-space:nowrap}
+@media (max-width: 767px){.f3x-2b62859{white-space:normal}}
 .f3x-2cc3c40{white-space:nowrap}
+@media (max-width: 767px){.f3x-2cc3c40{white-space:normal}}
 .f3x-1d13761{opacity:0.7}
 .f3x-020ccca{white-space:nowrap}
+@media (max-width: 767px){.f3x-020ccca{white-space:normal}}
 .f3x-da386c3{opacity:0.7}
 .f3x-2ac0cc5{white-space:nowrap}
+@media (max-width: 767px){.f3x-2ac0cc5{white-space:normal}}
 .f3x-2242698{opacity:0.7}
 .f3x-95c9e1d{white-space:nowrap}
+@media (max-width: 767px){.f3x-95c9e1d{white-space:normal}}
 .f3x-71b159e{opacity:0.7}
 .f3x-30fa95d{white-space:nowrap}
+@media (max-width: 767px){.f3x-30fa95d{white-space:normal}}
 .f3x-67ed607{opacity:0.7}
 .f3x-09f8c00{white-space:nowrap}
+@media (max-width: 767px){.f3x-09f8c00{white-space:normal}}
 .f3x-234d9b8{white-space:nowrap}
+@media (max-width: 767px){.f3x-234d9b8{white-space:normal}}
 .f3x-9a898b0{height:40px;display:grid;place-items:center;box-sizing:border-box}
 .f3x-6d50602{height:40px;display:grid;place-items:center;box-sizing:border-box}
 .f3x-5fd7609{height:40px;display:grid;place-items:center;box-sizing:border-box}
 .f3x-85f84a3{height:40px;display:grid;place-items:center;box-sizing:border-box}
 .f3x-78abc86{height:40px;display:grid;place-items:center;box-sizing:border-box}
 .f3x-7226fac{white-space:nowrap}
+@media (max-width: 767px){.f3x-7226fac{white-space:normal}}
 .f3x-a5c0f9d{white-space:nowrap}
+@media (max-width: 767px){.f3x-a5c0f9d{white-space:normal}}
 .f3x-108e96a{white-space:nowrap}
+@media (max-width: 767px){.f3x-108e96a{white-space:normal}}
 .f3x-27a568c{white-space:nowrap}
+@media (max-width: 767px){.f3x-27a568c{white-space:normal}}
 html.f3-js .f3m-fe5c715:not(.f3-in){opacity:0;transform:translateY(24px)}
 html.f3-js .f3m-9cfb559:not(.f3-in){opacity:0;transform:translateY(24px)}.f3m-9cfb559{--f3d:0.08s;}
 html.f3-js .f3m-7e52eb3:not(.f3-in){opacity:0;transform:translateY(24px)}

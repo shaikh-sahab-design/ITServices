@@ -32,6 +32,7 @@
 .f3x-3f6d2e1{opacity:0.1}
 .f3x-9a6d432{white-space:nowrap}
 .f3x-c437ea6{white-space:nowrap}
+@media (max-width: 767px){.f3x-c437ea6{white-space:normal}}
 html.f3-js .f3m-ca6f648:not(.f3-in){opacity:0;transform:scale(0.6)}.f3m-ca6f648{--f3d:0.1s;--f3t:0.6s;}
 html.f3-js .f3m-67b1950:not(.f3-in){opacity:0;transform:scale(0.4)}.f3m-67b1950{--f3t:0.6s;--f3e:cubic-bezier(0.34,1.56,0.64,1);}
 html.f3-js .f3m-e0cb920:not(.f3-in){opacity:0;transform:translateY(20px)}.f3m-e0cb920{--f3d:0.3s;}

@@ -1,27 +1,40 @@
 .f3x-3bf9b3d{--hero-img:url(/images/hero-soc.webp);--tint:6, 19, 51;--fade-from:30.9%;--fade-to:80.2%;--copy-w:873px}
 .f3x-b5a7067{white-space:nowrap}
+@media (max-width: 767px){.f3x-b5a7067{white-space:normal}}
 .f3x-89cfc95{white-space:nowrap}
+@media (max-width: 767px){.f3x-89cfc95{white-space:normal}}
 .f3x-5b63853{opacity:0.7}
 .f3x-9b8469a{white-space:nowrap}
+@media (max-width: 767px){.f3x-9b8469a{white-space:normal}}
 .f3x-687c549{opacity:0.7}
 .f3x-6f5e0c1{white-space:nowrap}
+@media (max-width: 767px){.f3x-6f5e0c1{white-space:normal}}
 .f3x-711cf48{opacity:0.7}
 .f3x-c605e8a{white-space:nowrap}
+@media (max-width: 767px){.f3x-c605e8a{white-space:normal}}
 .f3x-e7f2a5d{opacity:0.7}
 .f3x-abf6fb8{white-space:nowrap}
+@media (max-width: 767px){.f3x-abf6fb8{white-space:normal}}
 .f3x-a66ff5e{opacity:0.7}
 .f3x-6e52584{white-space:nowrap}
+@media (max-width: 767px){.f3x-6e52584{white-space:normal}}
 .f3x-2674a95{white-space:nowrap}
+@media (max-width: 767px){.f3x-2674a95{white-space:normal}}
 .f3x-17dfbb1{height:40px;display:grid;place-items:center;box-sizing:border-box}
 .f3x-a545dd1{height:40px;display:grid;place-items:center;box-sizing:border-box}
 .f3x-248c883{height:40px;display:grid;place-items:center;box-sizing:border-box}
 .f3x-b9568b5{height:40px;display:grid;place-items:center;box-sizing:border-box}
 .f3x-ca73288{height:40px;display:grid;place-items:center;box-sizing:border-box}
 .f3x-24614ed{white-space:nowrap}
+@media (max-width: 767px){.f3x-24614ed{white-space:normal}}
 .f3x-62a3472{white-space:nowrap}
+@media (max-width: 767px){.f3x-62a3472{white-space:normal}}
 .f3x-d1012ee{white-space:nowrap}
+@media (max-width: 767px){.f3x-d1012ee{white-space:normal}}
 .f3x-2d5b3ac{white-space:nowrap}
+@media (max-width: 767px){.f3x-2d5b3ac{white-space:normal}}
 .f3x-566d434{white-space:nowrap}
+@media (max-width: 767px){.f3x-566d434{white-space:normal}}
 html.f3-js .f3m-9a6069b:not(.f3-in){opacity:0;transform:translateY(24px)}
 html.f3-js .f3m-dd931e3:not(.f3-in){opacity:0;transform:translateY(24px)}.f3m-dd931e3{--f3d:0.08s;}
 html.f3-js .f3m-b6d1b26:not(.f3-in){opacity:0;transform:translateY(24px)}

@@ -3,7 +3,9 @@
 .f3x-896025a{white-space:nowrap}
 .f3x-1e7a8ef{white-space:nowrap}
 .f3x-d7fcd32{white-space:nowrap}
+@media (max-width: 767px){.f3x-d7fcd32{white-space:normal}}
 .f3x-46a19dd{white-space:nowrap}
+@media (max-width: 767px){.f3x-46a19dd{white-space:normal}}
 .f3x-185688c{--draw:0;transform:matrix(1, 0, 0, 1, 0, 0)}
 .f3x-7e0770e{opacity:0.06}
 .f3x-8e88415{opacity:0.06}

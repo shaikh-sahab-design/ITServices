@@ -3,6 +3,8 @@
 .f3x-0aa12ff{white-space:pre-line}
 .f3x-8208995{white-space:nowrap}
 .f3x-9f1d067{white-space:nowrap}
+@media (max-width: 1024px){.f3x-9f1d067{white-space:normal}}
+@media (max-width: 767px){.f3x-9f1d067{white-space:normal}}
 .f3x-00d86f7{overflow-x:auto}
 .f3x-42d9638{white-space:pre-line}
 .f3x-5084e9f{white-space:nowrap}
