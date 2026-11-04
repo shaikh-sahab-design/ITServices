@@ -31,10 +31,11 @@ function folio3_import_media( $ref, array $keys ) {
 	require_once ABSPATH . 'wp-admin/includes/file.php';
 	require_once ABSPATH . 'wp-admin/includes/media.php';
 	require_once ABSPATH . 'wp-admin/includes/image.php';
-	$map = get_option( 'folio3_media', [] );
+	global $wpdb;
 	$out = [];
 	foreach ( $keys as $key ) {
-		if ( isset( $map[ $key ] ) && get_post( $map[ $key ] ) ) {
+		$found = (int) $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key='_folio3_media_key' AND meta_value=%s LIMIT 1", $key ) );
+		if ( $found ) {
 			continue;
 		}
 		$body = folio3_fetch( FOLIO3_REPO_RAW . $ref . '/' . folio3_media_repo_path( $key ) );
@@ -52,11 +53,21 @@ function folio3_import_media( $ref, array $keys ) {
 			continue;
 		}
 		update_post_meta( $id, '_folio3_media_key', $key );
-		$map[ $key ] = $id;
 		$out[ $key ] = $id;
 	}
-	update_option( 'folio3_media', $map, false );
+	folio3_rebuild_media_map();
 	return $out;
+}
+
+/** The key => attachment map, rebuilt from attachment meta so parallel imports can't lose entries. */
+function folio3_rebuild_media_map() {
+	global $wpdb;
+	$map = [];
+	foreach ( $wpdb->get_results( "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key='_folio3_media_key' ORDER BY post_id" ) as $r ) {
+		$map[ $r->meta_value ] = $map[ $r->meta_value ] ?? (int) $r->post_id;
+	}
+	update_option( 'folio3_media', $map, false );
+	return $map;
 }
 
 /** Replace @@url:/@@id:/@@link: placeholders inside decoded Elementor data. */
