@@ -307,3 +307,7 @@ html, body { overflow-x: clip; }
 .f3-hero__handle.f3-hero__handle { --f3d: 0.2s; }
 .f3-hero__handle > .elementor-element { width: auto !important; line-height: 0 !important; margin: 0 !important; }
 .f3-hero__handle img { display: block; width: 20px !important; height: 20px !important; }
+
+/* Contact form: the Elementor widget is the card, so the inner form must not draw a second card. */
+.elementor-widget.f3-form form.f3-form { padding: 0 !important; border-radius: 0 !important; background: none !important; box-shadow: none !important; }
+.elementor-widget.f3-form > .elementor-widget-container, .elementor-widget.f3-form .elementor-shortcode { height: 100%; }
