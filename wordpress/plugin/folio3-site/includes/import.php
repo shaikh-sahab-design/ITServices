@@ -126,7 +126,7 @@ function folio3_save_elementor( $post_id, array $data ) {
 	return array_values( array_unique( $missing ) );
 }
 
-function folio3_import_page( $ref, $path, $slug, $title, $parent_path = '' ) {
+function folio3_import_page( $ref, $path, $slug, $title, $parent_path = '', $type = 'page' ) {
 	$json = folio3_fetch( FOLIO3_REPO_RAW . $ref . '/wordpress/data/' . $path );
 	if ( is_wp_error( $json ) ) {
 		return $json->get_error_message();
@@ -137,14 +137,18 @@ function folio3_import_page( $ref, $path, $slug, $title, $parent_path = '' ) {
 		$p      = get_page_by_path( $parent_path );
 		$parent = $p ? $p->ID : 0;
 	}
-	$existing = get_page_by_path( $parent_path ? $parent_path . '/' . $slug : $slug );
+	$existing = get_page_by_path( $parent_path ? $parent_path . '/' . $slug : $slug, OBJECT, $type );
 	$args     = [
-		'post_type'   => 'page',
+		'post_type'   => $type,
 		'post_status' => 'publish',
 		'post_title'  => $title,
 		'post_name'   => $slug,
 		'post_parent' => $parent,
 	];
+	if ( $existing && 'post' === $type ) {
+		// Blog posts are managed in Posts once created: never overwrite an editor's work.
+		return [ 'id' => $existing->ID, 'missing' => [] ];
+	}
 	if ( $existing ) {
 		$args['ID'] = $existing->ID;
 		$id         = wp_update_post( $args );
@@ -209,7 +213,7 @@ function folio3_import_all( $ref, array $only = [] ) {
 		if ( $only && ! in_array( $p['name'], $only, true ) ) {
 			continue;
 		}
-		$r = folio3_import_page( $ref, $p['name'] . '.json', $p['slug'], $p['title'], $p['parent'] );
+		$r = folio3_import_page( $ref, $p['name'] . '.json', $p['slug'], $p['title'], $p['parent'], $p['post_type'] ?? 'page' );
 		$out[ $p['name'] ] = is_array( $r ) ? ( $r['missing'] ? [ 'id' => $r['id'], 'missing' => $r['missing'] ] : $r['id'] ) : $r;
 		if ( 'home' === $p['name'] && is_array( $r ) ) {
 			update_option( 'show_on_front', 'page' );

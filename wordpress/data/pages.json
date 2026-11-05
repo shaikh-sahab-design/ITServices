@@ -178,8 +178,9 @@
   "route": "/blog/how-outsourced-it-support-services-boost-efficiency",
   "name": "blog__how-outsourced-it-support-services-boost-efficiency",
   "slug": "how-outsourced-it-support-services-boost-efficiency",
-  "parent": "blog",
-  "title": "How Outsourced IT Support Services Can Boost Your Company's Efficiency"
+  "parent": "",
+  "title": "How Outsourced IT Support Services Can Boost Your Company's Efficiency",
+  "post_type": "post"
  },
  {
   "route": "/case-studies",

@@ -39,6 +39,10 @@ def page_list():
             title = m.group(1) if m else None
         if not title:
             title = slug.replace('-', ' ').title()
+        if parent == 'blog':
+            # Blog articles live in WordPress Posts (permalinks /blog/%postname%/), not as child pages.
+            out.append({'route': r, 'name': name, 'slug': slug, 'parent': '', 'title': title, 'post_type': 'post'})
+            continue
         out.append({'route': r, 'name': name, 'slug': slug, 'parent': parent, 'title': title})
     return out
 
