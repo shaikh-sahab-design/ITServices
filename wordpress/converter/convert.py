@@ -12,6 +12,7 @@ import json
 import os
 import re
 import sys
+import icons
 
 WIDTHS = (1440, 1024, 390)
 VP = {1440: '', 1024: '_tablet', 390: '_mobile'}
@@ -932,6 +933,10 @@ class Converter:
         s = self.widget_common(n, parent, fn)
         # image radius is set on the img; drop wrapper radius copy
         s.pop('_border_radius', None)
+        shared = icons.resolve(key)
+        if shared:
+            key = shared[0]
+            s['_css_classes'] = (s.get('_css_classes', '') + ' ' + shared[1]).strip()
         s['image'] = media(key)
         s['image_size'] = 'full'
         if n['attrs'].get('alt'):

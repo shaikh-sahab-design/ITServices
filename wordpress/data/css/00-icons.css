@@ -1,0 +1,59 @@
+/* Shared icons: one file per shape, painted with a mask in the colour set by f3icc-* (see converter/icons.py). */
+.f3ic img{background-color:var(--f3ic,currentColor);object-position:-99999px 0;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
+.f3ic-001c7dc64a img{-webkit-mask-image:url(@@url:svg/ic-001c7dc64a.svg);mask-image:url(@@url:svg/ic-001c7dc64a.svg)}
+.f3ic-0e5371df3e img{-webkit-mask-image:url(@@url:svg/ic-0e5371df3e.svg);mask-image:url(@@url:svg/ic-0e5371df3e.svg)}
+.f3ic-1766d3b38a img{-webkit-mask-image:url(@@url:svg/ic-1766d3b38a.svg);mask-image:url(@@url:svg/ic-1766d3b38a.svg)}
+.f3ic-2719eaa69c img{-webkit-mask-image:url(@@url:svg/ic-2719eaa69c.svg);mask-image:url(@@url:svg/ic-2719eaa69c.svg)}
+.f3ic-3565b929be img{-webkit-mask-image:url(@@url:svg/ic-3565b929be.svg);mask-image:url(@@url:svg/ic-3565b929be.svg)}
+.f3ic-39ba9783bd img{-webkit-mask-image:url(@@url:svg/ic-39ba9783bd.svg);mask-image:url(@@url:svg/ic-39ba9783bd.svg)}
+.f3ic-39eda9d375 img{-webkit-mask-image:url(@@url:svg/ic-39eda9d375.svg);mask-image:url(@@url:svg/ic-39eda9d375.svg)}
+.f3ic-3e163a302a img{-webkit-mask-image:url(@@url:svg/ic-3e163a302a.svg);mask-image:url(@@url:svg/ic-3e163a302a.svg)}
+.f3ic-3ee7a2aa83 img{-webkit-mask-image:url(@@url:svg/ic-3ee7a2aa83.svg);mask-image:url(@@url:svg/ic-3ee7a2aa83.svg)}
+.f3ic-3f72327142 img{-webkit-mask-image:url(@@url:svg/ic-3f72327142.svg);mask-image:url(@@url:svg/ic-3f72327142.svg)}
+.f3ic-41121d6d8a img{-webkit-mask-image:url(@@url:svg/ic-41121d6d8a.svg);mask-image:url(@@url:svg/ic-41121d6d8a.svg)}
+.f3ic-488b7f896e img{-webkit-mask-image:url(@@url:svg/ic-488b7f896e.svg);mask-image:url(@@url:svg/ic-488b7f896e.svg)}
+.f3ic-55d2deb61f img{-webkit-mask-image:url(@@url:svg/ic-55d2deb61f.svg);mask-image:url(@@url:svg/ic-55d2deb61f.svg)}
+.f3ic-5e1f184677 img{-webkit-mask-image:url(@@url:svg/ic-5e1f184677.svg);mask-image:url(@@url:svg/ic-5e1f184677.svg)}
+.f3ic-66a0f0263f img{-webkit-mask-image:url(@@url:svg/ic-66a0f0263f.svg);mask-image:url(@@url:svg/ic-66a0f0263f.svg)}
+.f3ic-6e02773632 img{-webkit-mask-image:url(@@url:svg/ic-6e02773632.svg);mask-image:url(@@url:svg/ic-6e02773632.svg)}
+.f3ic-70ac6450a0 img{-webkit-mask-image:url(@@url:svg/ic-70ac6450a0.svg);mask-image:url(@@url:svg/ic-70ac6450a0.svg)}
+.f3ic-728b09b85a img{-webkit-mask-image:url(@@url:svg/ic-728b09b85a.svg);mask-image:url(@@url:svg/ic-728b09b85a.svg)}
+.f3ic-7738b8e5e1 img{-webkit-mask-image:url(@@url:svg/ic-7738b8e5e1.svg);mask-image:url(@@url:svg/ic-7738b8e5e1.svg)}
+.f3ic-7d6a50c696 img{-webkit-mask-image:url(@@url:svg/ic-7d6a50c696.svg);mask-image:url(@@url:svg/ic-7d6a50c696.svg)}
+.f3ic-7de08ae6c2 img{-webkit-mask-image:url(@@url:svg/ic-7de08ae6c2.svg);mask-image:url(@@url:svg/ic-7de08ae6c2.svg)}
+.f3ic-82b0776195 img{-webkit-mask-image:url(@@url:svg/ic-82b0776195.svg);mask-image:url(@@url:svg/ic-82b0776195.svg)}
+.f3ic-8cd2e11bb3 img{-webkit-mask-image:url(@@url:svg/ic-8cd2e11bb3.svg);mask-image:url(@@url:svg/ic-8cd2e11bb3.svg)}
+.f3ic-913fd683f4 img{-webkit-mask-image:url(@@url:svg/ic-913fd683f4.svg);mask-image:url(@@url:svg/ic-913fd683f4.svg)}
+.f3ic-98f9f8d1a2 img{-webkit-mask-image:url(@@url:svg/ic-98f9f8d1a2.svg);mask-image:url(@@url:svg/ic-98f9f8d1a2.svg)}
+.f3ic-9a403ea94e img{-webkit-mask-image:url(@@url:svg/ic-9a403ea94e.svg);mask-image:url(@@url:svg/ic-9a403ea94e.svg)}
+.f3ic-9f800bfd9f img{-webkit-mask-image:url(@@url:svg/ic-9f800bfd9f.svg);mask-image:url(@@url:svg/ic-9f800bfd9f.svg)}
+.f3ic-a05f54e6db img{-webkit-mask-image:url(@@url:svg/ic-a05f54e6db.svg);mask-image:url(@@url:svg/ic-a05f54e6db.svg)}
+.f3ic-a1ced0e3e8 img{-webkit-mask-image:url(@@url:svg/ic-a1ced0e3e8.svg);mask-image:url(@@url:svg/ic-a1ced0e3e8.svg)}
+.f3ic-a238498bb1 img{-webkit-mask-image:url(@@url:svg/ic-a238498bb1.svg);mask-image:url(@@url:svg/ic-a238498bb1.svg)}
+.f3ic-ac0b7452d2 img{-webkit-mask-image:url(@@url:svg/ic-ac0b7452d2.svg);mask-image:url(@@url:svg/ic-ac0b7452d2.svg)}
+.f3ic-acc6d3ee19 img{-webkit-mask-image:url(@@url:svg/ic-acc6d3ee19.svg);mask-image:url(@@url:svg/ic-acc6d3ee19.svg)}
+.f3ic-af1abf6f45 img{-webkit-mask-image:url(@@url:svg/ic-af1abf6f45.svg);mask-image:url(@@url:svg/ic-af1abf6f45.svg)}
+.f3ic-b921635bf2 img{-webkit-mask-image:url(@@url:svg/ic-b921635bf2.svg);mask-image:url(@@url:svg/ic-b921635bf2.svg)}
+.f3ic-bdfa1f5ffd img{-webkit-mask-image:url(@@url:svg/ic-bdfa1f5ffd.svg);mask-image:url(@@url:svg/ic-bdfa1f5ffd.svg)}
+.f3ic-c6fe42de4e img{-webkit-mask-image:url(@@url:svg/ic-c6fe42de4e.svg);mask-image:url(@@url:svg/ic-c6fe42de4e.svg)}
+.f3ic-cbb79d2dd0 img{-webkit-mask-image:url(@@url:svg/ic-cbb79d2dd0.svg);mask-image:url(@@url:svg/ic-cbb79d2dd0.svg)}
+.f3ic-d28e85c18c img{-webkit-mask-image:url(@@url:svg/ic-d28e85c18c.svg);mask-image:url(@@url:svg/ic-d28e85c18c.svg)}
+.f3ic-d5fbbd2b4d img{-webkit-mask-image:url(@@url:svg/ic-d5fbbd2b4d.svg);mask-image:url(@@url:svg/ic-d5fbbd2b4d.svg)}
+.f3ic-daf2d82d92 img{-webkit-mask-image:url(@@url:svg/ic-daf2d82d92.svg);mask-image:url(@@url:svg/ic-daf2d82d92.svg)}
+.f3ic-e4e3c52cd0 img{-webkit-mask-image:url(@@url:svg/ic-e4e3c52cd0.svg);mask-image:url(@@url:svg/ic-e4e3c52cd0.svg)}
+.f3ic-eb213dc358 img{-webkit-mask-image:url(@@url:svg/ic-eb213dc358.svg);mask-image:url(@@url:svg/ic-eb213dc358.svg)}
+.f3ic-f7c0ee36d9 img{-webkit-mask-image:url(@@url:svg/ic-f7c0ee36d9.svg);mask-image:url(@@url:svg/ic-f7c0ee36d9.svg)}
+.f3ic-f873107d38 img{-webkit-mask-image:url(@@url:svg/ic-f873107d38.svg);mask-image:url(@@url:svg/ic-f873107d38.svg)}
+.f3ic-fc3d30b026 img{-webkit-mask-image:url(@@url:svg/ic-fc3d30b026.svg);mask-image:url(@@url:svg/ic-fc3d30b026.svg)}
+.f3ic-fc5aed2191 img{-webkit-mask-image:url(@@url:svg/ic-fc5aed2191.svg);mask-image:url(@@url:svg/ic-fc5aed2191.svg)}
+.f3icc-0c0e16{--f3ic:#0c0e16}
+.f3icc-28303f{--f3ic:#28303f}
+.f3icc-2f5fcc{--f3ic:#2f5fcc}
+.f3icc-41444e{--f3ic:#41444e}
+.f3icc-4a7dee{--f3ic:#4a7dee}
+.f3icc-5732db{--f3ic:#5732db}
+.f3icc-7a5a00{--f3ic:#7a5a00}
+.f3icc-c41b2e{--f3ic:#c41b2e}
+.f3icc-ec2539{--f3ic:#ec2539}
+.f3icc-f5c300{--f3ic:#f5c300}
+.f3icc-ffffff{--f3ic:#ffffff}
