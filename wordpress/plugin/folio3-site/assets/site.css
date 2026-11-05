@@ -319,3 +319,11 @@ html, body { overflow-x: clip; }
 /* Case card "Read More" is a small button sized to its text. */
 .f3-case-card__btn { width: auto !important; max-width: max-content; justify-self: start; align-self: flex-start; }
 .f3-case-card__btn, .f3-case-card__btn :is(.elementor-widget-container, .elementor-heading-title, a) { font-family: Inter, sans-serif !important; font-size: 14px !important; line-height: 17px !important; font-weight: 600 !important; }
+
+/* Stat boxes: fixed square like the old site (230 desktop, 170 mobile), smaller value on mobile. */
+.f3-stat-box { height: 230px !important; min-height: 0 !important; justify-content: center !important; }
+.f3-eyebrow { gap: 10px !important; column-gap: 10px !important; --gap: 10px !important; --column-gap: 10px !important; }
+@media (max-width: 767px) {
+  .f3-stat-box { height: 170px !important; }
+  .f3-stat-box__value, .f3-stat-box__value .elementor-heading-title { font-size: 40px !important; }
+}
