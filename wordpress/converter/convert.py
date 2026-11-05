@@ -259,7 +259,11 @@ def inner_html(n, base_cs, top=True):
     row_gap = px(ncs.get('columnGap')) if flex_row and ncs.get('columnGap') not in (None, 'normal') else 0
     for k in n.get('kids', []):
         if 'text' in k:
-            parts.append(html.escape(k['text']))
+            t = html.escape(k['text'])
+            if ncs.get('whiteSpace') == 'pre-line':
+                # Write the line breaks out as <br>: pre-line on an Elementor wrapper would also render the template's leading newline.
+                t = re.sub(r'[ \t]*\n[ \t]*', '<br>', t)
+            parts.append(t)
             continue
         if k.get('hidden'):
             if k['tag'] == 'br' and 'line-mask' not in (k.get('cls') or ''):
@@ -423,7 +427,7 @@ def box_settings(cs, pre, au=None):
             extra.append(f'{css}:{v}')
             if prop == 'backdropFilter':
                 extra.append(f'-webkit-backdrop-filter:{v}')
-    if cs.get('whiteSpace') in ('nowrap', 'pre', 'pre-line', 'pre-wrap'):
+    if cs.get('whiteSpace') in ('nowrap', 'pre', 'pre-wrap'):
         extra.append(f"white-space:{cs['whiteSpace']}")
     if cs.get('position') == 'sticky':
         extra.append('position:sticky')
