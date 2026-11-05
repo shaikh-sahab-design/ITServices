@@ -311,3 +311,4 @@ html, body { overflow-x: clip; }
 /* Contact form: the Elementor widget is the card, so the inner form must not draw a second card. */
 .elementor-widget.f3-form form.f3-form { padding: 0 !important; border-radius: 0 !important; background: none !important; box-shadow: none !important; }
 .elementor-widget.f3-form > .elementor-widget-container, .elementor-widget.f3-form .elementor-shortcode { height: 100%; }
+.f3-form fieldset.f3-field--set { gap: 0 !important; }
