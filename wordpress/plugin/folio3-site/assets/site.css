@@ -468,4 +468,6 @@ html, body { overflow-x: clip; }
 @media (max-width: 767px) {
   .f3-form--hubspot .hsfc-NavigationRow { flex-direction: column; align-items: stretch; }
   .f3-form--hubspot .hsfc-NavigationRow__Buttons { width: 100%; }
+  /* On phones a floating badge sits over the fields while scrolling, so it goes back into the form flow. */
+  .f3-form--hubspot .hsfc-ReCaptchaV3 { position: static !important; width: 256px; max-width: 100%; margin: 4px 0 0 !important; border-radius: 2px; }
 }
