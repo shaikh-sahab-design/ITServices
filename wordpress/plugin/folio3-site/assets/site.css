@@ -327,3 +327,15 @@ html, body { overflow-x: clip; }
   .f3-stat-box { height: 170px !important; }
   .f3-stat-box__value, .f3-stat-box__value :is(.elementor-heading-title, .elementor-counter-number-wrapper) { font-size: 40px !important; }
 }
+
+/* vCIO page: list spacing, stat row, framework card stagger and icon centring as on the old site. */
+.f3-vcio-intro__list .elementor-icon-list-items, .f3-vcio-benefit__list .elementor-icon-list-items { display: flex; flex-direction: column; }
+.f3-vcio-intro__list .elementor-icon-list-items { gap: 12px !important; }
+.f3-vcio-benefit__list .elementor-icon-list-items { gap: 16px !important; }
+.f3-vcio-intro__list .elementor-icon-list-item, .f3-vcio-benefit__list .elementor-icon-list-item { padding: 0 !important; margin: 0 !important; }
+.f3-vcio-outcome-card__icon { justify-items: center !important; align-items: center !important; }
+.f3-vcio-outcome-card__icon > .elementor-widget { width: auto !important; }
+@media (min-width: 1201px) {
+  .f3-vcio-outcome-card:nth-child(even) { position: relative; top: 48px; }
+  .f3-vcio-benefit__list .elementor-icon-list-text { white-space: nowrap; }
+}
