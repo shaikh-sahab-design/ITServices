@@ -54,6 +54,7 @@ if __name__ == '__main__':
     media += sorted('svg/' + os.path.basename(f) for f in glob.glob(os.path.join(ROOT, '..', 'assets', 'svg', '*.svg')))
     open(os.path.join(DATA, 'all-media.txt'), 'w').write('\n'.join(media) + '\n')
     open(os.path.join(CSSDIR, '00-icons.css'), 'w').write(convert.icons.css())
+    json.dump(sorted(convert.icons.LOOKUP), open(os.path.join(DATA, 'icon-group-members.json'), 'w'))
     gen = '\n'.join(open(f).read() for f in sorted(glob.glob(os.path.join(CSSDIR, '*.css'))))
     gen = re.sub(r'https?://localhost:3000/', '@@url:', gen)
     gen = re.sub(r'url\((["\']?)/(images|icons|videos|svg)/', r'url(\1@@url:\2/', gen)  # resolved to media URLs when the plugin syncs
