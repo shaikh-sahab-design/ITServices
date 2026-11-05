@@ -35,7 +35,8 @@ add_filter( 'wp_check_filetype_and_ext', function ( $data, $file, $filename, $mi
 	$svg = is_readable( $file ) ? (string) file_get_contents( $file ) : '';
 	if ( false === stripos( $svg, '<svg' )
 		|| preg_match( '/<script|<foreignObject|\son[a-z]+\s*=|javascript:|<!ENTITY/i', $svg ) ) {
-		return $data; // Not a clean SVG: let WordPress reject it.
+		// Not a clean SVG: reject it (core would otherwise accept any .svg for admins via upload_mimes).
+		return [ 'ext' => false, 'type' => false, 'proper_filename' => false ];
 	}
 	$data['ext']  = 'svg';
 	$data['type'] = 'image/svg+xml';
