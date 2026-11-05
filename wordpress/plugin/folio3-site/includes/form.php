@@ -19,11 +19,24 @@ add_action( 'init', function () {
 		'show_ui'         => true,
 		'menu_icon'       => 'dashicons-email-alt',
 		'supports'        => [ 'title', 'editor' ],
-		'capability_type' => 'post',
+		// Own capabilities so only administrators can read the visitor details (see folio3_inquiry_caps).
+		'capability_type' => [ 'folio3_inquiry', 'folio3_inquiries' ],
 		'capabilities'    => [ 'create_posts' => 'do_not_allow' ],
 		'map_meta_cap'    => true,
 	] );
+	folio3_inquiry_caps();
 } );
+
+/** Give administrators the Inquiry capabilities once (stored in the role, so this is a no-op after the first run). */
+function folio3_inquiry_caps() {
+	$role = get_role( 'administrator' );
+	if ( ! $role || $role->has_cap( 'edit_folio3_inquiries' ) ) {
+		return;
+	}
+	foreach ( [ 'edit_folio3_inquiries', 'edit_others_folio3_inquiries', 'edit_private_folio3_inquiries', 'read_private_folio3_inquiries', 'delete_folio3_inquiries', 'delete_others_folio3_inquiries', 'delete_private_folio3_inquiries', 'publish_folio3_inquiries', 'edit_published_folio3_inquiries', 'delete_published_folio3_inquiries' ] as $cap ) {
+		$role->add_cap( $cap );
+	}
+}
 
 // HubSpot form (portal 45888346) used for every contact block since 2026-11-05. [folio3_contact_form native="1"] brings back the built-in form.
 const FOLIO3_HS_PORTAL = '45888346';
@@ -91,14 +104,27 @@ function folio3_handle_inquiry() {
 		wp_safe_redirect( home_url( '/thank-you/' ) );
 		exit;
 	}
-	$f = [
-		'Full Name'      => sanitize_text_field( wp_unslash( $_POST['name'] ?? '' ) ),
-		'Business Email' => sanitize_email( wp_unslash( $_POST['email'] ?? '' ) ),
-		'Company Name'   => sanitize_text_field( wp_unslash( $_POST['company'] ?? '' ) ),
-		'Phone Number'   => sanitize_text_field( wp_unslash( $_POST['phone'] ?? '' ) ),
-		'Company Size'   => sanitize_text_field( wp_unslash( $_POST['size'] ?? '' ) ),
-		'Needs'          => implode( ', ', array_map( 'sanitize_text_field', (array) wp_unslash( $_POST['needs'] ?? [] ) ) ),
-		'Challenges'     => sanitize_textarea_field( wp_unslash( $_POST['challenges'] ?? '' ) ),
+	// At most 5 submissions per IP per hour.
+	$ip_key = 'folio3_inq_' . md5( isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '' );
+	$count  = (int) get_transient( $ip_key );
+	if ( $count >= 5 ) {
+		wp_safe_redirect( home_url( '/thank-you/' ) );
+		exit;
+	}
+	set_transient( $ip_key, $count + 1, HOUR_IN_SECONDS );
+
+	$cut  = function ( $s, $n ) {
+		return mb_substr( $s, 0, $n );
+	};
+	$size = sanitize_text_field( wp_unslash( $_POST['size'] ?? '' ) );
+	$f    = [
+		'Full Name'      => $cut( sanitize_text_field( wp_unslash( $_POST['name'] ?? '' ) ), 100 ),
+		'Business Email' => $cut( sanitize_email( wp_unslash( $_POST['email'] ?? '' ) ), 200 ),
+		'Company Name'   => $cut( sanitize_text_field( wp_unslash( $_POST['company'] ?? '' ) ), 150 ),
+		'Phone Number'   => $cut( sanitize_text_field( wp_unslash( $_POST['phone'] ?? '' ) ), 40 ),
+		'Company Size'   => in_array( $size, FOLIO3_SIZES, true ) ? $size : '',
+		'Needs'          => implode( ', ', array_intersect( array_map( 'sanitize_text_field', (array) wp_unslash( $_POST['needs'] ?? [] ) ), FOLIO3_NEEDS ) ),
+		'Challenges'     => $cut( sanitize_textarea_field( wp_unslash( $_POST['challenges'] ?? '' ) ), 5000 ),
 		'Page'           => esc_url_raw( $back ),
 	];
 	if ( ! $f['Full Name'] || ! is_email( $f['Business Email'] ) || ! $f['Company Name'] ) {
@@ -115,7 +141,9 @@ function folio3_handle_inquiry() {
 		'post_title'   => $f['Full Name'] . ' – ' . $f['Company Name'],
 		'post_content' => $body,
 	] );
-	wp_mail( get_option( 'admin_email' ), 'New inquiry: ' . $f['Company Name'], $body, [ 'Reply-To: ' . $f['Full Name'] . ' <' . $f['Business Email'] . '>' ] );
+	// wp_mail splits Reply-To on commas, so strip them (and quoting characters) from the name.
+	$reply_name = trim( str_replace( [ ',', '"', '<', '>', ';' ], ' ', $f['Full Name'] ) );
+	wp_mail( get_option( 'admin_email' ), 'New inquiry: ' . $f['Company Name'], $body, [ 'Reply-To: "' . $reply_name . '" <' . $f['Business Email'] . '>' ] );
 	wp_safe_redirect( home_url( '/thank-you/' ) );
 	exit;
 }

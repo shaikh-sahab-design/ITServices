@@ -386,6 +386,7 @@
 (function () {
   'use strict';
   window.addEventListener('hs-form-event:on-submission:success', function () {
-    window.location.href = new URL('/thank-you/', location.origin).href;
+    var base = (window.folio3Site && window.folio3Site.home) || (location.origin + '/');
+    window.location.href = new URL('thank-you/', base).href;
   });
 })();

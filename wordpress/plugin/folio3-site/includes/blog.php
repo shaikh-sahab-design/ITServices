@@ -14,29 +14,63 @@ function folio3_blog_fill_grid( $content ) {
 		return $content;
 	}
 	$start = strpos( $content, '<article', strpos( $content, 'f3-blog-grid__inner' ) );
-	$end   = strrpos( $content, '</article>' );
-	if ( false === $start || false === $end || $end < $start ) {
+	if ( false === $start ) {
 		return $content;
 	}
-	$end     += strlen( '</article>' );
-	$first_end = strpos( $content, '</article>', $start ) + strlen( '</article>' );
+	$close     = strpos( $content, '</article>', $start );
+	if ( false === $close ) {
+		return $content;
+	}
+	$first_end = $close + strlen( '</article>' );
 	$template  = substr( $content, $start, $first_end - $start );
+	// The grid's cards sit next to each other, so the grid ends at the first </article> not followed by another <article.
+	$end = $first_end;
+	while ( preg_match( '/\G\s*<article\b/', $content, $m, 0, $end ) ) {
+		$next = strpos( $content, '</article>', $end );
+		if ( false === $next ) {
+			break;
+		}
+		$end = $next + strlen( '</article>' );
+	}
 
-	$posts = get_posts(
-		[
-			'post_type'      => 'post',
-			'post_status'    => 'publish',
-			'posts_per_page' => -1,
-			'orderby'        => 'date',
-			'order'          => 'DESC',
-		]
-	);
-	$cards = '';
-	foreach ( $posts as $post ) {
-		$cards .= folio3_blog_card( $template, $post );
+	// Built cards are cached until a post changes or the Blog page template does.
+	$key   = 'folio3_blog_cards_' . md5( $template );
+	$cards = get_transient( $key );
+	if ( false === $cards ) {
+		$posts = get_posts(
+			[
+				'post_type'      => 'post',
+				'post_status'    => 'publish',
+				'posts_per_page' => 48,
+				'no_found_rows'  => true,
+				'orderby'        => 'date',
+				'order'          => 'DESC',
+			]
+		);
+		$cards = '';
+		foreach ( $posts as $post ) {
+			$cards .= folio3_blog_card( $template, $post );
+		}
+		set_transient( $key, $cards, DAY_IN_SECONDS );
+		$keys = (array) get_option( 'folio3_blog_card_keys', [] );
+		if ( ! in_array( $key, $keys, true ) ) {
+			$keys[] = $key;
+			update_option( 'folio3_blog_card_keys', array_slice( $keys, -10 ), false );
+		}
 	}
 	return substr( $content, 0, $start ) . $cards . substr( $content, $end );
 }
+
+/** Drop the cached cards whenever a post is saved, trashed or deleted. */
+function folio3_blog_flush_cards() {
+	foreach ( (array) get_option( 'folio3_blog_card_keys', [] ) as $key ) {
+		delete_transient( $key );
+	}
+	delete_option( 'folio3_blog_card_keys' );
+}
+add_action( 'save_post_post', 'folio3_blog_flush_cards' );
+add_action( 'deleted_post', 'folio3_blog_flush_cards' );
+add_action( 'trashed_post', 'folio3_blog_flush_cards' );
 
 function folio3_blog_card( $template, WP_Post $post ) {
 	$doc = new DOMDocument();

@@ -4,6 +4,9 @@
  * Description: Shared header and footer for Elementor Canvas pages, the contact form shortcode, site CSS/JS, and the importer used to sync pages from the ITServices repo.
  * Version: 1.0.0
  * Author: Folio3
+ * Requires at least: 6.3
+ * Requires PHP: 8.0
+ * Requires Plugins: elementor
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -25,10 +28,17 @@ add_filter( 'upload_mimes', function ( $m ) {
 	return $m;
 } );
 add_filter( 'wp_check_filetype_and_ext', function ( $data, $file, $filename, $mimes ) {
-	if ( str_ends_with( strtolower( $filename ), '.svg' ) ) {
-		$data['ext']  = 'svg';
-		$data['type'] = 'image/svg+xml';
+	// Admins only, and only files that are clean SVG markup (no script, event handlers or entities).
+	if ( ! str_ends_with( strtolower( $filename ), '.svg' ) || ! current_user_can( 'manage_options' ) ) {
+		return $data;
 	}
+	$svg = is_readable( $file ) ? (string) file_get_contents( $file ) : '';
+	if ( false === stripos( $svg, '<svg' )
+		|| preg_match( '/<script|<foreignObject|\son[a-z]+\s*=|javascript:|<!ENTITY/i', $svg ) ) {
+		return $data; // Not a clean SVG: let WordPress reject it.
+	}
+	$data['ext']  = 'svg';
+	$data['type'] = 'image/svg+xml';
 	return $data;
 }, 10, 4 );
 
@@ -60,16 +70,23 @@ add_action( 'wp_enqueue_scripts', function () {
 	if ( file_exists( FOLIO3_SITE_DIR . '/assets/generated.css' ) ) {
 		wp_enqueue_style( 'folio3-generated', FOLIO3_SITE_URL . 'assets/generated.css', [ 'folio3-site' ], $v );
 	}
+	wp_enqueue_style( 'folio3-fonts', 'https://fonts.googleapis.com/css2?family=Bakbak+One&family=Geist:wght@600&family=Inter:wght@400;500;600;700;800&display=swap', [], null );
 	wp_enqueue_script( 'folio3-site', FOLIO3_SITE_URL . 'assets/site.js', [], $v, true );
 	wp_localize_script( 'folio3-site', 'folio3Site', [ 'home' => home_url( '/' ) ] );
 }, 20 );
 
-/* Brand fonts (Bakbak One, Inter, Geist) for the header/footer templates and form. */
+/* Brand fonts (Bakbak One, Inter, Geist) are enqueued above; preconnect to Google Fonts early. */
+add_filter( 'wp_resource_hints', function ( $urls, $type ) {
+	if ( 'preconnect' === $type ) {
+		$urls[] = 'https://fonts.googleapis.com';
+		$urls[] = [ 'href' => 'https://fonts.gstatic.com', 'crossorigin' ];
+	}
+	return $urls;
+}, 10, 2 );
+
 add_action( 'wp_head', function () {
 	// Lets the motion CSS hide elements before they animate in; skipped inside the Elementor editor.
 	if ( ! isset( $_GET['elementor-preview'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 		echo "<script>document.documentElement.classList.add('f3-js')</script>";
 	}
-	echo '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
-	echo '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bakbak+One&family=Geist:wght@600&family=Inter:wght@400;500;600;700;800&display=swap">';
 }, 1 );
