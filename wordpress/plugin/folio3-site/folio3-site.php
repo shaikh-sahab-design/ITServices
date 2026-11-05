@@ -41,7 +41,7 @@ add_filter( 'wp_check_filetype_and_ext', function ( $data, $file, $filename, $mi
 	$data['ext']  = 'svg';
 	$data['type'] = 'image/svg+xml';
 	return $data;
-}, 10, 4 );
+}, 99, 4 ); // After Elementor's own filter (priority 10), which would otherwise re-allow any .svg for admins.
 
 /* Site header and footer: Elementor library templates printed around every Canvas page. */
 function folio3_render_template( $option ) {
