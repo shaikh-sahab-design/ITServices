@@ -382,3 +382,6 @@ html, body { overflow-x: clip; }
   .f3-footer__contact { align-items: flex-start !important; }
   .f3-footer__contact > .e-con { width: auto !important; max-width: 100%; margin-left: 0 !important; }
 }
+.f3-vcio-intro__stat .elementor-heading-title > span:first-child { flex: none !important; white-space: nowrap !important; }
+.f3-footer__contact .f3-tag-li > .elementor-widget-image { line-height: 0 !important; height: 18px; }
+.f3-footer__contact .f3-tag-li > .elementor-widget-image img { display: block; }
