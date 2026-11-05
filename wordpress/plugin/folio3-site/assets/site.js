@@ -112,7 +112,7 @@
     line.style.cssText = 'stroke:rgba(255,255,255,.9);stroke-width:2';
     svg.appendChild(line);
     divider.style.visibility = 'hidden';
-    cmp.appendChild(svg);
+    cmp.insertBefore(svg, cmp.firstChild);
   }
   handle.setAttribute('role', 'slider'); handle.setAttribute('tabindex', '0');
   handle.setAttribute('aria-label', 'Dark version shown, in percent');

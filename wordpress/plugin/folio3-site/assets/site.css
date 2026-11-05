@@ -296,3 +296,8 @@ html, body { overflow-x: clip; }
 @media (max-width: 767px) {
   .f3-stats-band__row { grid-template-columns: 1fr; }
 }
+
+/* Hero compare: the handle always sits above the dark layer and the divider line (as on the old site). */
+.f3-hero__dash-dark { z-index: 0 !important; }
+.f3-hero__compare { z-index: 1 !important; }
+.f3-hero__handle { z-index: 2 !important; }
