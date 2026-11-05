@@ -352,3 +352,23 @@ html, body { overflow-x: clip; }
   .f3-vcio-intro__mark.elementor-widget { width: 240px !important; left: auto !important; top: auto !important; right: -3px !important; bottom: -19px !important; }
   .f3-vcio-trust__panel { width: calc(100% - 32px) !important; max-width: calc(100% - 32px) !important; }
 }
+
+/* Compare tables: header cells are 60px tall with centred text, like the old <th>. */
+.f3-compare__table > .e-con:first-child > .e-con > .elementor-widget-heading { min-height: 60px; display: flex !important; align-items: center; }
+/* vCIO intro stat: two flex children. */
+.f3-vcio-intro__stat .elementor-heading-title { display: flex !important; align-items: center !important; gap: 10px !important; }
+@media (max-width: 767px) { .f3-vcio-intro__stat .elementor-heading-title { flex-direction: column !important; align-items: flex-start !important; gap: 4px !important; } }
+.f3-vcio-intro__mark.elementor-widget { width: auto !important; }
+.f3-vcio-intro__mark img { width: 359px; }
+@media (max-width: 767px) { .f3-vcio-intro__mark.elementor-widget { width: 240px !important; } .f3-vcio-intro__mark img { width: 240px; } }
+/* vCIO framework icon centred in its circle. */
+.f3-vcio-outcome-card__icon { place-items: center !important; justify-content: center !important; }
+.f3-vcio-outcome-card__icon > .elementor-element { width: auto !important; line-height: 0 !important; }
+.f3-vcio-outcome-card__icon img { display: block; }
+/* vCIO intro bullets: 10px between dot and text. */
+.f3-vcio-intro__list .elementor-icon-list-icon { padding-right: 0 !important; margin-right: 10px !important; }
+.f3-vcio-intro__list .elementor-icon-list-icon svg { margin: 0 !important; }
+.f3-vcio-intro__list .elementor-icon-list-text { padding-left: 0 !important; }
+@media (max-width: 767px) { .f3-vcio-intro__list .elementor-icon-list-icon { margin-top: 9px; align-self: flex-start; } .f3-vcio-intro__list .elementor-icon-list-item { line-height: 26px; } }
+/* CTA band buttons never shrink below their link width. */
+.f3-cta-band > .f3-btn { flex: 0 0 auto !important; }
