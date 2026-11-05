@@ -453,3 +453,19 @@ html, body { overflow-x: clip; }
   .f3-form--hubspot .hsfc-Row { flex-direction: column !important; }
   .f3-form--hubspot .hsfc-Button { width: 100%; }
 }
+.f3-form--hubspot .hsfc-CheckboxFieldGroup__Options { align-items: flex-start !important; }
+.f3-form--hubspot .hsfc-CheckboxFieldGroup__Options > div { margin: 0 !important; }
+.f3-form--hubspot .hsfc-CheckboxInput { width: 16px !important; height: 16px !important; min-width: 16px; padding: 0 !important; flex: none !important; }
+/* reCAPTCHA badge floats bottom-right like Google's default (collapsed to the logo, opens on hover) instead of taking a form row. */
+.f3-form--hubspot .hsfc-ReCaptchaV3 { position: fixed !important; right: 0; bottom: 14px; z-index: 40; width: 70px; overflow: hidden; transition: width 300ms var(--ease-out-quint); box-shadow: 0 0 5px rgba(0, 0, 0, 0.25); border-radius: 2px 0 0 2px; }
+.f3-form--hubspot .hsfc-ReCaptchaV3:hover { width: 256px; }
+.f3-form--hubspot .hsfc-ReCaptchaV3 .grecaptcha-badge { box-shadow: none !important; }
+/* Footer row: note on the left, button on the right (as on the old form). */
+.f3-form--hubspot .hsfc-NavigationRow { display: flex !important; align-items: center; justify-content: space-between; gap: 24px; min-height: 0 !important; }
+.f3-form--hubspot .hsfc-NavigationRow::before { content: "Our team will review your request and connect you with the appropriate Managed IT specialist."; max-width: 440px; font: 400 13px/19px Inter, sans-serif; color: var(--text-2); }
+.f3-form--hubspot .hsfc-NavigationRow__Alerts:empty { display: none !important; }
+.f3-form--hubspot .hsfc-NavigationRow__Buttons { margin: 0 !important; padding: 0 !important; }
+@media (max-width: 767px) {
+  .f3-form--hubspot .hsfc-NavigationRow { flex-direction: column; align-items: stretch; }
+  .f3-form--hubspot .hsfc-NavigationRow__Buttons { width: 100%; }
+}
