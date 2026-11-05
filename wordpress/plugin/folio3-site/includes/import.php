@@ -131,7 +131,10 @@ function folio3_import_page( $ref, $path, $slug, $title, $parent_path = '', $typ
 	if ( is_wp_error( $json ) ) {
 		return $json->get_error_message();
 	}
-	$data   = json_decode( $json, true );
+	$data = json_decode( $json, true );
+	if ( ! is_array( $data ) ) {
+		return 'Invalid JSON in ' . $path . ': ' . json_last_error_msg();
+	}
 	$parent = 0;
 	if ( $parent_path ) {
 		$p      = get_page_by_path( $parent_path );
@@ -165,6 +168,10 @@ function folio3_import_template( $ref, $path, $title, $option ) {
 	if ( is_wp_error( $json ) ) {
 		return $json->get_error_message();
 	}
+	$data = json_decode( $json, true );
+	if ( ! is_array( $data ) ) {
+		return 'Invalid JSON in ' . $path . ': ' . json_last_error_msg();
+	}
 	$id = (int) get_option( $option );
 	if ( ! $id || ! get_post( $id ) ) {
 		$id = wp_insert_post( [ 'post_type' => 'elementor_library', 'post_status' => 'publish', 'post_title' => $title ] );
@@ -172,14 +179,21 @@ function folio3_import_template( $ref, $path, $title, $option ) {
 		wp_set_object_terms( $id, 'section', 'elementor_library_type' );
 		update_option( $option, $id );
 	}
-	$missing = folio3_save_elementor( $id, json_decode( $json, true ) );
+	$missing = folio3_save_elementor( $id, $data );
 	return [ 'id' => $id, 'missing' => $missing ];
 }
 
 /** Copy this plugin's own files from the repo (used to ship CSS/JS/PHP changes). */
 function folio3_sync_plugin( $ref, array $files ) {
+	if ( ! preg_match( '/^[0-9a-f]{40}$/', $ref ) ) {
+		return new WP_Error( 'ref', 'Pass a full 40-character commit SHA.' );
+	}
 	$out = [];
 	foreach ( $files as $f ) {
+		if ( ! preg_match( '#^(assets/[a-z0-9._-]+\.(css|js)|includes/[a-z0-9_-]+\.php|folio3-site\.php)$#', $f ) ) {
+			$out[ $f ] = 'path not allowed';
+			continue;
+		}
 		$body = folio3_fetch( FOLIO3_REPO_RAW . $ref . '/wordpress/plugin/folio3-site/' . $f );
 		if ( is_wp_error( $body ) ) {
 			$out[ $f ] = $body->get_error_message();
@@ -202,7 +216,11 @@ function folio3_sync_plugin( $ref, array $files ) {
  */
 function folio3_import_all( $ref, array $only = [] ) {
 	$out   = [];
-	$pages = json_decode( (string) folio3_fetch( FOLIO3_REPO_RAW . $ref . '/wordpress/data/pages.json' ), true );
+	$raw = folio3_fetch( FOLIO3_REPO_RAW . $ref . '/wordpress/data/pages.json' );
+	if ( is_wp_error( $raw ) ) {
+		return [ 'pages.json' => $raw->get_error_message() ];
+	}
+	$pages = json_decode( $raw, true );
 	if ( ! $only || in_array( 'header', $only, true ) ) {
 		$out['header'] = folio3_import_template( $ref, 'header.json', 'Site Header', 'folio3_header_template' );
 	}
