@@ -294,6 +294,8 @@ def inner_html(n, base_cs, top=True):
         if lines_as_blocks and cs['display'] == 'block':
             inner = re.sub(r'(<br>\s*)+$', '', inner)
         st = f' style="{";".join(style)}"' if style else ''
+        if lines_as_blocks and cs['display'] == 'block' and parts and ''.join(parts).strip() and not re.search(r'<br>\s*$', ''.join(parts)):
+            parts.append('<br>')  # a block element starts on its own line
         if tag == 'a':
             href = k['attrs'].get('href', '')
             lk = link(href)
@@ -307,7 +309,8 @@ def inner_html(n, base_cs, top=True):
     s = ''.join(parts)
     if top:
         s = re.sub(r'(<br>\s*)+$', '', s)
-    return re.sub(r'\s+', ' ', s).strip()
+    s = re.sub(r'\s+', ' ', s)
+    return s.strip() if top else s  # inner spans keep edge spaces ("Strengthened <span>")
 
 
 # ---------------------------------------------------------------- style -> settings
