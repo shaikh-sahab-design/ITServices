@@ -25,7 +25,16 @@ add_action( 'init', function () {
 	] );
 } );
 
-add_shortcode( 'folio3_contact_form', function () {
+// HubSpot form (portal 45888346) used for every contact block since 2026-11-05. [folio3_contact_form native="1"] brings back the built-in form.
+const FOLIO3_HS_PORTAL = '45888346';
+const FOLIO3_HS_FORM   = 'e1ecd3af-e383-4abc-bc36-d992f6ef1caa';
+
+add_shortcode( 'folio3_contact_form', function ( $atts ) {
+	$atts = shortcode_atts( [ 'native' => '' ], $atts );
+	if ( ! $atts['native'] ) {
+		wp_enqueue_script( 'folio3-hubspot-forms', 'https://js.hsforms.net/forms/embed/developer/' . FOLIO3_HS_PORTAL . '.js', [], null, [ 'strategy' => 'defer', 'in_footer' => true ] );
+		return '<div class="f3-form f3-form--hubspot"><div class="hs-form-html" data-region="na1" data-form-id="' . esc_attr( FOLIO3_HS_FORM ) . '" data-portal-id="' . esc_attr( FOLIO3_HS_PORTAL ) . '"></div></div>';
+	}
 	$action = esc_url( admin_url( 'admin-post.php' ) );
 	ob_start();
 	?>

@@ -381,3 +381,11 @@
     });
   });
 })();
+
+/* HubSpot contact form: after a successful submit, go to the Thank You page like the built-in form did. */
+(function () {
+  'use strict';
+  window.addEventListener('hs-form-event:on-submission:success', function () {
+    window.location.href = new URL('/thank-you/', location.origin).href;
+  });
+})();
