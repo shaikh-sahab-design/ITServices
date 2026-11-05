@@ -314,8 +314,8 @@ html, body { overflow-x: clip; }
 .f3-form fieldset.f3-field--set { gap: 0 !important; }
 
 /* Vertical card arrow hangs off the bottom-right corner, as on the old site. */
-.f3-vertical-card { box-shadow: 0 0 0 rgba(15, 61, 237, 0); }
+.f3-vertical-card:not(:hover) { box-shadow: 0 0 0 rgba(15, 61, 237, 0) !important; }
 .f3-vertical-card .f3-vertical-card__arrow.elementor-widget { width: auto !important; max-width: none !important; left: auto !important; right: -9px !important; bottom: -6px !important; }
 /* Case card "Read More" is a small button sized to its text. */
 .f3-case-card__btn { width: auto !important; max-width: max-content; justify-self: start; align-self: flex-start; }
-.f3-case-card__btn .elementor-heading-title { font-size: 14px !important; line-height: 17px !important; font-weight: 600 !important; }
+.f3-case-card__btn, .f3-case-card__btn :is(.elementor-widget-container, .elementor-heading-title, a) { font-family: Inter, sans-serif !important; font-size: 14px !important; line-height: 17px !important; font-weight: 600 !important; }
