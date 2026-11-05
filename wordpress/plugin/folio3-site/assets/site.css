@@ -386,3 +386,5 @@ html, body { overflow-x: clip; }
 .f3-footer__contact .f3-tag-li > .elementor-widget-image { line-height: 0 !important; height: 18px; }
 .f3-footer__contact .f3-tag-li > .elementor-widget-image img { display: block; }
 @media (min-width: 1201px) { .f3-vcio-intro__stat .elementor-heading-title > span:last-child { white-space: nowrap; } }
+
+.f3-rail__viewport { overflow-x: auto !important; }

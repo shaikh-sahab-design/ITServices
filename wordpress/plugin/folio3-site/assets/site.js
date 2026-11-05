@@ -71,12 +71,26 @@
       else step(track, 1);
     });
   });
-  document.querySelectorAll('.f3-rail').forEach(function (rail) {
-    var track = rail.querySelector('.f3-rail__viewport');
-    var arrows = rail.querySelectorAll('.f3-rail__arrow');
+  // Each arrow pair scrolls the nearest rail viewport in its section (card rails and numbered-card rails).
+  document.querySelectorAll('.f3-rail__arrows').forEach(function (group) {
+    var arrows = group.querySelectorAll('.f3-rail__arrow');
+    var scope = group.parentElement, track = null;
+    while (scope && !(track = scope.querySelector('.f3-rail__viewport'))) scope = scope.parentElement;
     if (!track || arrows.length < 2) return;
-    arrows[0].addEventListener('click', function () { step(track, -1); });
-    arrows[1].addEventListener('click', function () { step(track, 1); });
+    var go = function (dir) {
+      var card = track.querySelector('.f3-rail__card, .f3-num-card') || track.querySelector('.e-con .e-con');
+      var inner = track.querySelector('.f3-rail__track') || track.firstElementChild;
+      var gap = inner ? parseFloat(getComputedStyle(inner).columnGap) || 20 : 20;
+      track.scrollBy({ left: dir * ((card ? card.getBoundingClientRect().width : 316) + gap), behavior: 'smooth' });
+    };
+    [[arrows[0], -1], [arrows[1], 1]].forEach(function (a) {
+      var b = a[0];
+      b.setAttribute('role', 'button'); b.setAttribute('tabindex', '0');
+      b.setAttribute('aria-label', a[1] < 0 ? 'Previous' : 'Next');
+      b.style.cursor = 'pointer';
+      b.addEventListener('click', function (e) { e.preventDefault(); go(a[1]); });
+      b.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(a[1]); } });
+    });
   });
   // FAQ: open the item the design opens by default.
   document.querySelectorAll('.f3-faq').forEach(function (f) {
