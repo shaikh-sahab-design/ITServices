@@ -304,6 +304,6 @@ html, body { overflow-x: clip; }
 
 /* Hero compare handle: centre the arrow icon in the circle and settle the scale-in by ~2s, as on the old site. */
 .f3-hero__handle { display: flex !important; align-items: center !important; justify-content: center !important; padding: 0 !important; }
-.f3-hero__handle.f3-hero__handle { --f3d: 1.3s; }
+.f3-hero__handle.f3-hero__handle { --f3d: 0.7s; }
 .f3-hero__handle > .elementor-element { width: auto !important; line-height: 0 !important; margin: 0 !important; }
 .f3-hero__handle img { display: block; width: 20px !important; height: 20px !important; }
