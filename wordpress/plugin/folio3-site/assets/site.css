@@ -325,5 +325,5 @@ html, body { overflow-x: clip; }
 .f3-eyebrow { gap: 10px !important; column-gap: 10px !important; --gap: 10px !important; --column-gap: 10px !important; }
 @media (max-width: 767px) {
   .f3-stat-box { height: 170px !important; }
-  .f3-stat-box__value, .f3-stat-box__value .elementor-heading-title { font-size: 40px !important; }
+  .f3-stat-box__value, .f3-stat-box__value :is(.elementor-heading-title, .elementor-counter-number-wrapper, .elementor-counter-title) { font-size: 40px !important; }
 }
