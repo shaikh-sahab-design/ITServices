@@ -395,3 +395,61 @@ html, body { overflow-x: clip; }
 .f3-ty-card__chip.elementor-widget { display: inline-flex !important; align-items: center !important; gap: 6px !important; }
 /* SOC service label icons keep their size in the mobile row. */
 .f3-soc-service__label > .elementor-widget-image { flex: none !important; }
+
+/* ---------- HubSpot contact form, styled like the old built-in form ---------- */
+.elementor-widget.f3-form .f3-form--hubspot { padding: 0 !important; border-radius: 0 !important; background: none !important; box-shadow: none !important; }
+.f3-form.f3-form--hubspot [data-hsfc-id="Renderer"] {
+  --hsf-default-row__horizontal-spacing: 16px; --hsf-row__horizontal-spacing: 16px;
+  --hsf-default-row__vertical-spacing: 24px; --hsf-row__vertical-spacing: 24px;
+  --hsf-default-module__vertical-spacing: 6px; --hsf-module__vertical-spacing: 6px;
+  font-family: Inter, sans-serif !important; color: var(--text);
+}
+.f3-form--hubspot .hsfc-Form, .f3-form--hubspot .hsfc-Step__Content { font-family: Inter, sans-serif !important; }
+.f3-form--hubspot .hsfc-Step__Content { display: flex !important; flex-direction: column; gap: 24px; padding: 0 !important; }
+.f3-form--hubspot .hsfc-Row { margin: 0 !important; gap: 16px !important; }
+.f3-form--hubspot .hsfc-FieldLabel { margin: 0 0 6px !important; padding: 0 !important; font: 600 14px/17px Inter, sans-serif !important; color: var(--text) !important; }
+.f3-form--hubspot .hsfc-FieldLabel__RequiredIndicator { color: var(--text) !important; margin-left: 2px; }
+.f3-form--hubspot .hsfc-TextInput, .f3-form--hubspot .hsfc-TextareaInput {
+  width: 100% !important; height: 50px !important; padding: 14px 16px !important; border: 1px solid var(--line) !important; border-radius: 6px !important;
+  background: #fafbfd !important; box-shadow: none !important; font: 400 15px/18px Inter, sans-serif !important; color: var(--text) !important;
+  transition: border-color 150ms ease, box-shadow 200ms var(--ease-out-quint), background-color 150ms ease;
+}
+.f3-form--hubspot .hsfc-TextareaInput { height: 104px !important; min-height: 104px; resize: vertical; }
+.f3-form--hubspot .hsfc-TextInput::placeholder, .f3-form--hubspot .hsfc-TextareaInput::placeholder { color: #98a2b3 !important; opacity: 1; }
+.f3-form--hubspot .hsfc-TextInput:focus, .f3-form--hubspot .hsfc-TextareaInput:focus { outline: none !important; border-color: var(--blue) !important; background: #fff !important; box-shadow: 0 0 0 4px rgba(74, 125, 238, 0.15) !important; }
+.f3-form--hubspot .hsfc-DropdownInput { position: relative; }
+.f3-form--hubspot .hsfc-TextInput--button { cursor: pointer; text-align: left; }
+.f3-form--hubspot .hsfc-DropdownOptions { border: 1px solid var(--line) !important; border-radius: 6px !important; box-shadow: 0 12px 32px rgba(18, 26, 61, 0.08) !important; background: #fff !important; font: 400 14px/18px Inter, sans-serif !important; }
+.f3-form--hubspot .hsfc-DropdownOptions__List__ListItem { padding: 10px 16px !important; color: var(--text) !important; }
+.f3-form--hubspot .hsfc-DropdownOptions__List__ListItem:hover, .f3-form--hubspot .hsfc-DropdownOptions__List__ListItem[aria-selected="true"] { background: #f4f9ff !important; color: var(--blue) !important; }
+/* Help-with options as bordered chips, blue when ticked. */
+.f3-form--hubspot .hsfc-CheckboxFieldGroup__Options, .f3-form--hubspot .hsfc-CheckboxFieldGroup__Options > div { display: flex !important; flex-wrap: wrap !important; gap: 8px !important; }
+.f3-form--hubspot .hsfc-CheckboxFieldGroup__Options .hsfc-FieldLabel {
+  display: inline-flex !important; align-items: center; gap: 8px; margin: 0 !important; padding: 8px 12px !important; border: 1px solid var(--line); border-radius: 6px;
+  background: #fafbfd; font: 500 13px/16px Inter, sans-serif !important; color: var(--text) !important; cursor: pointer;
+  transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease, transform 100ms ease-out;
+}
+.f3-form--hubspot .hsfc-CheckboxFieldGroup__Options .hsfc-FieldLabel:active { transform: scale(0.97); }
+.f3-form--hubspot .hsfc-CheckboxFieldGroup__Options .hsfc-FieldLabel:has(input:checked) { border-color: var(--blue); background: #f4f9ff; color: var(--blue) !important; font-weight: 600 !important; }
+.f3-form--hubspot .hsfc-CheckboxInput {
+  appearance: none; -webkit-appearance: none; flex: none; width: 16px !important; height: 16px !important; margin: 0 !important; border: 1px solid var(--line) !important; border-radius: 3px !important;
+  background: #fff center / 10px no-repeat !important; transition: background-color 150ms ease, border-color 150ms ease;
+}
+.f3-form--hubspot .hsfc-CheckboxInput:checked { border-color: var(--blue) !important; background-color: var(--blue) !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2l2.3 2.3 4.7-4.9' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important; }
+.f3-form--hubspot .hsfc-CheckboxInput:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+/* Submit row: blue 8px-radius button like the old "Submit Inquiry". */
+.f3-form--hubspot .hsfc-NavigationRow { margin: 0 !important; padding: 0 !important; }
+.f3-form--hubspot .hsfc-NavigationRow__Buttons { display: flex; justify-content: flex-start; }
+.f3-form--hubspot .hsfc-Button {
+  min-width: 167px; padding: 10px 20px !important; border: 1px solid transparent !important; border-radius: 8px !important; background: var(--blue) !important; color: #fff !important;
+  font: 600 18px/22px Inter, sans-serif !important; cursor: pointer; transition: background-color 150ms ease, box-shadow 200ms var(--ease-out-quint), transform 100ms ease-out;
+}
+.f3-form--hubspot .hsfc-Button:hover, .f3-form--hubspot .hsfc-Button:focus-visible { background: #3b6fe3 !important; box-shadow: 0 8px 20px rgba(74, 125, 238, 0.3) !important; }
+.f3-form--hubspot .hsfc-Button:active { transform: scale(0.97); }
+.f3-form--hubspot .hsfc-ErrorAlert, .f3-form--hubspot .hsfc-NavigationRow__Alerts { font: 500 13px/18px Inter, sans-serif !important; color: var(--red) !important; }
+.f3-form--hubspot .hsfc-ReCaptchaV3 { margin: 0 !important; }
+@media (max-width: 767px) {
+  .f3-form--hubspot .hsfc-Row { flex-direction: column !important; }
+  .f3-form--hubspot .hsfc-Button { width: 100%; }
+}
