@@ -372,3 +372,13 @@ html, body { overflow-x: clip; }
 @media (max-width: 767px) { .f3-vcio-intro__list .elementor-icon-list-icon { margin-top: 9px; align-self: flex-start; } .f3-vcio-intro__list .elementor-icon-list-item { line-height: 26px; } }
 /* CTA band buttons never shrink below their link width. */
 .f3-cta-band > .f3-btn { flex: 0 0 auto !important; }
+
+/* vCIO intro stat line heights (value 45px, label 22px). */
+.f3-vcio-intro__stat .elementor-heading-title > span:first-child { line-height: 45px !important; }
+.f3-vcio-intro__stat .elementor-heading-title > span:last-child { line-height: 22px !important; }
+.f3-vcio-outcome-card__icon { align-content: center !important; }
+/* Footer contacts on mobile: every item starts at the column edge. */
+@media (max-width: 767px) {
+  .f3-footer__contact { align-items: flex-start !important; }
+  .f3-footer__contact > .e-con { width: auto !important; max-width: 100%; margin-left: 0 !important; }
+}
