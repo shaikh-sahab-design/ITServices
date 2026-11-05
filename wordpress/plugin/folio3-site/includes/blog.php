@@ -54,13 +54,13 @@ function folio3_blog_card( $template, WP_Post $post ) {
 	}
 	foreach ( $xp->query( '//*[' . $has( 'f3-blog-card__title' ) . ']//a' ) as $a ) {
 		$a->nodeValue = '';
-		$a->appendChild( $doc->createTextNode( get_the_title( $post ) ) );
+		$a->appendChild( $doc->createTextNode( html_entity_decode( get_the_title( $post ), ENT_QUOTES, 'UTF-8' ) ) );
 	}
 	foreach ( $xp->query( '//*[' . $has( 'f3-blog-card__excerpt' ) . ']' ) as $el ) {
 		while ( $el->firstChild ) {
 			$el->removeChild( $el->firstChild );
 		}
-		$el->appendChild( $doc->createTextNode( wp_strip_all_tags( get_the_excerpt( $post ) ) ) );
+		$el->appendChild( $doc->createTextNode( html_entity_decode( wp_strip_all_tags( get_the_excerpt( $post ) ), ENT_QUOTES, 'UTF-8' ) ) );
 	}
 	$thumb = get_post_thumbnail_id( $post );
 	if ( $thumb ) {
