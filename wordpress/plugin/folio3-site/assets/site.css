@@ -388,3 +388,10 @@ html, body { overflow-x: clip; }
 @media (min-width: 1201px) { .f3-vcio-intro__stat .elementor-heading-title > span:last-child { white-space: nowrap; } }
 
 .f3-rail__viewport { overflow-x: auto !important; }
+
+/* Thank-you: checks centred in the badge and step markers; every chip keeps its dot. */
+.f3-ty-badge__core, .f3-ty-step__marker { place-items: center !important; place-content: center !important; }
+.f3-ty-badge__core > .elementor-element, .f3-ty-step__marker > .elementor-element { width: auto !important; line-height: 0 !important; }
+.f3-ty-card__chip.elementor-widget { display: inline-flex !important; align-items: center !important; gap: 6px !important; }
+/* SOC service label icons keep their size in the mobile row. */
+.f3-soc-service__label > .elementor-widget-image { flex: none !important; }
