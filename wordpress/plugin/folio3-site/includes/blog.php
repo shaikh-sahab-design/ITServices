@@ -63,10 +63,16 @@ function folio3_blog_fill_grid( $content ) {
 
 /** Drop the cached cards whenever a post is saved, trashed or deleted. */
 function folio3_blog_flush_cards() {
+	global $wpdb;
 	foreach ( (array) get_option( 'folio3_blog_card_keys', [] ) as $key ) {
 		delete_transient( $key );
 	}
 	delete_option( 'folio3_blog_card_keys' );
+	// A page built while a post was being saved can store its cards after the list above was read,
+	// so also clear every cached card set by name.
+	if ( ! wp_using_ext_object_cache() ) {
+		$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s", $wpdb->esc_like( '_transient_folio3_blog_cards_' ) . '%', $wpdb->esc_like( '_transient_timeout_folio3_blog_cards_' ) . '%' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+	}
 }
 add_action( 'save_post_post', 'folio3_blog_flush_cards' );
 add_action( 'deleted_post', 'folio3_blog_flush_cards' );
