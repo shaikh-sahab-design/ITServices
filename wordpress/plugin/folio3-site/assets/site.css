@@ -603,3 +603,4 @@ html.f3-js .f3-blog-grid__inner:not(.is-paged) > article:nth-of-type(n+10) { dis
 .f3-toc__list { flex: 1 1 auto !important; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: rgba(74, 125, 238, 0.45) transparent; padding-right: 6px; }
 .f3-toc__list::-webkit-scrollbar { width: 4px; }
 .f3-toc__list::-webkit-scrollbar-thumb { border-radius: 4px; background: rgba(74, 125, 238, 0.45); }
+.f3-toc__list > .e-con, .f3-toc__list > .f3-tag-li { flex: none !important; }
