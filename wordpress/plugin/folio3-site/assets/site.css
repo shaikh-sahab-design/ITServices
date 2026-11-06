@@ -482,3 +482,37 @@ html, body { overflow-x: clip; }
   .f3-service-card:hover .f3-service-card__face--back { pointer-events: auto; }
   .f3-service-card:hover .f3-service-card__face--front { pointer-events: none; }
 }
+/* Blog posts written in the WordPress editor (blog-post.php puts their content in the article column). */
+.f3-prose.f3-prose--post { display: block !important; font: 400 14px/22px Inter, sans-serif; color: var(--text-2); }
+.f3-prose--post > :first-child { margin-top: 0 !important; }
+.f3-prose--post h2 { margin: 32px 0 16px; font: 700 18px/22px Inter, sans-serif; color: var(--text); scroll-margin-top: 96px; }
+.f3-prose--post h3 { margin: 22px 0 10px; font: 700 16px/20px Inter, sans-serif; color: var(--text); }
+.f3-prose--post h4 { margin: 18px 0 8px; font: 700 14px/20px Inter, sans-serif; color: var(--text); }
+.f3-prose--post p { margin: 0 0 16px; }
+.f3-prose--post strong { color: var(--text); font-weight: 700; }
+.f3-prose--post a { color: var(--blue); text-decoration: none; }
+.f3-prose--post a:hover { text-decoration: underline; }
+.f3-prose--post ul, .f3-prose--post ol { margin: 0 0 16px; padding-left: 22px; }
+.f3-prose--post li { margin: 0 0 6px; }
+.f3-prose--post li::marker { color: var(--blue); }
+.f3-prose--post figure { margin: 24px 0; }
+.f3-prose--post img { max-width: 100%; height: auto; border-radius: 10px; }
+.f3-prose--post figure.aligncenter, .f3-prose--post .aligncenter { margin-left: auto; margin-right: auto; text-align: center; }
+.f3-prose--post figcaption { margin-top: 8px; font-size: 12px; line-height: 18px; text-align: center; }
+.f3-prose--post hr { margin: 28px 0; border: 0; border-top: 1px solid #dfe2ea; }
+.f3-prose--post blockquote { margin: 20px 0; padding: 4px 0 4px 18px; border-left: 3px solid var(--blue); color: var(--text); }
+.f3-prose--post .wp-block-table, .f3-prose--post figure:has(> table) { overflow-x: auto; }
+.f3-prose--post table { width: 100%; margin: 0 0 20px; border-collapse: collapse; font-size: 13px; line-height: 19px; }
+.f3-prose--post th, .f3-prose--post td { padding: 10px 12px; border: 1px solid #dfe2ea; text-align: left; vertical-align: top; }
+.f3-prose--post thead th, .f3-prose--post tr:first-child th { background: var(--bg); color: var(--text); font-weight: 700; }
+/* In-article call to action. */
+.f3-prose--post .cta-banner { margin: 32px 0; padding: 30px; border-radius: 10px; background: var(--blue); color: #fff; }
+.f3-prose--post .cta-banner h2 { margin: 0 0 10px; font: 400 26px/30px "Bakbak One", sans-serif; color: #fff; }
+.f3-prose--post .cta-banner p { margin: 0 0 18px; color: rgba(255, 255, 255, 0.9); }
+.f3-prose--post .cta-banner .cta-banner__action { margin: 0; }
+.f3-prose--post .cta-banner a { display: inline-block; padding: 12px 20px; border-radius: 8px; background: #f5c300; color: var(--text); font: 600 14px/17px Inter, sans-serif; text-decoration: none; }
+.f3-prose--post .cta-banner a:hover { text-decoration: none; filter: brightness(0.96); }
+@media (max-width: 767px) {
+  .f3-prose--post .cta-banner { padding: 24px 20px; }
+  .f3-prose--post .cta-banner h2 { font-size: 22px; line-height: 26px; }
+}
