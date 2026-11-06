@@ -31,13 +31,18 @@ add_filter( 'upload_mimes', function ( $m ) {
 	return $m;
 } );
 add_filter( 'wp_check_filetype_and_ext', function ( $data, $file, $filename, $mimes ) {
-	// Admins only, and only files that are clean SVG markup (no script, event handlers or entities).
+	// Admins only, and only files that are clean SVG markup (no script, event handlers, entities or character references).
 	if ( ! str_ends_with( strtolower( $filename ), '.svg' ) || ! current_user_can( 'manage_options' ) ) {
 		return $data;
 	}
 	$svg = is_readable( $file ) ? (string) file_get_contents( $file ) : '';
-	if ( false === stripos( $svg, '<svg' )
-		|| preg_match( '/<script|<foreignObject|\son[a-z]+\s*=|javascript:|<!ENTITY/i', $svg ) ) {
+	// Tags may carry any namespace prefix (<svg:script>), and &#..; references could hide "javascript:".
+	$bad = '/<(?:[a-z0-9_.-]+:)?(?:script|foreignObject|iframe|embed|object|handler|listener)\b'
+		. '|\son[a-z]+\s*='
+		. '|javascript:'
+		. '|<!ENTITY'
+		. '|&#/i';
+	if ( false === stripos( $svg, '<svg' ) || preg_match( $bad, $svg ) ) {
 		// Not a clean SVG: reject it (core would otherwise accept any .svg for admins via upload_mimes).
 		return [ 'ext' => false, 'type' => false, 'proper_filename' => false ];
 	}
@@ -91,6 +96,6 @@ add_filter( 'wp_resource_hints', function ( $urls, $type ) {
 add_action( 'wp_head', function () {
 	// Lets the motion CSS hide elements before they animate in; skipped inside the Elementor editor.
 	if ( ! isset( $_GET['elementor-preview'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-		echo "<script>document.documentElement.classList.add('f3-js')</script>";
+		wp_print_inline_script_tag( "document.documentElement.classList.add('f3-js')" );
 	}
 }, 1 );

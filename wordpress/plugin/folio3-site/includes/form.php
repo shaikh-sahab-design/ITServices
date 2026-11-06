@@ -49,9 +49,19 @@ add_shortcode( 'folio3_contact_form', function ( $atts ) {
 		return '<div class="f3-form f3-form--hubspot"><div class="hs-form-html" data-region="na1" data-form-id="' . esc_attr( FOLIO3_HS_FORM ) . '" data-portal-id="' . esc_attr( FOLIO3_HS_PORTAL ) . '"></div></div>';
 	}
 	$action = esc_url( admin_url( 'admin-post.php' ) );
+	// Set by folio3_handle_inquiry() when it sends the visitor back.
+	$errors = [
+		'expired' => 'Your session expired. Please submit the form again.',
+		'invalid' => 'Please fill in your name, a valid business email and your company name.',
+		'limit'   => 'Too many submissions from your network. Please try again in an hour or email us directly.',
+	];
+	$err = isset( $_GET['f3err'] ) ? sanitize_key( wp_unslash( $_GET['f3err'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
 	ob_start();
 	?>
 	<form class="f3-form" method="post" action="<?php echo $action; ?>">
+		<?php if ( isset( $errors[ $err ] ) ) : ?>
+			<p class="f3-form__error" role="alert"><?php echo esc_html( $errors[ $err ] ); ?></p>
+		<?php endif; ?>
 		<input type="hidden" name="action" value="folio3_inquiry">
 		<?php wp_nonce_field( 'folio3_inquiry', '_f3nonce' ); ?>
 		<input type="text" name="website" value="" tabindex="-1" autocomplete="off" class="f3-form__trap" aria-hidden="true">
@@ -95,9 +105,9 @@ add_shortcode( 'folio3_contact_form', function ( $atts ) {
 } );
 
 function folio3_handle_inquiry() {
-	$back = wp_get_referer() ?: home_url( '/' );
+	$back = remove_query_arg( 'f3err', wp_get_referer() ?: home_url( '/' ) );
 	if ( ! isset( $_POST['_f3nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_f3nonce'] ) ), 'folio3_inquiry' ) ) {
-		wp_safe_redirect( $back );
+		wp_safe_redirect( add_query_arg( 'f3err', 'expired', $back ) );
 		exit;
 	}
 	if ( ! empty( $_POST['website'] ) ) { // bot trap
@@ -108,7 +118,7 @@ function folio3_handle_inquiry() {
 	$ip_key = 'folio3_inq_' . md5( isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '' );
 	$count  = (int) get_transient( $ip_key );
 	if ( $count >= 5 ) {
-		wp_safe_redirect( home_url( '/thank-you/' ) );
+		wp_safe_redirect( add_query_arg( 'f3err', 'limit', $back ) );
 		exit;
 	}
 	set_transient( $ip_key, $count + 1, HOUR_IN_SECONDS );
@@ -128,19 +138,23 @@ function folio3_handle_inquiry() {
 		'Page'           => esc_url_raw( $back ),
 	];
 	if ( ! $f['Full Name'] || ! is_email( $f['Business Email'] ) || ! $f['Company Name'] ) {
-		wp_safe_redirect( $back );
+		wp_safe_redirect( add_query_arg( 'f3err', 'invalid', $back ) );
 		exit;
 	}
 	$body = '';
 	foreach ( $f as $k => $v ) {
 		$body .= $k . ': ' . $v . "\n";
 	}
-	wp_insert_post( [
+	$inquiry_id = wp_insert_post( [
 		'post_type'    => 'folio3_inquiry',
 		'post_status'  => 'private',
 		'post_title'   => $f['Full Name'] . ' – ' . $f['Company Name'],
 		'post_content' => $body,
 	] );
+	if ( $inquiry_id && ! is_wp_error( $inquiry_id ) ) {
+		// Lets the privacy exporter and eraser find this visitor's inquiries.
+		update_post_meta( $inquiry_id, '_folio3_email', strtolower( $f['Business Email'] ) );
+	}
 	// wp_mail splits Reply-To on commas, so strip them (and quoting characters) from the name.
 	$reply_name = trim( str_replace( [ ',', '"', '<', '>', ';' ], ' ', $f['Full Name'] ) );
 	wp_mail( get_option( 'admin_email' ), 'New inquiry: ' . $f['Company Name'], $body, [ 'Reply-To: "' . $reply_name . '" <' . $f['Business Email'] . '>' ] );
@@ -149,3 +163,63 @@ function folio3_handle_inquiry() {
 }
 add_action( 'admin_post_folio3_inquiry', 'folio3_handle_inquiry' );
 add_action( 'admin_post_nopriv_folio3_inquiry', 'folio3_handle_inquiry' );
+
+/* Privacy: Tools > Export / Erase Personal Data find inquiries by the visitor's email. */
+function folio3_inquiries_for_email( $email, $page ) {
+	return get_posts( [
+		'post_type'      => 'folio3_inquiry',
+		'post_status'    => 'any',
+		'posts_per_page' => 50,
+		'paged'          => max( 1, (int) $page ),
+		'meta_key'       => '_folio3_email', // phpcs:ignore WordPress.DB.SlowDBQuery
+		'meta_value'     => strtolower( $email ), // phpcs:ignore WordPress.DB.SlowDBQuery
+	] );
+}
+
+add_filter( 'wp_privacy_personal_data_exporters', function ( $exporters ) {
+	$exporters['folio3-inquiries'] = [
+		'exporter_friendly_name' => 'Contact form inquiries',
+		'callback'               => function ( $email, $page = 1 ) {
+			$posts = folio3_inquiries_for_email( $email, $page );
+			$items = [];
+			foreach ( $posts as $post ) {
+				$items[] = [
+					'group_id'    => 'folio3-inquiries',
+					'group_label' => 'Contact form inquiries',
+					'item_id'     => 'folio3-inquiry-' . $post->ID,
+					'data'        => [
+						[ 'name' => 'Submitted', 'value' => get_the_date( 'Y-m-d H:i', $post ) ],
+						[ 'name' => 'Details', 'value' => $post->post_content ],
+					],
+				];
+			}
+			return [ 'data' => $items, 'done' => count( $posts ) < 50 ];
+		},
+	];
+	return $exporters;
+} );
+
+add_filter( 'wp_privacy_personal_data_erasers', function ( $erasers ) {
+	$erasers['folio3-inquiries'] = [
+		'eraser_friendly_name' => 'Contact form inquiries',
+		'callback'             => function ( $email, $page = 1 ) {
+			// Deleting shifts the result set, so always read the first page.
+			$posts   = folio3_inquiries_for_email( $email, 1 );
+			$removed = false;
+			foreach ( $posts as $post ) {
+				$removed = (bool) wp_delete_post( $post->ID, true ) || $removed;
+			}
+			return [ 'items_removed' => $removed, 'items_retained' => false, 'messages' => [], 'done' => count( $posts ) < 50 ];
+		},
+	];
+	return $erasers;
+} );
+
+add_action( 'admin_init', function () {
+	if ( function_exists( 'wp_add_privacy_policy_content' ) ) {
+		wp_add_privacy_policy_content(
+			'Folio3 Site Helper',
+			wp_kses_post( '<p>The contact form is provided by HubSpot. When you send it, HubSpot receives your name, business email, company, phone number, company size, the services you picked and your message, and passes them to our team. Page fonts load from Google Fonts, which receives your IP address.</p>' )
+		);
+	}
+} );

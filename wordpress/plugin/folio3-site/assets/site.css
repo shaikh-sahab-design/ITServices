@@ -102,6 +102,7 @@ body { overflow-x: hidden; background: #fff; color: var(--text); -webkit-font-sm
 .f3-form__submit-label.is-in { animation: f3-label-in 0.2s var(--ease-out-quint) both; }
 @keyframes f3-label-in { from { transform: translateY(16px); opacity: 0; } }
 .f3-form__footer { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: auto; }
+.f3-form__error { margin: 0 0 4px; padding: 12px 16px; border-radius: 8px; background: rgba(236, 37, 57, 0.08); color: #b3122a; font-size: 14px; line-height: 20px; }
 .f3-form__micro { max-width: 440px; margin: 0; font-size: 13px; line-height: 19px; color: var(--text-2); }
 .f3-form .f3-form__submit { min-width: 167px; padding: 10px 20px; border: 1px solid transparent; border-radius: 8px; background: var(--blue); color: #fff; font: 600 18px/22px Inter, sans-serif; white-space: nowrap; cursor: pointer; transition: background-color 150ms ease, box-shadow 200ms var(--ease-out-quint), transform 100ms ease-out; }
 .f3-form .f3-form__submit:hover, .f3-form .f3-form__submit:focus { background: #3b6fe3; color: #fff; box-shadow: 0 8px 20px rgba(74, 125, 238, 0.3); }

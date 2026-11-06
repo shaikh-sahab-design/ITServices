@@ -10,6 +10,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 const FOLIO3_REPO_RAW = 'https://raw.githubusercontent.com/shaikh-sahab-design/ITServices/';
 
+/** A full commit SHA, so every import is pinned to a reviewed commit. */
+function folio3_valid_ref( $ref ) {
+	return is_string( $ref ) && 1 === preg_match( '/^[0-9a-f]{40}$/', $ref );
+}
+
 function folio3_fetch( $url ) {
 	$r = wp_remote_get( $url, [ 'timeout' => 60 ] );
 	if ( is_wp_error( $r ) ) {
@@ -28,6 +33,9 @@ function folio3_media_repo_path( $key ) {
 
 /** Upload media keys that are not in the library yet. Returns [key => id]. */
 function folio3_import_media( $ref, array $keys ) {
+	if ( ! folio3_valid_ref( $ref ) ) {
+		return [ 'ref' => 'Pass a full 40-character commit SHA.' ];
+	}
 	require_once ABSPATH . 'wp-admin/includes/file.php';
 	require_once ABSPATH . 'wp-admin/includes/media.php';
 	require_once ABSPATH . 'wp-admin/includes/image.php';
@@ -127,6 +135,9 @@ function folio3_save_elementor( $post_id, array $data ) {
 }
 
 function folio3_import_page( $ref, $path, $slug, $title, $parent_path = '', $type = 'page' ) {
+	if ( ! folio3_valid_ref( $ref ) ) {
+		return 'Pass a full 40-character commit SHA.';
+	}
 	$json = folio3_fetch( FOLIO3_REPO_RAW . $ref . '/wordpress/data/' . $path );
 	if ( is_wp_error( $json ) ) {
 		return $json->get_error_message();
@@ -154,9 +165,12 @@ function folio3_import_page( $ref, $path, $slug, $title, $parent_path = '', $typ
 	}
 	if ( $existing ) {
 		$args['ID'] = $existing->ID;
-		$id         = wp_update_post( $args );
+		$id         = wp_update_post( $args, true );
 	} else {
-		$id = wp_insert_post( $args );
+		$id = wp_insert_post( $args, true );
+	}
+	if ( is_wp_error( $id ) ) {
+		return $id->get_error_message();
 	}
 	update_post_meta( $id, '_wp_page_template', 'elementor_canvas' );
 	$missing = folio3_save_elementor( $id, $data );
@@ -164,6 +178,9 @@ function folio3_import_page( $ref, $path, $slug, $title, $parent_path = '', $typ
 }
 
 function folio3_import_template( $ref, $path, $title, $option ) {
+	if ( ! folio3_valid_ref( $ref ) ) {
+		return 'Pass a full 40-character commit SHA.';
+	}
 	$json = folio3_fetch( FOLIO3_REPO_RAW . $ref . '/wordpress/data/' . $path );
 	if ( is_wp_error( $json ) ) {
 		return $json->get_error_message();
@@ -174,7 +191,10 @@ function folio3_import_template( $ref, $path, $title, $option ) {
 	}
 	$id = (int) get_option( $option );
 	if ( ! $id || ! get_post( $id ) ) {
-		$id = wp_insert_post( [ 'post_type' => 'elementor_library', 'post_status' => 'publish', 'post_title' => $title ] );
+		$id = wp_insert_post( [ 'post_type' => 'elementor_library', 'post_status' => 'publish', 'post_title' => $title ], true );
+		if ( is_wp_error( $id ) ) {
+			return $id->get_error_message();
+		}
 		update_post_meta( $id, '_elementor_template_type', 'section' );
 		wp_set_object_terms( $id, 'section', 'elementor_library_type' );
 		update_option( $option, $id );
@@ -185,12 +205,12 @@ function folio3_import_template( $ref, $path, $title, $option ) {
 
 /** Copy this plugin's own files from the repo (used to ship CSS/JS/PHP changes). */
 function folio3_sync_plugin( $ref, array $files ) {
-	if ( ! preg_match( '/^[0-9a-f]{40}$/', $ref ) ) {
+	if ( ! folio3_valid_ref( $ref ) ) {
 		return new WP_Error( 'ref', 'Pass a full 40-character commit SHA.' );
 	}
 	$out = [];
 	foreach ( $files as $f ) {
-		if ( ! preg_match( '#^(assets/[a-z0-9._-]+\.(css|js)|includes/[a-z0-9_-]+\.php|folio3-site\.php)$#', $f ) ) {
+		if ( ! preg_match( '#^(assets/[a-z0-9._-]+\.(css|js)|includes/[a-z0-9_-]+\.php|folio3-site\.php|uninstall\.php)$#', $f ) ) {
 			$out[ $f ] = 'path not allowed';
 			continue;
 		}
@@ -204,7 +224,14 @@ function folio3_sync_plugin( $ref, array $files ) {
 		}
 		$dest = FOLIO3_SITE_DIR . '/' . $f;
 		wp_mkdir_p( dirname( $dest ) );
-		$out[ $f ] = false !== file_put_contents( $dest, $body ) ? strlen( $body ) : 'write failed';
+		// Write next to the file, then rename: a request never loads a half-written PHP file.
+		$tmp = $dest . '.tmp-' . wp_generate_password( 8, false );
+		if ( false === file_put_contents( $tmp, $body ) || ! rename( $tmp, $dest ) ) {
+			@unlink( $tmp );
+			$out[ $f ] = 'write failed';
+			continue;
+		}
+		$out[ $f ] = strlen( $body );
 	}
 	update_option( 'folio3_assets_version', substr( $ref, 0, 8 ) );
 	return $out;
@@ -215,6 +242,9 @@ function folio3_sync_plugin( $ref, array $files ) {
  * $only: optional list of page names to limit the run.
  */
 function folio3_import_all( $ref, array $only = [] ) {
+	if ( ! folio3_valid_ref( $ref ) ) {
+		return [ 'ref' => 'Pass a full 40-character commit SHA.' ];
+	}
 	$out   = [];
 	$raw = folio3_fetch( FOLIO3_REPO_RAW . $ref . '/wordpress/data/pages.json' );
 	if ( is_wp_error( $raw ) ) {
