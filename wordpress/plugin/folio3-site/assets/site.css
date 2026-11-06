@@ -586,3 +586,14 @@ html.f3-js .f3-blog-grid__inner:not(.is-paged) > article:nth-of-type(n+10) { dis
 }
 .f3-blog-tabs { justify-content: center; }
 @media (max-width: 767px) { .f3-blog-tabs { justify-content: flex-start; } }
+/* Figma draws the tab border inside the box: 42px tall, text + 40px wide. */
+.f3-pill { padding: 9px 19px; }
+.f3-pill__stack { line-height: 22px; }
+.f3-pill:not(.is-active) .f3-pill__label:not(.f3-pill__label--hover) { color: #4a7dee; }
+.f3-pill.is-active .f3-pill__label { color: #fff; }
+@media (max-width: 767px) {
+  .f3-blog-tabs { justify-content: center; }
+  .f3-pill-nav { flex-wrap: wrap; justify-content: center; overflow: visible; }
+  .f3-pill { padding: 7px 15px; }
+  .f3-pill__stack { line-height: 19px; }
+}
