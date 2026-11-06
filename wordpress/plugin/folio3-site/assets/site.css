@@ -566,3 +566,9 @@ html.f3-js .f3-blog-grid__inner:not(.is-paged) > article:nth-of-type(n+10) { dis
   .f3-blog-grid .f3-blog-card { min-height: 0; }
   .f3-blog-grid .f3-blog-card__media, .f3-blog-grid .f3-blog-card__media img { height: 131px !important; }
 }
+/* Post lists use the site's blue dot bullets; wide tables scroll sideways on phones. */
+.f3-prose--post ul { padding-left: 0; list-style: none; }
+.f3-prose--post ul > li { position: relative; padding-left: 18px; }
+.f3-prose--post ul > li::before { content: ""; position: absolute; left: 2px; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: #4a7dee; }
+.f3-prose--post .wp-block-table { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+@media (max-width: 767px) { .f3-prose--post .wp-block-table table { min-width: 560px; } }
