@@ -193,22 +193,25 @@
   "route": "/case-studies/arcom-it",
   "name": "case-studies__arcom-it",
   "slug": "arcom-it",
-  "parent": "case-studies",
-  "title": "Arcom IT Case Study"
+  "parent": "",
+  "title": "Arcom IT Case Study",
+  "post_type": "case_study"
  },
  {
   "route": "/case-studies/activecomply",
   "name": "case-studies__activecomply",
   "slug": "activecomply",
-  "parent": "case-studies",
-  "title": "ActiveComply Case Study"
+  "parent": "",
+  "title": "ActiveComply Case Study",
+  "post_type": "case_study"
  },
  {
   "route": "/case-studies/opportune",
   "name": "case-studies__opportune",
   "slug": "opportune",
-  "parent": "case-studies",
-  "title": "Opportune Case Study"
+  "parent": "",
+  "title": "Opportune Case Study",
+  "post_type": "case_study"
  },
  {
   "route": "/contact",

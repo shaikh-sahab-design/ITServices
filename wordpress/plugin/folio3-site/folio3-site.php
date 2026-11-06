@@ -19,6 +19,7 @@ define( 'FOLIO3_SITE_URL', plugin_dir_url( __FILE__ ) );
 require_once __DIR__ . '/includes/form.php';
 require_once __DIR__ . '/includes/import.php';
 require_once __DIR__ . '/includes/blog.php';
+require_once __DIR__ . '/includes/case-studies.php';
 
 /* SVG uploads for admins (icons are SVG files). */
 add_filter( 'upload_mimes', function ( $m ) {

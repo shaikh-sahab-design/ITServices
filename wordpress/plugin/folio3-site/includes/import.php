@@ -148,8 +148,8 @@ function folio3_import_page( $ref, $path, $slug, $title, $parent_path = '', $typ
 		'post_name'   => $slug,
 		'post_parent' => $parent,
 	];
-	if ( $existing && 'post' === $type ) {
-		// Blog posts are managed in Posts once created: never overwrite an editor's work.
+	if ( $existing && 'page' !== $type ) {
+		// Blog posts and case studies are managed in their own admin menus once created: never overwrite an editor's work.
 		return [ 'id' => $existing->ID, 'missing' => [] ];
 	}
 	if ( $existing ) {

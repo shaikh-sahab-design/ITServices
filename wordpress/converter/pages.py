@@ -43,6 +43,10 @@ def page_list():
             # Blog articles live in WordPress Posts (permalinks /blog/%postname%/), not as child pages.
             out.append({'route': r, 'name': name, 'slug': slug, 'parent': '', 'title': title, 'post_type': 'post'})
             continue
+        if parent == 'case-studies':
+            # Case studies live in the Case Studies post type (permalinks /case-studies/<slug>/).
+            out.append({'route': r, 'name': name, 'slug': slug, 'parent': '', 'title': title, 'post_type': 'case_study'})
+            continue
         out.append({'route': r, 'name': name, 'slug': slug, 'parent': parent, 'title': title})
     return out
 
