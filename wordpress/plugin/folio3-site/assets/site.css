@@ -471,3 +471,14 @@ html, body { overflow-x: clip; }
   /* On phones a floating badge sits over the fields while scrolling, so it goes back into the form flow. */
   .f3-form--hubspot .hsfc-ReCaptchaV3 { position: static !important; width: 256px; max-width: 100%; margin: 4px 0 0 !important; border-radius: 2px; }
 }
+/* Service cards: the card text sits above the (faded) picture, as on the old site, so the back-side button takes clicks. */
+.f3-service-card__body { position: relative; z-index: 1; }
+.f3-service-card__img { pointer-events: none; }
+/* Only the side that faces the visitor takes clicks. */
+.f3-service-card__face--back { pointer-events: none; }
+.f3-service-card.is-flipped .f3-service-card__face--back { pointer-events: auto; }
+.f3-service-card.is-flipped .f3-service-card__face--front { pointer-events: none; }
+@media (hover: hover) and (pointer: fine) {
+  .f3-service-card:hover .f3-service-card__face--back { pointer-events: auto; }
+  .f3-service-card:hover .f3-service-card__face--front { pointer-events: none; }
+}
