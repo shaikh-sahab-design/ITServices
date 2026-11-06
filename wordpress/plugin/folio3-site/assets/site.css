@@ -554,3 +554,15 @@ html.f3-js .f3-blog-grid__inner:not(.is-paged) > article:nth-of-type(n+10) { dis
   .f3-pill__circle, .f3-pill__label, .f3-pill::after { transition: none; }
   .f3-blog-grid__inner > .f3-blog-card--enter { animation: none; }
 }
+/* Blog cards as in Figma (Card 752:1434): 427 x 400, 160px image, title two lines, summary three lines, link and date pinned to the bottom. */
+.f3-blog-grid .f3-blog-card { min-height: 400px; background: #f4f5fb; border-radius: 10px; overflow: hidden; }
+.f3-blog-grid .f3-blog-card__media { flex: none !important; height: 160px; overflow: hidden; border-radius: 10px 10px 0 0; }
+.f3-blog-grid .f3-blog-card__media img { width: 100% !important; height: 160px !important; object-fit: cover; }
+.f3-blog-grid .f3-blog-card__body { flex: 1 1 auto !important; }
+.f3-blog-grid .f3-blog-card__title .elementor-heading-title { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font: 400 21px/28px "Bakbak One", sans-serif; color: #0c0e16; }
+.f3-blog-grid .f3-blog-card__excerpt { display: -webkit-box !important; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden; max-height: calc(14px * 1.55 * 3); font: 400 14px/1.55 Inter, sans-serif; color: #41444e; }
+.f3-blog-grid .f3-blog-card__foot { margin-top: auto !important; padding-top: 28px !important; align-items: center; justify-content: space-between; }
+@media (max-width: 767px) {
+  .f3-blog-grid .f3-blog-card { min-height: 0; }
+  .f3-blog-grid .f3-blog-card__media, .f3-blog-grid .f3-blog-card__media img { height: 131px !important; }
+}
