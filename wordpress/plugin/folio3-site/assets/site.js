@@ -331,7 +331,11 @@
     if (!row) return;
     var lr = list.getBoundingClientRect(), rr = row.getBoundingClientRect();
     bar.style.width = rr.width + 'px';
-    bar.style.transform = 'translate(' + (rr.left - lr.left) + 'px,' + (rr.bottom - lr.top) + 'px)';
+    bar.style.transform = 'translate(' + (rr.left - lr.left) + 'px,' + (rr.bottom - lr.top + list.scrollTop) + 'px)';
+    // The list scrolls inside a 500px box: keep the current section in view.
+    if (list.scrollHeight > list.clientHeight + 1 && (row.offsetTop < list.scrollTop || row.offsetTop + row.offsetHeight > list.scrollTop + list.clientHeight)) {
+      list.scrollTo({ top: Math.max(0, row.offsetTop - list.clientHeight / 3), behavior: 'smooth' });
+    }
     bar.style.bottom = 'auto'; bar.style.top = '-1px';
   };
   setActive(0);
