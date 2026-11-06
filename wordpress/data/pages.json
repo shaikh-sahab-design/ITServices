@@ -170,7 +170,7 @@
  {
   "route": "/blog",
   "name": "blog",
-  "slug": "blog",
+  "slug": "blogs",
   "parent": "",
   "title": "Blog"
  },

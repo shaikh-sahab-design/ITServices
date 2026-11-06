@@ -40,13 +40,15 @@ def page_list():
         if not title:
             title = slug.replace('-', ' ').title()
         if parent == 'blog':
-            # Blog articles live in WordPress Posts (permalinks /blog/%postname%/), not as child pages.
+            # Blog articles live in WordPress Posts (permalinks /blogs/%postname%/), not as child pages.
             out.append({'route': r, 'name': name, 'slug': slug, 'parent': '', 'title': title, 'post_type': 'post'})
             continue
         if parent == 'case-studies':
             # Case studies live in the Case Studies post type (permalinks /case-studies/<slug>/).
             out.append({'route': r, 'name': name, 'slug': slug, 'parent': '', 'title': title, 'post_type': 'case_study'})
             continue
+        if r == '/blog':
+            slug = 'blogs'  # the WordPress blog lives at /blogs/
         out.append({'route': r, 'name': name, 'slug': slug, 'parent': parent, 'title': title})
     return out
 

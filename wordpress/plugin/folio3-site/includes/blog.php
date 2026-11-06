@@ -70,7 +70,7 @@ function folio3_blog_tabs() {
 	if ( count( $cats ) < 2 ) {
 		return '';
 	}
-	$base = get_permalink( get_page_by_path( 'blog' ) ) ?: home_url( '/blog/' );
+	$base = get_permalink( get_page_by_path( 'blogs' ) ) ?: home_url( '/blogs/' );
 	$item = function ( $slug, $label ) use ( $base ) {
 		$href = $slug ? add_query_arg( 'category', $slug, $base ) : $base;
 		return '<li><a class="f3-pill" href="' . esc_url( $href ) . '" data-cat="' . esc_attr( $slug ) . '">'
@@ -162,3 +162,16 @@ function folio3_blog_card( $template, WP_Post $post ) {
 	}
 	return $html;
 }
+
+/* The blog moved from /blog/ to /blogs/ (2026-11-06): send old links to the new address. */
+add_action( 'template_redirect', function () {
+	if ( ! is_404() ) {
+		return;
+	}
+	$path = (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ); // phpcs:ignore
+	if ( preg_match( '#^/blog(/.*)?$#', $path, $m ) ) {
+		$q = (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_QUERY ); // phpcs:ignore
+		wp_safe_redirect( home_url( '/blogs' . ( $m[1] ?? '/' ) ) . ( $q ? '?' . $q : '' ), 301 );
+		exit;
+	}
+} );

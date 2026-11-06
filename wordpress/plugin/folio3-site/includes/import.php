@@ -112,6 +112,8 @@ function folio3_resolve( $data, &$missing = [] ) {
 				[ $path, $hash ] = explode( '#', $path, 2 );
 				$hash = '#' . $hash;
 			}
+			// The Next.js /blog section lives at /blogs/ on WordPress (Adil, 2026-11-06).
+			$path = preg_replace( '#^/blog(?=/|$)#', '/blogs', $path );
 			return ( '/' === $path ? home_url( '/' ) : home_url( trailingslashit( $path ) ) ) . $hash;
 		}, $v );
 	};

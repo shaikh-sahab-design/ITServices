@@ -48,7 +48,7 @@ function folio3_old_blog_link( $url ) {
 	}
 	$path = $parts['path'] ?? '/';
 	if ( preg_match( '#^/blogs/([^/]+)/?$#', $path, $b ) ) {
-		return home_url( '/blog/' . $b[1] . '/' );
+		return home_url( '/blogs/' . $b[1] . '/' );
 	}
 	$map = folio3_old_blog_paths();
 	if ( isset( $map[ $path ] ) ) {
