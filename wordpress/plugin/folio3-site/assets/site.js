@@ -390,3 +390,104 @@
     window.location.href = new URL('thank-you/', base).href;
   });
 })();
+
+/* Blog: category tabs (pill nav, hover effect after React Bits' PillNav) and pages of nine cards. */
+(function () {
+  'use strict';
+  var grid = document.querySelector('.f3-blog-grid__inner');
+  if (!grid) return;
+  var PER = 9;
+  var cards = [].slice.call(grid.children).filter(function (el) { return el.tagName === 'ARTICLE'; });
+  var tabs = [].slice.call(grid.querySelectorAll('.f3-pill'));
+  var pager = grid.querySelector('.f3-blog-pager');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cats = tabs.map(function (t) { return t.getAttribute('data-cat'); });
+  var state = { cat: '', page: 1 };
+  var read = function () {
+    var q = new URLSearchParams(location.search);
+    state.cat = cats.indexOf(q.get('category') || '') >= 0 ? (q.get('category') || '') : '';
+    state.page = Math.max(1, parseInt(q.get('pg'), 10) || 1);
+  };
+  var href = function (cat, page) {
+    var u = new URL(location.href);
+    u.searchParams.delete('category'); u.searchParams.delete('pg'); u.hash = '';
+    if (cat) u.searchParams.set('category', cat);
+    if (page > 1) u.searchParams.set('pg', page);
+    return u.pathname + u.search;
+  };
+  var top = function () {
+    var y = grid.getBoundingClientRect().top + window.pageYOffset - 110;
+    if (window.pageYOffset > y) window.scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
+  };
+  var render = function (animate) {
+    var list = cards.filter(function (c) { return !state.cat || (' ' + (c.getAttribute('data-cats') || '') + ' ').indexOf(' ' + state.cat + ' ') >= 0; });
+    var pages = Math.max(1, Math.ceil(list.length / PER));
+    if (state.page > pages) state.page = pages;
+    var shown = list.slice((state.page - 1) * PER, state.page * PER);
+    cards.forEach(function (c) {
+      var i = shown.indexOf(c);
+      c.hidden = i < 0;
+      c.classList.remove('f3-blog-card--enter');
+      if (i >= 0 && animate) {
+        c.classList.add('f3-in');
+        if (!reduce) { void c.offsetWidth; c.style.animationDelay = (i * 40) + 'ms'; c.classList.add('f3-blog-card--enter'); }
+      }
+    });
+    grid.classList.add('is-paged');
+    tabs.forEach(function (t) {
+      var on = t.getAttribute('data-cat') === state.cat;
+      t.classList.toggle('is-active', on);
+      if (on) t.setAttribute('aria-current', 'page'); else t.removeAttribute('aria-current');
+    });
+    if (!pager) return;
+    pager.innerHTML = '';
+    pager.hidden = pages < 2;
+    if (pages < 2) return;
+    var add = function (label, page, opts) {
+      var a = document.createElement('a');
+      a.className = 'f3-blog-pager__btn' + (opts && opts.cls ? ' ' + opts.cls : '');
+      a.innerHTML = label;
+      if (opts && opts.aria) a.setAttribute('aria-label', opts.aria);
+      if (opts && opts.disabled) { a.setAttribute('aria-disabled', 'true'); a.classList.add('is-disabled'); }
+      else {
+        a.href = href(state.cat, page);
+        a.addEventListener('click', function (e) { e.preventDefault(); go(state.cat, page); });
+      }
+      if (page === state.page && !(opts && opts.cls)) { a.classList.add('is-current'); a.setAttribute('aria-current', 'page'); }
+      pager.appendChild(a);
+    };
+    add('<span aria-hidden="true">&larr;</span>', state.page - 1, { cls: 'f3-blog-pager__btn--prev', aria: 'Previous page', disabled: state.page === 1 });
+    for (var p = 1; p <= pages; p++) add(String(p), p, { aria: 'Page ' + p });
+    add('<span aria-hidden="true">&rarr;</span>', state.page + 1, { cls: 'f3-blog-pager__btn--next', aria: 'Next page', disabled: state.page === pages });
+  };
+  var go = function (cat, page) {
+    state.cat = cat; state.page = page;
+    history.pushState(null, '', href(cat, page));
+    render(true);
+    top();
+  };
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function (e) { e.preventDefault(); if (t.getAttribute('data-cat') !== state.cat || state.page !== 1) go(t.getAttribute('data-cat'), 1); });
+  });
+  window.addEventListener('popstate', function () { read(); render(true); });
+  read();
+  render(false);
+
+  // Pill hover circle: sized so that, scaled up, it covers the whole pill from its bottom edge.
+  var layout = function () {
+    tabs.forEach(function (p) {
+      var w = p.offsetWidth, h = p.offsetHeight;
+      if (!w || !h) return;
+      var R = ((w * w) / 4 + h * h) / (2 * h);
+      var D = Math.ceil(2 * R) + 2;
+      var delta = Math.ceil(R - Math.sqrt(Math.max(0, R * R - (w * w) / 4))) + 1;
+      p.style.setProperty('--f3p-d', D + 'px');
+      p.style.setProperty('--f3p-b', -delta + 'px');
+      p.style.setProperty('--f3p-oy', (D - delta) + 'px');
+      p.style.setProperty('--f3p-h', h + 'px');
+    });
+  };
+  layout();
+  window.addEventListener('resize', layout);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
+})();

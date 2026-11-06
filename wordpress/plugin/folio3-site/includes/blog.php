@@ -41,7 +41,7 @@ function folio3_blog_fill_grid( $content ) {
 			[
 				'post_type'      => 'post',
 				'post_status'    => 'publish',
-				'posts_per_page' => 48,
+				'posts_per_page' => 200,
 				'no_found_rows'  => true,
 				'orderby'        => 'date',
 				'order'          => 'DESC',
@@ -58,7 +58,31 @@ function folio3_blog_fill_grid( $content ) {
 			update_option( 'folio3_blog_card_keys', array_slice( $keys, -10 ), false );
 		}
 	}
-	return substr( $content, 0, $start ) . $cards . substr( $content, $end );
+	return substr( $content, 0, $start ) . folio3_blog_tabs() . $cards . '<nav class="f3-blog-pager" aria-label="Blog pages" hidden></nav>' . substr( $content, $end );
+}
+
+/**
+ * Category tabs above the grid. site.js filters the cards by category and splits them into pages of
+ * nine; the links still work without JavaScript (?category=slug).
+ */
+function folio3_blog_tabs() {
+	$cats = get_categories( [ 'hide_empty' => true, 'orderby' => 'count', 'order' => 'DESC' ] );
+	if ( count( $cats ) < 2 ) {
+		return '';
+	}
+	$base = get_permalink( get_page_by_path( 'blog' ) ) ?: home_url( '/blog/' );
+	$item = function ( $slug, $label ) use ( $base ) {
+		$href = $slug ? add_query_arg( 'category', $slug, $base ) : $base;
+		return '<li><a class="f3-pill" href="' . esc_url( $href ) . '" data-cat="' . esc_attr( $slug ) . '">'
+			. '<span class="f3-pill__circle" aria-hidden="true"></span>'
+			. '<span class="f3-pill__stack"><span class="f3-pill__label">' . esc_html( $label ) . '</span>'
+			. '<span class="f3-pill__label f3-pill__label--hover" aria-hidden="true">' . esc_html( $label ) . '</span></span></a></li>';
+	};
+	$out = $item( '', 'All' );
+	foreach ( $cats as $c ) {
+		$out .= $item( $c->slug, html_entity_decode( $c->name, ENT_QUOTES, 'UTF-8' ) );
+	}
+	return '<nav class="f3-blog-tabs" aria-label="Blog categories"><ul class="f3-pill-nav">' . $out . '</ul></nav>';
 }
 
 /** Drop the cached cards whenever a post is saved, trashed or deleted. */
@@ -123,6 +147,13 @@ function folio3_blog_card( $template, WP_Post $post ) {
 			$el->removeChild( $el->firstChild );
 		}
 		$el->appendChild( $doc->createTextNode( get_the_date( 'F j, Y', $post ) ) );
+	}
+
+	// Categories for the tabs filter.
+	$root = $xp->query( '//div[@id="f3-root"]/*' )->item( 0 );
+	if ( $root ) {
+		$slugs = wp_list_pluck( get_the_category( $post->ID ), 'slug' );
+		$root->setAttribute( 'data-cats', implode( ' ', $slugs ) );
 	}
 
 	$html = '';
