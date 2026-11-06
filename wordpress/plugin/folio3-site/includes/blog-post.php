@@ -7,7 +7,8 @@
  *
  * - hero and article titles: the post title
  * - meta row: author display name, publish date, reading time
- * - prose column: the post content; every H2 gets an id and a line in the table of contents
+ * - prose column: the post content; every H2 (or H3, when the post has fewer than two H2s) gets an
+ *   id and a line in the table of contents
  * - FAQ: a block in the content with class "faq-section" (an H2, then H3 questions each followed by
  *   their answer) is moved into the FAQ accordion; without one, the FAQ section is left out
  * - author box: the author's display name, "Job title" and "Photo" (Users → Profile) and biography
@@ -205,11 +206,18 @@ function folio3_post_fill( $layout, WP_Post $post, $content ) {
 	}
 	$toc  = [];
 	$used = [];
-	foreach ( iterator_to_array( $cxp->query( '//h2' ) ) as $h2 ) {
+	$heads = function ( $tag ) use ( $cxp, $has ) {
+		return array_values( array_filter( iterator_to_array( $cxp->query( '//' . $tag ) ), function ( $h ) use ( $cxp, $has ) {
+			return '' !== trim( $h->textContent ) && ! $cxp->query( 'ancestor::*[' . $has( 'cta-banner' ) . ']', $h )->length;
+		} ) );
+	};
+	// Sections are H2s; a post that uses H3s for its sections (fewer than two H2s) lists those instead.
+	$list = $heads( 'h2' );
+	if ( count( $list ) < 2 && count( $heads( 'h3' ) ) >= 2 ) {
+		$list = $heads( 'h3' );
+	}
+	foreach ( $list as $h2 ) {
 		$label = trim( preg_replace( '/\s+/', ' ', $h2->textContent ) );
-		if ( '' === $label || $cxp->query( 'ancestor::*[' . $has( 'cta-banner' ) . ']', $h2 )->length ) {
-			continue;
-		}
 		$id = $h2->getAttribute( 'id' ) ?: sanitize_title( $label );
 		$id = $id ?: 'section';
 		$base = $id;

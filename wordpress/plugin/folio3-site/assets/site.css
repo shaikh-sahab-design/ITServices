@@ -486,7 +486,7 @@ html, body { overflow-x: clip; }
 .f3-prose.f3-prose--post { display: block !important; font: 400 14px/22px Inter, sans-serif; color: var(--text-2); }
 .f3-prose--post > :first-child { margin-top: 0 !important; }
 .f3-prose--post h2 { margin: 32px 0 16px; font: 700 18px/22px Inter, sans-serif; color: var(--text); scroll-margin-top: 96px; }
-.f3-prose--post h3 { margin: 22px 0 10px; font: 700 16px/20px Inter, sans-serif; color: var(--text); }
+.f3-prose--post h3 { scroll-margin-top: 96px; margin: 22px 0 10px; font: 700 16px/20px Inter, sans-serif; color: var(--text); }
 .f3-prose--post h4 { margin: 18px 0 8px; font: 700 14px/20px Inter, sans-serif; color: var(--text); }
 .f3-prose--post p { margin: 0 0 16px; }
 .f3-prose--post strong { color: var(--text); font-weight: 700; }
