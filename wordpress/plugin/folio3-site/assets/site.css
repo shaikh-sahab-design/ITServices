@@ -623,3 +623,5 @@ html.f3-js .f3-blog-grid__inner:not(.is-paged) > article:nth-of-type(n+10) { dis
 .f3-form--hubspot .hsfc-CheckboxInput,
 .f3-form--hubspot .hsfc-CheckboxInput:checked,
 .f3-form--hubspot .hsfc-CheckboxInput:focus{box-shadow:none !important}
+.f3-form--hubspot .hsfc-CheckboxInput::after,
+.f3-form--hubspot .hsfc-CheckboxInput::before{display:none !important}

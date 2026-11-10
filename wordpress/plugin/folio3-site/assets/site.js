@@ -585,28 +585,29 @@
     sync(true);
   };
 
+  var tried = new WeakSet();
   var scan = function (form) {
     form.querySelectorAll('.hsfc-DropdownInput').forEach(function (dd) {
       var field = fieldOf(dd);
-      if (!field || field.querySelector('.f3-chips--hs') || dd.dataset.f3Tried) return;
+      if (!field || field.querySelector('.f3-chips--hs') || tried.has(dd)) return;
       var lab = field.querySelector('.hsfc-FieldLabel');
       if (!lab || !/company\s*size/i.test(lab.textContent)) return;
-      dd.dataset.f3Tried = '1';
+      tried.add(dd);
       withList(dd, field, function (list, opened) {
         var labels = list.map(function (li) { return clean(li.textContent); });
         if (opened) close(dd);
-        delete dd.dataset.f3Tried;
+        tried.delete(dd);
         if (labels.length) build(dd, field, labels);
       });
     });
   };
+  /* Wait until HubSpot has finished rendering (its ready event, or no DOM changes for a moment), so the
+     pills are never added while React is still hydrating the form. */
   forms.forEach(function (form) {
-    var queued = false;
-    new MutationObserver(function () {
-      if (queued) return;
-      queued = true;
-      requestAnimationFrame(function () { queued = false; scan(form); });
-    }).observe(form, { childList: true, subtree: true });
-    scan(form);
+    var timer = 0, ready = false;
+    var later = function (ms) { clearTimeout(timer); timer = setTimeout(function () { scan(form); }, ms); };
+    new MutationObserver(function () { later(ready ? 60 : 700); }).observe(form, { childList: true, subtree: true });
+    window.addEventListener('hs-form-event:on-ready', function () { ready = true; later(60); });
+    later(1500);
   });
 })();
