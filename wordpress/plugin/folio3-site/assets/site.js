@@ -538,7 +538,7 @@
     wrap.className = 'f3-chips f3-chips--hs';
     wrap.setAttribute('role', 'radiogroup');
     var lab = field.querySelector('.hsfc-FieldLabel');
-    if (lab) { if (!lab.id) lab.id = name + '-label'; wrap.setAttribute('aria-labelledby', lab.id); }
+    if (lab) wrap.setAttribute('aria-label', clean(lab.textContent).replace(/\*$/, '').trim());
     labels.forEach(function (text) {
       var l = document.createElement('label');
       l.className = 'f3-chip';
@@ -568,7 +568,7 @@
       wrap.querySelectorAll('input').forEach(function (i) { i.checked = i.value === v; });
       place(instant);
     };
-    var fail = function () { field.classList.remove('f3-hs-pills'); wrap.remove(); };
+    var fail = function () { wrap.remove(); };
     wrap.addEventListener('change', function (e) {
       var want = e.target.value;
       place(false);
@@ -581,7 +581,6 @@
     });
     window.addEventListener('resize', function () { place(true); });
     dd.parentNode.insertBefore(wrap, dd.nextSibling);
-    field.classList.add('f3-hs-pills');
     sync(true);
   };
 
@@ -601,13 +600,24 @@
       });
     });
   };
-  /* Wait until HubSpot has finished rendering (its ready event, or no DOM changes for a moment), so the
-     pills are never added while React is still hydrating the form. */
+  /* Only touch the form once React owns it: the dropdown's own nodes carry React's props key after
+     hydration. Adding the pills earlier makes React throw hydration errors on slow loads. */
+  var hydrated = function (form) {
+    var t = form.querySelector('.hsfc-DropdownInput [role="combobox"], .hsfc-DropdownInput input');
+    if (!t) return false;
+    for (var k in t) if (k.indexOf('__reactProps') === 0 || k.indexOf('__reactFiber') === 0) return true;
+    return false;
+  };
+  var idle = window.requestIdleCallback || function (fn) { setTimeout(fn, 200); };
   forms.forEach(function (form) {
-    var timer = 0, ready = false;
-    var later = function (ms) { clearTimeout(timer); timer = setTimeout(function () { scan(form); }, ms); };
-    new MutationObserver(function () { later(ready ? 60 : 700); }).observe(form, { childList: true, subtree: true });
-    window.addEventListener('hs-form-event:on-ready', function () { ready = true; later(60); });
+    var timer = 0;
+    var go = function () {
+      if (!hydrated(form)) { later(300); return; }
+      requestAnimationFrame(function () { requestAnimationFrame(function () { idle(function () { scan(form); }, { timeout: 800 }); }); });
+    };
+    var later = function (ms) { clearTimeout(timer); timer = setTimeout(go, ms); };
+    new MutationObserver(function () { later(400); }).observe(form, { childList: true, subtree: true });
+    window.addEventListener('hs-form-event:on-ready', function () { later(100); });
     later(1500);
   });
 })();

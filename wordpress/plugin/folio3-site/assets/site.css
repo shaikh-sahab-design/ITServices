@@ -605,7 +605,7 @@ html.f3-js .f3-blog-grid__inner:not(.is-paged) > article:nth-of-type(n+10) { dis
 .f3-toc__list::-webkit-scrollbar-thumb { border-radius: 4px; background: rgba(74, 125, 238, 0.45); }
 .f3-toc__list > .e-con, .f3-toc__list > .f3-tag-li { flex: none !important; }
 /* HubSpot form, matched to the reference design: company size as pills (site.js builds them and keeps HubSpot's dropdown in sync, hidden). */
-.f3-hs-pills .hsfc-DropdownInput { position: absolute !important; width: 1px !important; height: 1px !important; overflow: hidden !important; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.hsfc-DropdownField:has(> .f3-chips--hs) .hsfc-DropdownInput, .hsfc-DropdownInput:has(+ .f3-chips--hs) { position: absolute !important; width: 1px !important; height: 1px !important; overflow: hidden !important; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
 .f3-form--hubspot .f3-chips--hs { margin-top: 2px; }
 .f3-form--hubspot .f3-chips--hs .f3-chip span { padding: 8px 14px; font: 500 13px/16px Inter, sans-serif; color: #667085; }
 .f3-form--hubspot .f3-chips--hs .f3-chip input:checked + span { color: var(--blue); font-weight: 600; }
