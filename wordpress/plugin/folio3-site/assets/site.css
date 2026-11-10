@@ -620,3 +620,6 @@ html.f3-js .f3-blog-grid__inner:not(.is-paged) > article:nth-of-type(n+10) { dis
 @media (max-width: 767px) {
   .f3-form--hubspot .hsfc-CheckboxFieldGroup__Options .hsfc-FieldLabel { padding: 9px 12px !important; font-size: 13px !important; }
 }
+.f3-form--hubspot .hsfc-CheckboxInput,
+.f3-form--hubspot .hsfc-CheckboxInput:checked,
+.f3-form--hubspot .hsfc-CheckboxInput:focus{box-shadow:none !important}
