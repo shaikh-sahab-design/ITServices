@@ -495,3 +495,118 @@
   window.addEventListener('resize', layout);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
 })();
+
+/* HubSpot form: the company size dropdown is shown as single-select pills with the sliding highlight
+   of the old form. The pills drive HubSpot's own dropdown, so validation and submission are unchanged;
+   if a pill cannot set the dropdown, the dropdown is shown again. */
+(function () {
+  'use strict';
+  var forms = document.querySelectorAll('.f3-form--hubspot');
+  if (!forms.length) return;
+  var ITEM = '.hsfc-DropdownOptions__List__ListItem, [role="option"]';
+  var clean = function (s) { return (s || '').replace(/\s+/g, ' ').trim(); };
+  var fieldOf = function (dd) {
+    var n = dd.parentElement;
+    while (n && !n.querySelector('.hsfc-FieldLabel')) n = n.parentElement;
+    return n;
+  };
+  var trigger = function (dd) { return dd.querySelector('.hsfc-TextInput--button, button, [role="combobox"], input'); };
+  var press = function (el) {
+    ['pointerdown', 'mousedown', 'pointerup', 'mouseup', 'click'].forEach(function (t) {
+      el.dispatchEvent(new MouseEvent(t, { bubbles: true, cancelable: true, view: window }));
+    });
+  };
+  var items = function (field) { return [].slice.call(field.querySelectorAll(ITEM)).filter(function (li) { var t = clean(li.textContent); return t && li.getAttribute('aria-disabled') !== 'true' && !/^(please\s+)?select\b/i.test(t); }); };
+  var withList = function (dd, field, fn) {
+    var list = items(field);
+    if (list.length) return fn(list, false);
+    var t = trigger(dd);
+    if (!t) return fn([], false);
+    press(t);
+    requestAnimationFrame(function () { setTimeout(function () { fn(items(field), true); }, 30); });
+  };
+  var close = function (dd) {
+    var t = trigger(dd);
+    if (t) t.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+  };
+  var current = function (dd) { var t = trigger(dd); return t ? clean(t.value || t.textContent) : ''; };
+
+  var build = function (dd, field, labels) {
+    if (field.querySelector('.f3-chips--hs')) return;
+    var name = 'f3-hs-size-' + Math.random().toString(36).slice(2, 7);
+    var wrap = document.createElement('div');
+    wrap.className = 'f3-chips f3-chips--hs';
+    wrap.setAttribute('role', 'radiogroup');
+    var lab = field.querySelector('.hsfc-FieldLabel');
+    if (lab) { if (!lab.id) lab.id = name + '-label'; wrap.setAttribute('aria-labelledby', lab.id); }
+    labels.forEach(function (text) {
+      var l = document.createElement('label');
+      l.className = 'f3-chip';
+      var i = document.createElement('input');
+      i.type = 'radio'; i.name = name; i.value = text;
+      var s = document.createElement('span');
+      s.textContent = text;
+      l.appendChild(i); l.appendChild(s);
+      wrap.appendChild(l);
+    });
+    var hl = document.createElement('span');
+    hl.className = 'f3-chip-hl';
+    wrap.appendChild(hl);
+    wrap.classList.add('has-hl');
+    var place = function (instant) {
+      var on = wrap.querySelector('input:checked');
+      if (!on) { hl.style.opacity = '0'; return; }
+      var r = on.closest('.f3-chip').getBoundingClientRect(), cr = wrap.getBoundingClientRect();
+      if (instant) hl.style.transition = 'none';
+      hl.style.opacity = '1';
+      hl.style.width = r.width + 'px'; hl.style.height = r.height + 'px';
+      hl.style.transform = 'translate(' + (r.left - cr.left) + 'px,' + (r.top - cr.top) + 'px)';
+      if (instant) { hl.getBoundingClientRect(); hl.style.transition = ''; }
+    };
+    var sync = function (instant) {
+      var v = current(dd);
+      wrap.querySelectorAll('input').forEach(function (i) { i.checked = i.value === v; });
+      place(instant);
+    };
+    var fail = function () { field.classList.remove('f3-hs-pills'); wrap.remove(); };
+    wrap.addEventListener('change', function (e) {
+      var want = e.target.value;
+      place(false);
+      withList(dd, field, function (list) {
+        var hit = list.filter(function (li) { return clean(li.textContent) === want; })[0];
+        if (!hit) { fail(); return; }
+        press(hit);
+        setTimeout(function () { if (current(dd) !== want) fail(); }, 120);
+      });
+    });
+    window.addEventListener('resize', function () { place(true); });
+    dd.parentNode.insertBefore(wrap, dd.nextSibling);
+    field.classList.add('f3-hs-pills');
+    sync(true);
+  };
+
+  var scan = function (form) {
+    form.querySelectorAll('.hsfc-DropdownInput').forEach(function (dd) {
+      var field = fieldOf(dd);
+      if (!field || field.querySelector('.f3-chips--hs') || dd.dataset.f3Tried) return;
+      var lab = field.querySelector('.hsfc-FieldLabel');
+      if (!lab || !/company\s*size/i.test(lab.textContent)) return;
+      dd.dataset.f3Tried = '1';
+      withList(dd, field, function (list, opened) {
+        var labels = list.map(function (li) { return clean(li.textContent); });
+        if (opened) close(dd);
+        delete dd.dataset.f3Tried;
+        if (labels.length) build(dd, field, labels);
+      });
+    });
+  };
+  forms.forEach(function (form) {
+    var queued = false;
+    new MutationObserver(function () {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(function () { queued = false; scan(form); });
+    }).observe(form, { childList: true, subtree: true });
+    scan(form);
+  });
+})();
