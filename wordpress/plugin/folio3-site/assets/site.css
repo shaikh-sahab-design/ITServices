@@ -685,3 +685,29 @@ html.f3-js .f3-blog-grid__inner:not(.is-paged) > article:nth-of-type(n+10) { dis
   .f3-footer a, .f3-site-footer a { display: inline-block; padding-block: 6px; }
   .f3-nav__toggle .elementor-icon { min-width: 32px; min-height: 32px; display: inline-flex; align-items: center; justify-content: center; }
 }
+
+/* Responsive pass 2: fixed-px grids from the 1440 converter overflow between 1025 and 1439 */
+@media (min-width: 1025px) and (max-width: 1439px) {
+  .f3-footer__top { grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr)) minmax(0, 1fr) !important; }
+  .f3-journey__steps { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; }
+  .f3-num-cards__grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+  .f3-footer__top > *, .f3-journey__steps > *, .f3-num-cards__grid > *,
+  .f3-vcio-intro__grid > *, .f3-vcio-trust__row > *, .f3-vcio-trust__panel, .f3-detail-pair__grid > * { min-width: 0 !important; }
+}
+.f3-vcio-intro__stat .elementor-heading-title, .f3-define__box-title .elementor-heading-title,
+.f3-aia-stage__title .elementor-heading-title, .f3-soc-why__label .elementor-heading-title,
+.f3-vcio-trust__panel-title .elementor-heading-title { white-space: normal !important; overflow-wrap: break-word; }
+.f3-vcio-trust__panel, .f3-vcio-trust__panel-text, .f3-vcio-intro__list { min-width: 0; max-width: 100%; }
+.wp-block-table { overflow-x: auto; }
+.f3-num-cards__head { flex-wrap: wrap !important; }
+@media (max-width: 1024px) {
+  .f3-toc, .e-con:has(> .f3-toc), .e-con:has(> .e-con > .f3-toc) { position: static !important; top: auto !important; }
+  .f3-toc { max-height: none; }
+  .f3-toc__list { overflow-y: visible; }
+  .f3-panel--blue { min-height: auto !important; }
+  .f3-detail-pair, .f3-detail-pair__grid, .f3-detail-pair__grid > * { min-height: auto !important; }
+  .f3-hero .elementor-widget-image img, .f3-hero img.wp-image-331 { object-fit: cover !important; height: 100% !important; }
+}
+@media (max-width: 767px) {
+  .f3-cta-band .elementor-element.elementor-widget-button, .f3-soc-case .elementor-element.elementor-widget-button { width: 100% !important; max-width: 100% !important; flex: 1 1 100% !important; }
+}
