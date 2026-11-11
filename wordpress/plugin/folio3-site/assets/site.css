@@ -662,3 +662,26 @@ html.f3-js .f3-blog-grid__inner:not(.is-paged) > article:nth-of-type(n+10) { dis
 @media (min-width: 1025px) and (max-width: 1199px) { .f3-nav .f3-nav__sheet { height: calc(100dvh - 73px); } }
 @media (max-width: 380px) { .f3-hero__title .elementor-heading-title { font-size: 32px !important; } }
 @media (max-width: 767px) { .f3-ty-hero__word .elementor-heading-title { font-size: clamp(40px, 17vw, 70px) !important; } }
+
+/* Responsive pass (2026-11-11): buttons, pills, tables and images that overflowed on phones and tablets */
+.elementor-widget-button { max-width: 100%; min-width: 0; }
+.elementor-widget-button .elementor-button { max-width: 100%; }
+.f3-soc-case__banner-row, .f3-soc-closing__actions, .f3-cta-band__actions { flex-wrap: wrap !important; }
+@media (max-width: 1024px) {
+  .f3-soc-case__banner-row > .elementor-widget-button, .f3-detail-cta { flex-shrink: 1 !important; }
+  .f3-detail-cta .elementor-button, .f3-soc-case .elementor-button { white-space: normal; }
+}
+@media (max-width: 767px) {
+  .elementor-widget-button .elementor-button, .elementor-widget-button .elementor-button-text { white-space: normal; text-align: center; }
+  .f3-cta-band .elementor-widget-button, .f3-soc-case .elementor-widget-button, .f3-icon-cards__cta, .f3-detail-cta { width: 100% !important; }
+  .f3-cta-band .elementor-button, .f3-soc-case .elementor-button, .f3-icon-cards__cta .elementor-button, .f3-detail-cta .elementor-button { width: 100%; justify-content: center; }
+  .f3-soc-table .elementor-heading-title { overflow-wrap: anywhere; }
+  .f3-pill-tag, .f3-pill-tag .elementor-widget-container, .f3-pill-tag p { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+  .f3-hero img { object-fit: cover; }
+}
+.f3-case-tile .f3-pill-tag { max-width: 100%; overflow-wrap: anywhere; }
+.f3-case-card__logo img { height: auto !important; max-width: 100%; object-fit: contain; }
+@media (pointer: coarse) {
+  .f3-footer a, .f3-site-footer a { display: inline-block; padding-block: 6px; }
+  .f3-nav__toggle .elementor-icon { min-width: 32px; min-height: 32px; display: inline-flex; align-items: center; justify-content: center; }
+}
