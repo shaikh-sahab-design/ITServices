@@ -637,24 +637,25 @@ html.f3-js .f3-blog-grid__inner:not(.is-paged) > article:nth-of-type(n+10) { dis
 .f3-icon-cards--dark .f3-icon-cards__lede { max-width: 800px; margin-left: auto !important; margin-right: auto !important; }
 
 /* Responsive header and banners (2026-11-11) */
-@media (max-width: 1024px) {
+@media (max-width: 1199px) {
   .f3-nav__sheet, .f3-nav__sheet-services, .f3-nav__sheet-group { flex-wrap: nowrap !important; }
-  .f3-nav__sheet > *, .f3-nav__sheet-services > * { flex-shrink: 0; }
+  .f3-nav__sheet > *, .f3-nav__sheet-services > *, .f3-nav__sheet-services .f3-nav__sheet-group, .f3-nav__sheet-group > * { flex-shrink: 0 !important; }
 }
-@media (min-width: 1025px) {
-  .f3-nav__link .elementor-heading-title, .f3-nav__link a, .f3-nav__cta .elementor-button { white-space: nowrap; }
-}
+/* 1025-1199px: not enough room for the full menu, so use the burger and sheet like tablets. */
 @media (min-width: 1025px) and (max-width: 1199px) {
-  .f3-nav__inner { gap: 16px !important; }
-  .f3-nav__links { gap: 22px !important; flex-shrink: 1; min-width: 0; }
-  .f3-nav__links .f3-nav__item { gap: 4px !important; }
-  .f3-nav__link .elementor-heading-title { font-size: 15px !important; }
-  .f3-nav__logo { flex-shrink: 1; min-width: 0; max-width: 190px; }
-  .f3-nav__logo img { width: 100% !important; height: auto !important; }
-  .f3-nav__cta .elementor-button { padding: 10px 16px !important; font-size: 14px !important; }
+  .f3-nav .f3-nav__links, .f3-nav .f3-nav__cta, .f3-nav .f3-mega { display: none !important; }
+  .f3-nav .f3-nav__burger.elementor-hidden-desktop { display: block !important; }
+  .f3-nav.is-open .f3-nav__sheet.elementor-hidden-desktop { display: flex !important; animation: f3-sheet-in 0.25s var(--ease-out-quint) both; }
+}
+@media (min-width: 1200px) {
+  .f3-nav__link .elementor-heading-title, .f3-nav__link a, .f3-nav__cta .elementor-button { white-space: nowrap; }
 }
 .f3-page-hero .elementor-heading-title, .f3-hero__title .elementor-heading-title { text-wrap: balance; }
 .f3-page-hero .elementor-heading-title .f3-lm, .f3-hero__title .elementor-heading-title .f3-lm { text-wrap: balance; }
 @media (min-width: 768px) and (max-width: 1024px) {
   .f3-hero__title .elementor-heading-title, .f3-page-hero__title .elementor-heading-title { font-size: clamp(44px, 6vw, 56px) !important; }
+}
+@media (max-width: 380px) {
+  .f3-page-hero__title .elementor-heading-title { font-size: 30px !important; }
+  .f3-page-hero__title-lines .elementor-heading-title { font-size: 28px !important; }
 }
