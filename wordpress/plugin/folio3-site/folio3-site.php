@@ -23,6 +23,7 @@ require_once __DIR__ . '/includes/blog-post.php';
 require_once __DIR__ . '/includes/blog-import.php';
 require_once __DIR__ . '/includes/case-studies.php';
 require_once __DIR__ . '/includes/redirects.php';
+require_once __DIR__ . '/includes/content-sync.php';
 
 /* SVG uploads for admins (icons are SVG files). */
 add_filter( 'upload_mimes', function ( $m ) {
