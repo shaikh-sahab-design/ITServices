@@ -631,3 +631,4 @@ html.f3-js .f3-blog-grid__inner:not(.is-paged) > article:nth-of-type(n+10) { dis
 @media (max-width: 767px) { .f3-verticals .f3-btn .elementor-button { max-width: 100%; white-space: normal; } }
 /* Home stats: the longer heading keeps its old column width so the four stats are not squeezed. */
 @media (min-width: 1025px) { .f3-stats__inner .e-con:has(> .f3-stats__title, > .e-con-inner > .f3-stats__title) { flex: 0 0 480px !important; max-width: 480px !important; } .f3-stats__title.elementor-element { max-width: 480px !important; } }
+.f3-lede p + p { margin-top: 12px; }
