@@ -629,3 +629,5 @@ html.f3-js .f3-blog-grid__inner:not(.is-paged) > article:nth-of-type(n+10) { dis
 @media (min-width: 1025px) { .f3-cases > :last-child:nth-child(odd) { grid-column: 1 / -1; } }
 /* Long outline buttons wrap inside narrow screens instead of running past the gutter. */
 @media (max-width: 767px) { .f3-verticals .f3-btn .elementor-button { max-width: 100%; white-space: normal; } }
+/* Home stats: the longer heading keeps its old column width so the four stats are not squeezed. */
+@media (min-width: 1025px) { .f3-stats__title { max-width: 480px; } }
