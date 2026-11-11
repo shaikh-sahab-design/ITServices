@@ -34,9 +34,6 @@ function folio3_old_blog_paths() {
 		'/services/managed-security/mdr-service/'                       => '/threat-detection-incident-response/',
 		'/services/managed-security/soc-services/'                      => '/soc-services/',
 		'/services/managed-security/vulnerability-management/'          => '/vulnerability-assessment/',
-		'/success-stories/active-comply-it-security-readiness/'         => '/case-studies/activecomply/',
-		'/success-stories/arcom-it-managed-it-support/'                 => '/case-studies/arcom-it/',
-		'/success-stories/opportune-it-infrastructure-management/'      => '/case-studies/opportune/',
 	];
 }
 

@@ -1,7 +1,7 @@
 <?php
 /**
  * Case Studies: a post type with its own admin menu. Each case study is edited with Elementor like a
- * page (its detail page lives at /case-studies/<slug>/). The tile grid on the Case Studies page is
+ * page (its detail page lives at /success-stories/<slug>/; the old /case-studies/ addresses redirect). The tile grid on the Case Studies page is
  * filled from published case studies at render time; the first tile in the grid is the design every
  * tile copies, so editing that tile in Elementor restyles them all.
  *
@@ -38,7 +38,7 @@ function folio3_cs_register() {
 			'menu_icon'     => 'dashicons-portfolio',
 			'has_archive'   => false,
 			'hierarchical'  => false,
-			'rewrite'       => [ 'slug' => 'case-studies', 'with_front' => false ],
+			'rewrite'       => [ 'slug' => 'success-stories', 'with_front' => false ],
 			'supports'      => [ 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'page-attributes', 'elementor' ],
 		]
 	);

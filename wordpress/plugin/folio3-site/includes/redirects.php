@@ -43,6 +43,12 @@ add_action( 'template_redirect', function () {
 		return;
 	}
 	$path = trim( (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' ); // phpcs:ignore
+	$q    = (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_QUERY ); // phpcs:ignore
+	/* Case studies moved from /case-studies/ to /success-stories/ (2026-11-11). */
+	if ( preg_match( '#^case-studies(/.*)?$#', $path, $m ) ) {
+		wp_safe_redirect( home_url( '/success-stories' . ( $m[1] ?? '' ) . '/' ) . ( $q ? '?' . $q : '' ), 301 );
+		exit;
+	}
 	$map  = folio3_old_page_paths();
 	if ( ! isset( $map[ $path ] ) || 'publish' !== get_post_status( $map[ $path ] ) ) {
 		return;
@@ -51,7 +57,6 @@ add_action( 'template_redirect', function () {
 	if ( ! $to || trim( (string) wp_parse_url( $to, PHP_URL_PATH ), '/' ) === $path ) {
 		return;
 	}
-	$q = (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_QUERY ); // phpcs:ignore
 	wp_safe_redirect( $to . ( $q ? '?' . $q : '' ), 301 );
 	exit;
 }, 9 );
