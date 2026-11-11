@@ -659,3 +659,6 @@ html.f3-js .f3-blog-grid__inner:not(.is-paged) > article:nth-of-type(n+10) { dis
   .f3-page-hero__title .elementor-heading-title { font-size: 30px !important; }
   .f3-page-hero__title-lines .elementor-heading-title { font-size: 28px !important; }
 }
+@media (min-width: 1025px) and (max-width: 1199px) { .f3-nav .f3-nav__sheet { height: calc(100dvh - 73px); } }
+@media (max-width: 380px) { .f3-hero__title .elementor-heading-title { font-size: 32px !important; } }
+@media (max-width: 767px) { .f3-ty-hero__word .elementor-heading-title { font-size: clamp(40px, 17vw, 70px) !important; } }
