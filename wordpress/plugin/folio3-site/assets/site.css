@@ -25,7 +25,7 @@ body { overflow-x: hidden; background: #fff; color: var(--text); -webkit-font-sm
 .f3-nav.is-scrolled { box-shadow: 0 6px 24px rgba(12, 14, 22, 0.06); }
 .f3-nav__link .elementor-heading-title a { position: relative; transition: color 150ms ease; }
 .f3-nav__link .elementor-heading-title a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px; border-radius: 2px; background: var(--blue); transform: scaleX(0); transform-origin: left; transition: transform 250ms var(--ease-out-quint); }
-.f3-nav a[aria-current="page"] { color: var(--blue) !important; }
+.f3-nav a[aria-current="page"]:not(.elementor-button) { color: var(--blue) !important; }
 .f3-nav__link a[aria-current="page"], .f3-nav__sheet-link a[aria-current="page"] { font-weight: 800 !important; }
 .f3-nav__item:has(a[aria-current="page"]) .f3-nav__toggle i, .f3-nav.is-services .f3-nav__item .f3-nav__link a { color: var(--blue); }
 .f3-nav__toggle { cursor: pointer; }
