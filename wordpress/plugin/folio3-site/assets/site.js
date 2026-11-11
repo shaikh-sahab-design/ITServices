@@ -223,7 +223,7 @@
     var lines = t.innerHTML.split(/<br\s*\/?>/i);
     t.innerHTML = lines.map(function (l, i) {
       return '<span class="f3-lm"><span style="--f3d:' + (0.15 + i * 0.1) + 's">' + l + '</span></span>';
-    }).join('');
+    }).join(' '); // the space keeps words apart for screen readers, search and copy-paste
     w.classList.add('f3-lines-ready');
   });
   var groupOf = function (el) {
