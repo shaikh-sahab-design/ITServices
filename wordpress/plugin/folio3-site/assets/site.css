@@ -748,3 +748,15 @@ html.f3-js .f3-blog-grid__inner:not(.is-paged) > article:nth-of-type(n+10) { dis
   .f3-split__lists .elementor-icon-list-text, .f3-split__lists .elementor-widget-container, .f3-split__lists p, .f3-split__lists .f3-tag-li, .f3-split__lists .f3-tag-li * { white-space: normal !important; }
   .f3-split__lists .f3-tag-li { max-width: 100%; min-width: 0; }
 }
+/* Responsive pass 5 */
+.f3-prose img { height: auto !important; max-width: 100%; }
+@media (min-width: 1025px) and (max-width: 1439px) {
+  .f3-rv .elementor-button, .f3-icon-card .elementor-button { white-space: normal !important; text-align: center; }
+  .f3-icon-card .elementor-widget-button { max-width: 100%; }
+}
+@media (max-width: 1024px) {
+  .f3-detail-pair + .f3-detail-pair, .f3-detail-pair + .e-con > .f3-detail-pair:first-child, .e-con:has(> .f3-detail-pair:last-child) + .f3-detail-pair { padding-top: 0 !important; }
+}
+@media (max-width: 414px) {
+  .f3-soc-case .elementor-button { padding-inline: 12px !important; }
+}
