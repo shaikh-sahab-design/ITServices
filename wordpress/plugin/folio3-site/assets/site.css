@@ -749,7 +749,7 @@ html.f3-js .f3-blog-grid__inner:not(.is-paged) > article:nth-of-type(n+10) { dis
   .f3-split__lists .f3-tag-li { max-width: 100%; min-width: 0; }
 }
 /* Responsive pass 5 */
-.f3-prose img { height: auto !important; max-width: 100%; }
+.f3-prose img { height: auto !important; max-width: 100%; aspect-ratio: auto !important; }
 @media (min-width: 1025px) and (max-width: 1439px) {
   .f3-rv .elementor-button, .f3-icon-card .elementor-button { white-space: normal !important; text-align: center; }
   .f3-icon-card .elementor-widget-button { max-width: 100%; }
