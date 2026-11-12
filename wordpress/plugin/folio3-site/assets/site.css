@@ -737,3 +737,13 @@ html.f3-js .f3-blog-grid__inner:not(.is-paged) > article:nth-of-type(n+10) { dis
   .f3-cta-band .elementor-button, .f3-soc-case .elementor-button { font-size: 15px !important; }
   .f3-cta-band > .f3-btn, .f3-cta-band .elementor-widget-button { flex: 1 1 100% !important; width: 100% !important; }
 }
+/* Responsive pass 4 */
+@media (max-width: 767px) {
+  .f3-soc-case__banner-row { flex-wrap: nowrap !important; }
+  .f3-soc-case__banner-row > .elementor-element.elementor-widget-button { flex: 0 0 auto !important; }
+}
+@media (max-width: 1439px) {
+  .f3-split__lists { max-width: 100% !important; min-width: 0 !important; }
+  .f3-split__lists > * { min-width: 0 !important; flex-shrink: 1 !important; }
+  .f3-split__lists .elementor-icon-list-text, .f3-split__lists .elementor-widget-container, .f3-split__lists p { white-space: normal !important; }
+}
