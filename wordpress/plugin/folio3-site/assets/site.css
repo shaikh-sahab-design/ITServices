@@ -745,5 +745,6 @@ html.f3-js .f3-blog-grid__inner:not(.is-paged) > article:nth-of-type(n+10) { dis
 @media (max-width: 1439px) {
   .f3-split__lists { max-width: 100% !important; min-width: 0 !important; }
   .f3-split__lists > * { min-width: 0 !important; flex-shrink: 1 !important; }
-  .f3-split__lists .elementor-icon-list-text, .f3-split__lists .elementor-widget-container, .f3-split__lists p { white-space: normal !important; }
+  .f3-split__lists .elementor-icon-list-text, .f3-split__lists .elementor-widget-container, .f3-split__lists p, .f3-split__lists .f3-tag-li, .f3-split__lists .f3-tag-li * { white-space: normal !important; }
+  .f3-split__lists .f3-tag-li { max-width: 100%; min-width: 0; }
 }
